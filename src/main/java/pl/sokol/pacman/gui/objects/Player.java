@@ -67,4 +67,6 @@ public class Player extends Rectangle {
     public void setDown(boolean down) {
         this.down = down;
     }
+
+
 }

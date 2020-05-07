@@ -1,11 +1,14 @@
 package pl.sokol.pacman.gui.levels;
 
+import pl.sokol.pacman.gui.objects.Enemy;
 import pl.sokol.pacman.threads.Game;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Level {
 
@@ -15,7 +18,8 @@ public class Level {
     private int mapHeightProportion;
 
     private Tile[][] tiles;
-
+    private List<Point> points = new ArrayList<>();
+    private List<Enemy> enemies = new ArrayList<>();
 
     public Level(String path) {
         try {
@@ -34,6 +38,16 @@ public class Level {
                     if (val == 0xFF000000) {
                         // Tile
                         tiles[xx][yy] = new Tile(xx * this.mapWidthProportion, yy * this.mapHeightProportion);
+                    } else if (val == 0xFF0000FF) {
+                        // Player
+                        Game.player.x = xx * this.mapWidthProportion;
+                        Game.player.y = yy * this.mapHeightProportion;
+                    } else if (val == 0xFFFF0000) {
+                        // Enemy
+                        enemies.add(new Enemy(xx * mapWidthProportion, yy * mapHeightProportion));
+
+                    } else {
+                        points.add(new Point(xx * this.mapWidthProportion, yy*mapHeightProportion));
                     }
                 }
             }
@@ -41,7 +55,6 @@ public class Level {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
 
     }
@@ -54,5 +67,15 @@ public class Level {
                 }
             }
         }
+        for (int i = 0; i < points.size(); i++) {
+            points.get(i).render(g);
+        }
+        for (int i = 0; i < enemies.size(); i++) {
+            enemies.get(i).render(g);
+        }
+    }
+
+    public void timer() {
+
     }
 }

@@ -98,6 +98,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     private void timer() {
         player.timer();
+        level.timer();
     }
 
     @Override
