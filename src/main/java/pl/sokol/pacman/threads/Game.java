@@ -1,5 +1,6 @@
 package pl.sokol.pacman.threads;
 
+import pl.sokol.pacman.gui.levels.Level;
 import pl.sokol.pacman.gui.objects.Player;
 
 import java.awt.*;
@@ -14,6 +15,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
     public static final String TITLE = "Pac-Man";
 
     public static Player player;
+    public static Level level;
 
     private Thread thread;
     private boolean isRunningFlag = false;
@@ -25,6 +27,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
         setFocusable(true);
         addKeyListener(this);
         player = new Player(WIDTH / 2, HEIGHT / 2);
+        level = new Level("/maps/map1.png");
     }
 
     @Override
@@ -88,6 +91,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, WIDTH, HEIGHT);
         player.render(g);
+        level.render(g);
         g.dispose();
         bs.show();
     }

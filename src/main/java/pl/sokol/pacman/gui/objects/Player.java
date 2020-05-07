@@ -4,8 +4,8 @@ import java.awt.*;
 
 public class Player extends Rectangle {
 
-    private static final int PLAYER_WIDTH = 32;
-    private static final int PLAYER_HEIGHT = 32;
+    private final int PLAYER_WIDTH = 32;
+    private final int PLAYER_HEIGHT = 32;
     private final int SPEED = 4;
     private boolean right;
     private boolean left;
