@@ -30,13 +30,14 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
     //    1 - right
     //    2 - down
     //    3 - left
-    private List<Boolean> movements = new ArrayList<>();
-    private int currentMovement;
-    private int previousMovement;
 
     private Random random = new Random();
 
-    private BufferedImage bf = null;
+    private List<Boolean> movements = new ArrayList<>();
+    private int currentMovement = random.nextInt(4);
+    private int counter = 0;
+
+    private BufferedImage bf;
 
     private Player player;
 
@@ -60,37 +61,31 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
     @Override
     public void move() {
 
-        // try to find a player in search range
-        boolean findPlayerFlag = false;
-        if (y - SEARCH_RANGE < player.y || x + SEARCH_RANGE > player.x || y + SEARCH_RANGE > player.y || x - SEARCH_RANGE < player.x) {
-            findPlayerFlag = true;
-        }
+//        // try to find a player in search range
+//        boolean findPlayerFlag = false;
+//        if (y - SEARCH_RANGE < player.y || x + SEARCH_RANGE > player.x || y + SEARCH_RANGE > player.y || x - SEARCH_RANGE < player.x) {
+//            findPlayerFlag = true;
+//        }
 
-        if (findPlayerFlag) {
+        int newMovement = random.nextInt(4);
+
+        if (counter > 50 && canMove(newMovement)) {
+            System.out.println(counter);
+            makeMove(newMovement);
+            currentMovement = newMovement;
+            counter = 0;
+
+        } else if (canMove(currentMovement)) {
+            makeMove(currentMovement);
 
         } else {
-            int newMovement = random.nextInt(4);
-
-            // up
-            if (movements.get(0) && canMove(0)) {
-                y -= SPEED;
-            }
-
-            // right
-            if (movements.get(1) && canMove(1)) {
-                x += SPEED;
-            }
-
-            // down
-            if (movements.get(2) && canMove(2)) {
-                y += SPEED;
-            }
-
-            // left
-            if (movements.get(3) && canMove(3)) {
-                x -= SPEED;
-            }
+            do {
+                newMovement = random.nextInt(4);
+            } while (canMove(newMovement));
+            makeMove(newMovement);
+            currentMovement = newMovement;
         }
+        counter++;
     }
 
     @Override
@@ -133,6 +128,33 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
             }
         }
         return true;
+    }
+
+    private void makeMove(int newMovement) {
+        switch (newMovement) {
+            // up
+            case 0:
+                y -= SPEED;
+                break;
+
+            // right
+            case 1:
+                x += SPEED;
+                break;
+
+            // down
+            case 2:
+                y += SPEED;
+                break;
+
+            // left
+            case 3:
+                x -= SPEED;
+                break;
+
+            default:
+                break;
+        }
     }
 
     private void initMovements() {

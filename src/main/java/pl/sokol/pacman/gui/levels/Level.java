@@ -7,7 +7,7 @@ import pl.sokol.pacman.Game;
 import pl.sokol.pacman.gui.elements.dynamic.Player;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class Level {
     private int mapHeightProportion;
 
     private Tile[][] tiles;
-    private List<pl.sokol.pacman.gui.elements.Point> points = new ArrayList<>();
+    private List<Point> points = new ArrayList<>();
     private List<Enemy> enemies = new ArrayList<>();
 
     public Level(String path, Player player) {
