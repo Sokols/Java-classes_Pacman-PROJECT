@@ -1,6 +1,8 @@
 package pl.sokol.pacman.gui.levels;
 
-import pl.sokol.pacman.gui.objects.Enemy;
+import pl.sokol.pacman.gui.elements.dynamic.Enemy;
+import pl.sokol.pacman.gui.elements.Point;
+import pl.sokol.pacman.gui.elements.Tile;
 import pl.sokol.pacman.threads.Game;
 
 import javax.imageio.ImageIO;
@@ -18,7 +20,7 @@ public class Level {
     private int mapHeightProportion;
 
     private Tile[][] tiles;
-    private List<Point> points = new ArrayList<>();
+    private List<pl.sokol.pacman.gui.elements.Point> points = new ArrayList<>();
     private List<Enemy> enemies = new ArrayList<>();
 
     public Level(String path) {
@@ -47,7 +49,7 @@ public class Level {
                         enemies.add(new Enemy(xx * mapWidthProportion, yy * mapHeightProportion));
 
                     } else {
-                        points.add(new Point(xx * this.mapWidthProportion, yy*mapHeightProportion));
+                        points.add(new pl.sokol.pacman.gui.elements.Point(xx * this.mapWidthProportion, yy*mapHeightProportion));
                     }
                 }
             }
@@ -55,8 +57,6 @@ public class Level {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
     public void render(Graphics g) {
@@ -75,7 +75,19 @@ public class Level {
         }
     }
 
-    public void timer() {
+    public Tile[][] getTiles() {
+        return tiles;
+    }
 
+    public void setTiles(Tile[][] tiles) {
+        this.tiles = tiles;
+    }
+
+    public List<pl.sokol.pacman.gui.elements.Point> getPoints() {
+        return points;
+    }
+
+    public void setPoints(List<Point> points) {
+        this.points = points;
     }
 }

@@ -1,8 +1,8 @@
-package pl.sokol.pacman.gui.levels;
+package pl.sokol.pacman.gui.elements;
 
 import java.awt.*;
 
-public class Point extends Rectangle {
+public class Point extends Rectangle implements Renderable {
 
     private final int POINT_WIDTH = 8;
     private final int POINT_HEIGHT = 8;

@@ -1,7 +1,7 @@
 package pl.sokol.pacman.threads;
 
 import pl.sokol.pacman.gui.levels.Level;
-import pl.sokol.pacman.gui.objects.Player;
+import pl.sokol.pacman.gui.elements.dynamic.Player;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -26,37 +26,16 @@ public class Game extends Canvas implements Runnable, KeyListener {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setFocusable(true);
         addKeyListener(this);
-        player = new Player(WIDTH / 2, HEIGHT / 2);
+        player = new Player(0, 0);
         level = new Level("/maps/map1.png");
     }
 
     @Override
     public void run() {
 
-        int fps = 0;
-        double timer = System.currentTimeMillis();
-        long lastTime = System.nanoTime();
-        double targetTick = 60.0;
-        double delta = 0;
-        double ns = 1e9 / targetTick;
-        long now;
-
         while (isRunningFlag) {
-            now = System.nanoTime();
-            delta += (now - lastTime) / ns;
-            lastTime = now;
-
-            while (delta >= 1) {
-                timer();
-                render();
-                fps++;
-                delta--;
-            }
-            if (System.currentTimeMillis() - timer >= 1000) {
-                System.out.println(fps);
-                fps = 0;
-                timer += 1000;
-            }
+            move();
+            render();
         }
         // stop the game if isRunningFlag is false
         stop();
@@ -81,12 +60,22 @@ public class Game extends Canvas implements Runnable, KeyListener {
         }
     }
 
-    private void render() {
+    public BufferStrategy getBS() {
         BufferStrategy bs = getBufferStrategy();
         if (bs == null) {
             createBufferStrategy(3);
-            return;
+            bs = getBufferStrategy();
         }
+        return bs;
+    }
+
+    private void render() {
+//        BufferStrategy bs = getBufferStrategy();
+//        if (bs == null) {
+//            createBufferStrategy(3);
+//            return;
+//        }
+        BufferStrategy bs = getBS();
         Graphics g = bs.getDrawGraphics();
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, WIDTH, HEIGHT);
@@ -96,9 +85,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
         bs.show();
     }
 
-    private void timer() {
-        player.timer();
-        level.timer();
+    private void move() {
+        player.move();
     }
 
     @Override
