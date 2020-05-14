@@ -1,6 +1,6 @@
 package pl.sokol.pacman.gui.frames;
 
-import pl.sokol.pacman.threads.Game;
+import pl.sokol.pacman.Game;
 
 import javax.swing.*;
 
@@ -13,10 +13,10 @@ public class GameFrame extends JFrame {
         setSize(640, 720);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
-//        pack();
+//      pack();
         setLocationRelativeTo(null);
         setVisible(true);
 
-        game.start();
+        game.startNewGame();
     }
 }

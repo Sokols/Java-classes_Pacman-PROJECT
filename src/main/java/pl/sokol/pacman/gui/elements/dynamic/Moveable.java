@@ -4,5 +4,5 @@ public interface Moveable {
 
     void move();
 
-    boolean canMove(int toX, int toY);
+    boolean canMove(int movement);
 }

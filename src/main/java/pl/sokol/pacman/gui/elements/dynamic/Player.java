@@ -1,29 +1,33 @@
 package pl.sokol.pacman.gui.elements.dynamic;
 
 import pl.sokol.pacman.gui.elements.Renderable;
-import pl.sokol.pacman.gui.elements.dynamic.Moveable;
 import pl.sokol.pacman.gui.levels.Level;
-import pl.sokol.pacman.threads.Game;
+import pl.sokol.pacman.Game;
 
 import javax.imageio.ImageIO;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Player extends Rectangle implements Renderable, Moveable {
 
     private final int PLAYER_WIDTH = 24;
     private final int PLAYER_HEIGHT = 24;
-    private final int SPEED = 2;
-    private boolean right;
-    private boolean left;
-    private boolean up;
-    private boolean down;
+    private final int SPEED = 4;
+    //    0 - up
+    //    1 - right
+    //    2 - down
+    //    3 - left
+    private List<Boolean> movements = new ArrayList<>();
 
     public Player(int x, int y) {
         setBounds(x, y, PLAYER_WIDTH, PLAYER_HEIGHT);
+        initMovements();
     }
+
 
 //    @Override
 //    public void run() {
@@ -33,17 +37,24 @@ public class Player extends Rectangle implements Renderable, Moveable {
 
     @Override
     public void move() {
-        if (right && canMove(x + SPEED, y)) {
-            x += SPEED;
-        }
-        if (left && canMove(x - SPEED, y)) {
-            x -= SPEED;
-        }
-        if (up && canMove(x, y - SPEED)) {
+        // up
+        if (movements.get(0) && canMove(0)) {
             y -= SPEED;
         }
-        if (down && canMove(x, y + SPEED)) {
+
+        // right
+        if (movements.get(1) && canMove(1)) {
+            x += SPEED;
+        }
+
+        // down
+        if (movements.get(2) && canMove(2)) {
             y += SPEED;
+        }
+
+        // left
+        if (movements.get(3) && canMove(3)) {
+            x -= SPEED;
         }
 
         for (int i = 0; i < Game.level.getPoints().size(); i++) {
@@ -59,7 +70,33 @@ public class Player extends Rectangle implements Renderable, Moveable {
     }
 
     @Override
-    public boolean canMove(int toX, int toY) {
+    public boolean canMove(int movement) {
+        int toX = 0, toY = 0;
+        switch (movement) {
+            case 0:
+                toX = x;
+                toY = y - SPEED;
+                break;
+
+            case 1:
+                toX = x + SPEED;
+                toY = y;
+                break;
+
+            case 2:
+                toX = x;
+                toY = y + SPEED;
+                break;
+
+            case 3:
+                toX = x - SPEED;
+                toY = y;
+                break;
+
+            default:
+                break;
+        }
+
         Rectangle bounds = new Rectangle(toX, toY, width, height);
         Level level = Game.level;
         for (int xx = 0; xx < level.getTiles().length; xx++) {
@@ -76,6 +113,7 @@ public class Player extends Rectangle implements Renderable, Moveable {
 
     @Override
     public void render(Graphics g) {
+        move();
         BufferedImage bf = null;
         try {
             bf = ImageIO.read(getClass().getResourceAsStream("/player/player.png"));
@@ -85,35 +123,17 @@ public class Player extends Rectangle implements Renderable, Moveable {
         g.drawImage(bf, x, y, width, height, null);
     }
 
-    public boolean isRight() {
-        return right;
+    private void initMovements() {
+        for (int i = 0; i < 4; i++) {
+            this.movements.add(false);
+        }
     }
 
-    public void setRight(boolean right) {
-        this.right = right;
+    public List<Boolean> getMovements() {
+        return movements;
     }
 
-    public boolean isLeft() {
-        return left;
-    }
-
-    public void setLeft(boolean left) {
-        this.left = left;
-    }
-
-    public boolean isUp() {
-        return up;
-    }
-
-    public void setUp(boolean up) {
-        this.up = up;
-    }
-
-    public boolean isDown() {
-        return down;
-    }
-
-    public void setDown(boolean down) {
-        this.down = down;
+    public void setMovements(List<Boolean> movements) {
+        this.movements = movements;
     }
 }
