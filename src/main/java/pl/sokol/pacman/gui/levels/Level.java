@@ -25,9 +25,14 @@ public class Level {
     private List<Point> points = new ArrayList<>();
     private List<Enemy> enemies = new ArrayList<>();
 
-    public Level(String path, Player player) {
+    private Game game;
+    private Player player;
+
+    public Level(String path, Player player, Game game) {
         try {
             BufferedImage map = ImageIO.read(getClass().getResourceAsStream(path));
+            this.game = game;
+            this.player = player;
             this.width = map.getWidth();
             this.height = map.getHeight();
             this.mapWidthProportion = Game.WIDTH / this.width;
@@ -49,8 +54,8 @@ public class Level {
                     } else if (val == 0xFFFF0000) {
                         // Enemy
                         enemies.add(new Enemy(xx * mapWidthProportion, yy * mapHeightProportion, player, new Random().nextInt(5)));
-
                     } else {
+                        // Points
                         points.add(new Point(xx * this.mapWidthProportion, yy*mapHeightProportion));
                     }
                 }
@@ -74,6 +79,10 @@ public class Level {
         }
         for (int i = 0; i < enemies.size(); i++) {
             enemies.get(i).render(g);
+            if (enemies.get(i).intersects(player)) {
+                game.setEndedFlag(false);
+                new Game();
+            }
         }
     }
 
@@ -85,7 +94,7 @@ public class Level {
         this.tiles = tiles;
     }
 
-    public List<pl.sokol.pacman.gui.elements.Point> getPoints() {
+    public List<Point> getPoints() {
         return points;
     }
 

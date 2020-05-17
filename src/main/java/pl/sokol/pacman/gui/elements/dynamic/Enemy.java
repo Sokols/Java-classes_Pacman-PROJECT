@@ -5,7 +5,8 @@ import pl.sokol.pacman.gui.elements.Renderable;
 import pl.sokol.pacman.gui.levels.Level;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,8 +17,9 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
 
     private final int ENEMY_WIDTH = 32;
     private final int ENEMY_HEIGHT = 32;
+    private final int ENEMY_COUNTER = 30;
     private final int SPEED = 2;
-    private int SEARCH_RANGE = 50;
+    private int SEARCH_RANGE = 20;
     private String[] IMAGES = {
             "/enemies/enemy1.png",
             "/enemies/enemy2.png",
@@ -25,11 +27,6 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
             "/enemies/enemy4.png",
             "/enemies/enemy5.png"
     };
-
-    //    0 - up
-    //    1 - right
-    //    2 - down
-    //    3 - left
 
     private Random random = new Random();
 
@@ -61,31 +58,87 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
     @Override
     public void move() {
 
-//        // try to find a player in search range
-//        boolean findPlayerFlag = false;
-//        if (y - SEARCH_RANGE < player.y || x + SEARCH_RANGE > player.x || y + SEARCH_RANGE > player.y || x - SEARCH_RANGE < player.x) {
-//            findPlayerFlag = true;
-//        }
+        // vector position of the enemy relative to the player
+        // HERE WE USE JAVA COORDINATE SYSTEM
+        int vectorX = player.x - x;
+        int vectorY = player.y - y;
 
-        int newMovement = random.nextInt(4);
+        // try to find a player in search range
+        if (vectorX < SEARCH_RANGE || vectorY < SEARCH_RANGE) {
 
-        if (counter > 50 && canMove(newMovement)) {
-            System.out.println(counter);
-            makeMove(newMovement);
-            currentMovement = newMovement;
-            counter = 0;
-
-        } else if (canMove(currentMovement)) {
-            makeMove(currentMovement);
-
-        } else {
-            do {
-                newMovement = random.nextInt(4);
-            } while (canMove(newMovement));
-            makeMove(newMovement);
-            currentMovement = newMovement;
+            // I QUARTER
+            if (vectorX >= 0 && vectorY >= 0) {
+                if (canMove(1)) {
+                    makeMove(1);
+                } else if (canMove(2)) {
+                    makeMove(2);
+                } else if (canMove(3)) {
+                    makeMove(3);
+                } else {
+                    makeMove(0);
+                }
+                // II QUARTER
+            } else if (vectorX <= 0 && vectorY >= 0) {
+                if (canMove(2)) {
+                    makeMove(2);
+                } else if (canMove(3)) {
+                    makeMove(3);
+                } else if (canMove(1)) {
+                    makeMove(1);
+                } else {
+                    makeMove(0);
+                }
+            }
+            // III QUARTER
+            else if (vectorX <= 0 && vectorY <= 0) {
+                if (canMove(3)) {
+                    makeMove(3);
+                } else if (canMove(0)) {
+                    makeMove(0);
+                } else if (canMove(1)) {
+                    makeMove(1);
+                } else {
+                    makeMove(2);
+                }
+            }
+            // IV QUARTER
+            else {
+                if (canMove(0)) {
+                    makeMove(0);
+                } else if (canMove(1)) {
+                    makeMove(1);
+                } else if (canMove(3)) {
+                    makeMove(3);
+                } else {
+                    makeMove(2);
+                }
+            }
         }
-        counter++;
+
+        // if an enemy didn't find a player
+        else {
+            int newMovement = random.nextInt(4);
+
+            if (counter > ENEMY_COUNTER && canMove(newMovement)) {
+                makeMove(newMovement);
+                currentMovement = newMovement;
+                counter = 0;
+
+            } else if (canMove(currentMovement)) {
+                makeMove(currentMovement);
+
+            } else {
+                do {
+                    newMovement = random.nextInt(4);
+                } while (!canMove(newMovement));
+                makeMove(newMovement);
+                currentMovement = newMovement;
+            }
+            if (counter > ENEMY_COUNTER) {
+                counter = 0;
+            }
+            counter++;
+        }
     }
 
     @Override

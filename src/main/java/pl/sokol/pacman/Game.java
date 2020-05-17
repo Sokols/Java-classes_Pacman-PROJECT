@@ -29,15 +29,15 @@ public class Game extends JPanel implements Runnable, KeyListener {
         setFocusable(true);
         addKeyListener(this);
         player = new Player(0, 0);
-        level = new Level("/maps/map1.png", player);
+        level = new Level("/maps/map1.png", player, this);
     }
 
     @Override
     public void run() {
         while (!isEndedFlag) {
-            while (!isStoppedFlag && !isEndedFlag) {
+            //while (!isStoppedFlag && !isEndedFlag) {
                 mainRender();
-            }
+           // }
         }
     }
 
@@ -133,4 +133,19 @@ public class Game extends JPanel implements Runnable, KeyListener {
         player.getMovements().set(3, false);
     }
 
+    public boolean isStoppedFlag() {
+        return isStoppedFlag;
+    }
+
+    public void setStoppedFlag(boolean stoppedFlag) {
+        isStoppedFlag = stoppedFlag;
+    }
+
+    public boolean isEndedFlag() {
+        return isEndedFlag;
+    }
+
+    public void setEndedFlag(boolean endedFlag) {
+        isEndedFlag = endedFlag;
+    }
 }
