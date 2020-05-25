@@ -1,20 +1,21 @@
-package pl.sokol.pacman;
+package pl.sokol.pacman.game;
 
-import pl.sokol.pacman.gui.elements.dynamic.Player;
-import pl.sokol.pacman.gui.levels.Level;
+import pl.sokol.pacman.elements.dynamic.Player;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class Game extends JPanel implements Runnable, KeyListener {
+public class GameThread extends JPanel implements Runnable, KeyListener {
 
-    public static final int WIDTH = 640;
-    public static final int HEIGHT = 480;
+    static final int WIDTH = 640;
+    static final int HEIGHT = 480;
     public static final String TITLE = "Pac-Man";
 
-    public static Player player;
+    private Player player;
     public static Level level;
 
     private Thread gameThread;
@@ -22,7 +23,7 @@ public class Game extends JPanel implements Runnable, KeyListener {
     private boolean isEndedFlag = false;
 
 
-    public Game() {
+    public GameThread() {
         // set size of the game window
         // GameFrame is not resizable!
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -35,9 +36,7 @@ public class Game extends JPanel implements Runnable, KeyListener {
     @Override
     public void run() {
         while (!isEndedFlag) {
-            //while (!isStoppedFlag && !isEndedFlag) {
-                mainRender();
-           // }
+            mainRender();
         }
     }
 
@@ -133,19 +132,7 @@ public class Game extends JPanel implements Runnable, KeyListener {
         player.getMovements().set(3, false);
     }
 
-    public boolean isStoppedFlag() {
-        return isStoppedFlag;
-    }
-
-    public void setStoppedFlag(boolean stoppedFlag) {
-        isStoppedFlag = stoppedFlag;
-    }
-
-    public boolean isEndedFlag() {
-        return isEndedFlag;
-    }
-
-    public void setEndedFlag(boolean endedFlag) {
+    void setEndedFlag(boolean endedFlag) {
         isEndedFlag = endedFlag;
     }
 }

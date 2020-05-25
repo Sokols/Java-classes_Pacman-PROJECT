@@ -1,4 +1,4 @@
-package pl.sokol.pacman.gui.elements;
+package pl.sokol.pacman.elements;
 
 import java.awt.*;
 

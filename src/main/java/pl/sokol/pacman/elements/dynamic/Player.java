@@ -1,8 +1,8 @@
-package pl.sokol.pacman.gui.elements.dynamic;
+package pl.sokol.pacman.elements.dynamic;
 
-import pl.sokol.pacman.gui.elements.Renderable;
-import pl.sokol.pacman.gui.levels.Level;
-import pl.sokol.pacman.Game;
+import pl.sokol.pacman.elements.Renderable;
+import pl.sokol.pacman.game.Level;
+import pl.sokol.pacman.game.GameThread;
 
 import javax.imageio.ImageIO;
 import java.awt.Graphics;
@@ -57,12 +57,12 @@ public class Player extends Rectangle implements Renderable, Moveable {
             x -= SPEED;
         }
 
-        for (int i = 0; i < Game.level.getPoints().size(); i++) {
-            if (this.intersects(Game.level.getPoints().get(i))) {
-                Game.level.getPoints().remove(i);
+        for (int i = 0; i < GameThread.level.getPoints().size(); i++) {
+            if (this.intersects(GameThread.level.getPoints().get(i))) {
+                GameThread.level.getPoints().remove(i);
                 break;
             }
-            if (Game.level.getPoints().size() == 0) {
+            if (GameThread.level.getPoints().size() == 0) {
                 // WIN THE GAME
             }
         }
@@ -98,7 +98,7 @@ public class Player extends Rectangle implements Renderable, Moveable {
         }
 
         Rectangle bounds = new Rectangle(toX, toY, width, height);
-        Level level = Game.level;
+        Level level = GameThread.level;
         for (int xx = 0; xx < level.getTiles().length; xx++) {
             for (int yy = 0; yy < level.getTiles()[0].length; yy++) {
                 if (level.getTiles()[xx][yy] != null) {

@@ -1,4 +1,4 @@
-package pl.sokol.pacman.gui.elements.dynamic;
+package pl.sokol.pacman.elements.dynamic;
 
 public interface Moveable {
 

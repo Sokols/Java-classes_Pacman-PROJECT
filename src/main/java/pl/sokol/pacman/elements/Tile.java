@@ -1,6 +1,8 @@
-package pl.sokol.pacman.gui.elements;
+package pl.sokol.pacman.elements;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 
 public class Tile extends Rectangle implements Renderable {
 
@@ -14,6 +16,6 @@ public class Tile extends Rectangle implements Renderable {
     @Override
     public void render(Graphics g) {
         g.setColor(new Color(33, 0, 127));
-        g.fillRect(x, y, width, height);
+        g.fillRect(x, y, TILE_WIDTH, TILE_HEIGHT);
     }
 }

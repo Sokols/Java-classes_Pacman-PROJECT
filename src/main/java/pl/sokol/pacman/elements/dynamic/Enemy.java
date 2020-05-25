@@ -1,9 +1,9 @@
-package pl.sokol.pacman.gui.elements.dynamic;
+package pl.sokol.pacman.elements.dynamic;
 
-import pl.sokol.pacman.Game;
-import pl.sokol.pacman.gui.elements.Junction;
-import pl.sokol.pacman.gui.elements.Renderable;
-import pl.sokol.pacman.gui.levels.Level;
+import pl.sokol.pacman.game.GameThread;
+import pl.sokol.pacman.elements.Junction;
+import pl.sokol.pacman.elements.Renderable;
+import pl.sokol.pacman.game.Level;
 
 import javax.imageio.ImageIO;
 import java.awt.Graphics;
@@ -202,7 +202,7 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
         }
 
         Rectangle bounds = new Rectangle(toX, toY, width, height);
-        Level level = Game.level;
+        Level level = GameThread.level;
         for (int xx = 0; xx < level.getTiles().length; xx++) {
             for (int yy = 0; yy < level.getTiles()[0].length; yy++) {
                 if (level.getTiles()[xx][yy] != null) {
