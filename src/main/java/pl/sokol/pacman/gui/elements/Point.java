@@ -12,7 +12,7 @@ public class Point extends Rectangle implements Renderable {
     }
 
     public void render(Graphics g) {
-        g.setColor(Color.GREEN);
+        g.setColor(Color.YELLOW);
         g.fillRect(x, y, POINT_WIDTH, POINT_HEIGHT);
     }
 }

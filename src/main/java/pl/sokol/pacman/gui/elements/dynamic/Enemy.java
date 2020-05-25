@@ -1,6 +1,7 @@
 package pl.sokol.pacman.gui.elements.dynamic;
 
 import pl.sokol.pacman.Game;
+import pl.sokol.pacman.gui.elements.Junction;
 import pl.sokol.pacman.gui.elements.Renderable;
 import pl.sokol.pacman.gui.levels.Level;
 
@@ -17,9 +18,8 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
 
     private final int ENEMY_WIDTH = 32;
     private final int ENEMY_HEIGHT = 32;
-    private final int ENEMY_COUNTER = 30;
     private final int SPEED = 2;
-    private int SEARCH_RANGE = 20;
+    private int SEARCH_RANGE = 160;
     private String[] IMAGES = {
             "/enemies/enemy1.png",
             "/enemies/enemy2.png",
@@ -30,19 +30,23 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
 
     private Random random = new Random();
 
-    private List<Boolean> movements = new ArrayList<>();
-    private int currentMovement = random.nextInt(4);
-    private int counter = 0;
+    private Player player;
+
+    private List<Junction> junctions;
 
     private BufferedImage bf;
 
-    private Player player;
+    private int currentMovement;
 
-    public Enemy(int x, int y, Player player, int numberOfTheImage) throws IOException {
+    private int previousMovement;
+
+    public Enemy(int x, int y, Player player, List<Junction> junctions, int numberOfTheImage) throws IOException {
         this.player = player;
-        initMovements();
+        this.bf = ImageIO.read(getClass().getResourceAsStream(IMAGES[numberOfTheImage]));
+        this.junctions = junctions;
+        this.currentMovement = 0;
+        this.previousMovement = 0;
         setBounds(x, y, ENEMY_WIDTH, ENEMY_HEIGHT);
-        bf = ImageIO.read(getClass().getResourceAsStream(IMAGES[numberOfTheImage]));
     }
 
     public void render(Graphics g) {
@@ -62,83 +66,111 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
         // HERE WE USE JAVA COORDINATE SYSTEM
         int vectorX = player.x - x;
         int vectorY = player.y - y;
-
+        boolean findPlayerFlag = false;
         // try to find a player in search range
-        if (vectorX < SEARCH_RANGE || vectorY < SEARCH_RANGE) {
+        if (Math.abs(vectorX) < SEARCH_RANGE && Math.abs(vectorY) < SEARCH_RANGE) {
+            findPlayerFlag = true;
+        }
 
+        boolean findJunctionFlag = false;
+        // check if the enemy is on the junction
+        for (Junction junction : junctions) {
+            if (junction.contains(this)) {
+                findJunctionFlag = true;
+                break;
+            }
+        }
+
+        if (findJunctionFlag && findPlayerFlag) {
+            System.out.println("Im in " + this.getX() + " " + this.getY());
+            List<Integer> priorities = new ArrayList<>();
             // I QUARTER
-            if (vectorX >= 0 && vectorY >= 0) {
-                if (canMove(1)) {
-                    makeMove(1);
-                } else if (canMove(2)) {
-                    makeMove(2);
-                } else if (canMove(3)) {
-                    makeMove(3);
+            final boolean vectorsDifference = Math.abs(vectorX) >= Math.abs(vectorY);
+            if (vectorX >= 0 && vectorY <= 0) {
+                if (vectorsDifference) {
+                    priorities.add(1);
+                    priorities.add(0);
+                    priorities.add(2);
+                    priorities.add(3);
                 } else {
-                    makeMove(0);
-                }
-                // II QUARTER
-            } else if (vectorX <= 0 && vectorY >= 0) {
-                if (canMove(2)) {
-                    makeMove(2);
-                } else if (canMove(3)) {
-                    makeMove(3);
-                } else if (canMove(1)) {
-                    makeMove(1);
-                } else {
-                    makeMove(0);
+                    priorities.add(0);
+                    priorities.add(1);
+                    priorities.add(3);
+                    priorities.add(2);
                 }
             }
-            // III QUARTER
+
+            // II QUARTER
             else if (vectorX <= 0 && vectorY <= 0) {
-                if (canMove(3)) {
-                    makeMove(3);
-                } else if (canMove(0)) {
-                    makeMove(0);
-                } else if (canMove(1)) {
-                    makeMove(1);
+                if (vectorsDifference) {
+                    priorities.add(3);
+                    priorities.add(0);
+                    priorities.add(2);
+                    priorities.add(1);
                 } else {
-                    makeMove(2);
+                    priorities.add(0);
+                    priorities.add(3);
+                    priorities.add(1);
+                    priorities.add(2);
                 }
             }
+
+            // III QUARTER
+            else if (vectorX <= 0) {
+                if (vectorsDifference) {
+                    priorities.add(3);
+                    priorities.add(2);
+                    priorities.add(0);
+                    priorities.add(1);
+                } else {
+                    priorities.add(2);
+                    priorities.add(3);
+                    priorities.add(1);
+                    priorities.add(0);
+                }
+            }
+
             // IV QUARTER
             else {
-                if (canMove(0)) {
-                    makeMove(0);
-                } else if (canMove(1)) {
-                    makeMove(1);
-                } else if (canMove(3)) {
-                    makeMove(3);
+                if (vectorsDifference) {
+                    priorities.add(1);
+                    priorities.add(2);
+                    priorities.add(0);
+                    priorities.add(3);
                 } else {
-                    makeMove(2);
+                    priorities.add(2);
+                    priorities.add(1);
+                    priorities.add(3);
+                    priorities.add(0);
                 }
             }
-        }
 
-        // if an enemy didn't find a player
-        else {
-            int newMovement = random.nextInt(4);
-
-            if (counter > ENEMY_COUNTER && canMove(newMovement)) {
-                makeMove(newMovement);
-                currentMovement = newMovement;
-                counter = 0;
-
-            } else if (canMove(currentMovement)) {
-                makeMove(currentMovement);
-
-            } else {
-                do {
-                    newMovement = random.nextInt(4);
-                } while (!canMove(newMovement));
-                makeMove(newMovement);
-                currentMovement = newMovement;
+            for (int movement : priorities) {
+                if (canMove(movement) && movement != previousMovement) {
+                    previousMovement = currentMovement;
+                    currentMovement = movement;
+                    break;
+                }
             }
-            if (counter > ENEMY_COUNTER) {
-                counter = 0;
+
+        } else if (findJunctionFlag) {
+            // find new movement
+            previousMovement = currentMovement;
+            do {
+                currentMovement = random.nextInt(4);
+            } while (!canMove(currentMovement));
+
+        } else {
+            // if possible, move with the current movement, if not - find new one
+            int temp = currentMovement;
+            while (!canMove(currentMovement)) {
+                currentMovement = random.nextInt(4);
             }
-            counter++;
+            if (currentMovement != temp) {
+                previousMovement = temp;
+            }
         }
+        makeMove(currentMovement);
     }
 
     @Override
@@ -210,9 +242,7 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
         }
     }
 
-    private void initMovements() {
-        for (int i = 0; i < 4; i++) {
-            this.movements.add(false);
-        }
+    public void setJunctions(List<Junction> junctions) {
+        this.junctions = junctions;
     }
 }

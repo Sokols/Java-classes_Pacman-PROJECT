@@ -1,5 +1,6 @@
 package pl.sokol.pacman.gui.levels;
 
+import pl.sokol.pacman.gui.elements.Junction;
 import pl.sokol.pacman.gui.elements.dynamic.Enemy;
 import pl.sokol.pacman.gui.elements.Point;
 import pl.sokol.pacman.gui.elements.Tile;
@@ -24,6 +25,7 @@ public class Level {
     private Tile[][] tiles;
     private List<Point> points = new ArrayList<>();
     private List<Enemy> enemies = new ArrayList<>();
+    private List<Junction> junctions = new ArrayList<>();
 
     private Game game;
     private Player player;
@@ -45,20 +47,28 @@ public class Level {
                 for (int yy = 0; yy < height; yy++) {
                     int val = pixels[xx + (yy * width)];
                     if (val == 0xFF000000) {
-                        // Tile
+                        // Black - Tile
                         tiles[xx][yy] = new Tile(xx * this.mapWidthProportion, yy * this.mapHeightProportion);
                     } else if (val == 0xFF0000FF) {
-                        // Player
+                        // Blue - Player
                         player.x = xx * this.mapWidthProportion;
                         player.y = yy * this.mapHeightProportion;
+                    }  else if (val == 0xFF00FF00) {
+                        // Green - Junction & Points
+                        points.add(new Point(xx * this.mapWidthProportion, yy * mapHeightProportion));
+                        junctions.add(new Junction(xx * this.mapWidthProportion, yy * mapHeightProportion));
                     } else if (val == 0xFFFF0000) {
-                        // Enemy
-                        enemies.add(new Enemy(xx * mapWidthProportion, yy * mapHeightProportion, player, new Random().nextInt(5)));
+                        // Red - Enemy
+                        enemies.add(new Enemy(xx * mapWidthProportion, yy * mapHeightProportion, player, null, new Random().nextInt(5)));
                     } else {
-                        // Points
+                        // White - Points
                         points.add(new Point(xx * this.mapWidthProportion, yy*mapHeightProportion));
                     }
                 }
+            }
+
+            for (Enemy enemy : enemies) {
+                enemy.setJunctions(junctions);
             }
 
         } catch (IOException e) {
@@ -74,12 +84,12 @@ public class Level {
                 }
             }
         }
-        for (int i = 0; i < points.size(); i++) {
-            points.get(i).render(g);
+        for (Point point : points) {
+            point.render(g);
         }
-        for (int i = 0; i < enemies.size(); i++) {
-            enemies.get(i).render(g);
-            if (enemies.get(i).intersects(player)) {
+        for (Enemy enemy : enemies) {
+            enemy.render(g);
+            if (enemy.intersects(player)) {
                 game.setEndedFlag(false);
                 new Game();
             }
