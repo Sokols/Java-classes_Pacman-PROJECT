@@ -15,7 +15,7 @@ public class GameThread extends JPanel implements Runnable, KeyListener {
     static final int HEIGHT = 480;
     public static final String TITLE = "Pac-Man";
 
-    private Player player;
+    private static Player player;
     public static Level level;
 
     private Thread gameThread;
