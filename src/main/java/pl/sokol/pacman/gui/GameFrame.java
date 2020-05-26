@@ -1,4 +1,4 @@
-package pl.sokol.pacman.frames;
+package pl.sokol.pacman.gui;
 
 import pl.sokol.pacman.game.GameThread;
 
@@ -7,11 +7,15 @@ import javax.swing.WindowConstants;
 
 public class GameFrame extends JFrame {
 
-    public GameFrame(GameThread gameThread) {
-        super(GameThread.TITLE);
-        this.add(gameThread);
+    private static final String TITLE = "Pac-Man";
 
-        setSize(640, 720);
+    private final int MENU_HEIGHT = 200;
+
+    public GameFrame(GameThread gameThread) {
+        super(TITLE);
+        this.add(gameThread.getGamePanel());
+
+        setSize(GamePanel.GAME_WIDTH, GamePanel.GAME_HEIGHT + MENU_HEIGHT);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);

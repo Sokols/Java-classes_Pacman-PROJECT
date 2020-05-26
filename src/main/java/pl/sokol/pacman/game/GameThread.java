@@ -1,36 +1,28 @@
 package pl.sokol.pacman.game;
 
+import pl.sokol.pacman.Utils;
 import pl.sokol.pacman.elements.dynamic.Player;
+import pl.sokol.pacman.gui.GamePanel;
 
 import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
-public class GameThread extends JPanel implements Runnable, KeyListener {
+public class GameThread implements Runnable {
 
-    static final int WIDTH = 640;
-    static final int HEIGHT = 480;
-    public static final String TITLE = "Pac-Man";
+    private final int RENDER_SLEEP_TIME = 25;
 
-    private static Player player;
+    public static Player player;
     public static Level level;
 
     private Thread gameThread;
     private boolean isStoppedFlag = false;
     private boolean isEndedFlag = false;
 
+    private JPanel gamePanel;
 
     public GameThread() {
-        // set size of the game window
-        // GameFrame is not resizable!
-        setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        setFocusable(true);
-        addKeyListener(this);
-        player = new Player(0, 0);
+        player = new Player(0, 0, this);
         level = new Level("/maps/map1.png", player, this);
+        this.gamePanel = new GamePanel(player, level);
     }
 
     @Override
@@ -68,71 +60,19 @@ public class GameThread extends JPanel implements Runnable, KeyListener {
     }
 
     private void mainRender() {
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        repaint();
+        gamePanel.repaint();
+        Utils.sleep(RENDER_SLEEP_TIME);
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, WIDTH, HEIGHT);
-        player.render(g);
-        level.render(g);
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        int key = e.getKeyCode();
-        switch (key) {
-            case KeyEvent.VK_UP:
-                clearKeys();
-                player.getMovements().set(0, true);
-                break;
-
-            case KeyEvent.VK_RIGHT:
-                clearKeys();
-                player.getMovements().set(1, true);
-                break;
-
-            case KeyEvent.VK_DOWN:
-                clearKeys();
-                player.getMovements().set(2, true);
-                break;
-
-            case KeyEvent.VK_LEFT:
-                clearKeys();
-                player.getMovements().set(3, true);
-                break;
-
-            default:
-                break;
-        }
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        // unused
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-        // unused
-    }
-
-    private void clearKeys() {
-        player.getMovements().set(0, false);
-        player.getMovements().set(1, false);
-        player.getMovements().set(2, false);
-        player.getMovements().set(3, false);
-    }
-
-    void setEndedFlag(boolean endedFlag) {
+    public void setEndedFlag(boolean endedFlag) {
         isEndedFlag = endedFlag;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public JPanel getGamePanel() {
+        return gamePanel;
     }
 }

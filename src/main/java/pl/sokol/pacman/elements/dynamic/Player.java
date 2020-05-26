@@ -1,114 +1,54 @@
 package pl.sokol.pacman.elements.dynamic;
 
 import pl.sokol.pacman.elements.Renderable;
-import pl.sokol.pacman.game.Level;
 import pl.sokol.pacman.game.GameThread;
+import pl.sokol.pacman.gui.GameFrame;
 
 import javax.imageio.ImageIO;
-import java.awt.Graphics;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Player extends Rectangle implements Renderable, Moveable {
 
     private final int PLAYER_WIDTH = 24;
     private final int PLAYER_HEIGHT = 24;
     private final int SPEED = 4;
-    //    0 - up
-    //    1 - right
-    //    2 - down
-    //    3 - left
-    private List<Boolean> movements = new ArrayList<>();
 
-    public Player(int x, int y) {
+    private GameThread gameThread;
+
+    private int currentMovement;
+
+    public Player(int x, int y, GameThread gameThread) {
+        this.gameThread = gameThread;
         setBounds(x, y, PLAYER_WIDTH, PLAYER_HEIGHT);
-        initMovements();
+        currentMovement = 0;
     }
-
-
-//    @Override
-//    public void run() {
-//        move();
-//        // this.render();
-//    }
 
     @Override
     public void move() {
-        // up
-        if (movements.get(0) && canMove(0)) {
-            y -= SPEED;
-        }
 
-        // right
-        if (movements.get(1) && canMove(1)) {
-            x += SPEED;
-        }
+        if (canMove(currentMovement, SPEED, this)) {
+            makeMove(currentMovement, SPEED, this);
 
-        // down
-        if (movements.get(2) && canMove(2)) {
-            y += SPEED;
-        }
-
-        // left
-        if (movements.get(3) && canMove(3)) {
-            x -= SPEED;
-        }
-
-        for (int i = 0; i < GameThread.level.getPoints().size(); i++) {
-            if (this.intersects(GameThread.level.getPoints().get(i))) {
-                GameThread.level.getPoints().remove(i);
-                break;
+            for (int i = 0; i < gameThread.getLevel().getPoints().size(); i++) {
+                if (this.intersects(gameThread.getLevel().getPoints().get(i))) {
+                    gameThread.getLevel().getPoints().remove(i);
+                    break;
+                }
             }
-            if (GameThread.level.getPoints().size() == 0) {
+
+            if (gameThread.getLevel().getPoints().size() == 0) {
                 // WIN THE GAME
             }
         }
 
-    }
-
-    @Override
-    public boolean canMove(int movement) {
-        int toX = 0, toY = 0;
-        switch (movement) {
-            case 0:
-                toX = x;
-                toY = y - SPEED;
-                break;
-
-            case 1:
-                toX = x + SPEED;
-                toY = y;
-                break;
-
-            case 2:
-                toX = x;
-                toY = y + SPEED;
-                break;
-
-            case 3:
-                toX = x - SPEED;
-                toY = y;
-                break;
-
-            default:
-                break;
-        }
-
-        Rectangle bounds = new Rectangle(toX, toY, width, height);
-        Level level = GameThread.level;
-        for (int xx = 0; xx < level.getTiles().length; xx++) {
-            for (int yy = 0; yy < level.getTiles()[0].length; yy++) {
-                if (level.getTiles()[xx][yy] != null) {
-                    if (bounds.intersects(level.getTiles()[xx][yy])) {
-                        return false;
-                    }
-                }
+        for (Enemy enemy : gameThread.getLevel().getEnemies()) {
+            if (this.intersects(enemy)) {
+                gameThread.setEndedFlag(false);
+                new GameFrame(new GameThread());
             }
         }
-        return true;
     }
 
     @Override
@@ -123,17 +63,7 @@ public class Player extends Rectangle implements Renderable, Moveable {
         g.drawImage(bf, x, y, width, height, null);
     }
 
-    private void initMovements() {
-        for (int i = 0; i < 4; i++) {
-            this.movements.add(false);
-        }
-    }
-
-    public List<Boolean> getMovements() {
-        return movements;
-    }
-
-    public void setMovements(List<Boolean> movements) {
-        this.movements = movements;
+    public void setCurrentMovement(int currentMovement) {
+        this.currentMovement = currentMovement;
     }
 }

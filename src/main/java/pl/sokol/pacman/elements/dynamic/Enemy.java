@@ -1,5 +1,6 @@
 package pl.sokol.pacman.elements.dynamic;
 
+import pl.sokol.pacman.Utils;
 import pl.sokol.pacman.game.GameThread;
 import pl.sokol.pacman.elements.Junction;
 import pl.sokol.pacman.elements.Renderable;
@@ -19,7 +20,7 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
     private final int ENEMY_WIDTH = 32;
     private final int ENEMY_HEIGHT = 32;
     private final int SPEED = 2;
-    private int SEARCH_RANGE = 160;
+    private final int SEARCH_RANGE = 160;
     private String[] IMAGES = {
             "/enemies/enemy1.png",
             "/enemies/enemy2.png",
@@ -37,7 +38,6 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
     private BufferedImage bf;
 
     private int currentMovement;
-
     private int previousMovement;
 
     public Enemy(int x, int y, Player player, List<Junction> junctions, int numberOfTheImage) throws IOException {
@@ -52,11 +52,6 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
     public void render(Graphics g) {
         move();
         g.drawImage(bf, x, y, width, height, null);
-        try {
-            Thread.sleep(5);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -146,7 +141,7 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
             }
 
             for (int movement : priorities) {
-                if (canMove(movement) && movement != previousMovement) {
+                if (canMove(movement, SPEED, this) && movement != previousMovement) {
                     previousMovement = currentMovement;
                     currentMovement = movement;
                     break;
@@ -158,88 +153,19 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
             previousMovement = currentMovement;
             do {
                 currentMovement = random.nextInt(4);
-            } while (!canMove(currentMovement));
+            } while (!canMove(currentMovement, SPEED, this));
 
         } else {
             // if possible, move with the current movement, if not - find new one
             int temp = currentMovement;
-            while (!canMove(currentMovement)) {
+            while (!canMove(currentMovement, SPEED, this)) {
                 currentMovement = random.nextInt(4);
             }
             if (currentMovement != temp) {
                 previousMovement = temp;
             }
         }
-        makeMove(currentMovement);
-    }
-
-    @Override
-    public boolean canMove(int movement) {
-        int toX = 0, toY = 0;
-        switch (movement) {
-            case 0:
-                toX = x;
-                toY = y - SPEED;
-                break;
-
-            case 1:
-                toX = x + SPEED;
-                toY = y;
-                break;
-
-            case 2:
-                toX = x;
-                toY = y + SPEED;
-                break;
-
-            case 3:
-                toX = x - SPEED;
-                toY = y;
-                break;
-
-            default:
-                break;
-        }
-
-        Rectangle bounds = new Rectangle(toX, toY, width, height);
-        Level level = GameThread.level;
-        for (int xx = 0; xx < level.getTiles().length; xx++) {
-            for (int yy = 0; yy < level.getTiles()[0].length; yy++) {
-                if (level.getTiles()[xx][yy] != null) {
-                    if (bounds.intersects(level.getTiles()[xx][yy])) {
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
-    private void makeMove(int newMovement) {
-        switch (newMovement) {
-            // up
-            case 0:
-                y -= SPEED;
-                break;
-
-            // right
-            case 1:
-                x += SPEED;
-                break;
-
-            // down
-            case 2:
-                y += SPEED;
-                break;
-
-            // left
-            case 3:
-                x -= SPEED;
-                break;
-
-            default:
-                break;
-        }
+        makeMove(currentMovement, SPEED, this);
     }
 
     public void setJunctions(List<Junction> junctions) {
