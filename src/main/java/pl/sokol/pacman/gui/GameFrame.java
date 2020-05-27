@@ -1,7 +1,10 @@
 package pl.sokol.pacman.gui;
 
 import pl.sokol.pacman.game.GameThread;
+import pl.sokol.pacman.gui.stats.StatsPanelView;
+import pl.sokol.pacman.gui.stats.StatsPanelViewModel;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
@@ -9,13 +12,18 @@ public class GameFrame extends JFrame {
 
     private static final String TITLE = "Pac-Man";
 
-    private final int MENU_HEIGHT = 200;
+    private StatsPanelViewModel statsViewModel;
 
     public GameFrame(GameThread gameThread) {
         super(TITLE);
-        this.add(gameThread.getGamePanel());
+        this.statsViewModel = new StatsPanelViewModel();
 
-        setSize(GamePanel.GAME_WIDTH, GamePanel.GAME_HEIGHT + MENU_HEIGHT);
+        this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
+        this.add(gameThread.getGamePanel());
+        this.add(statsViewModel.getView());
+
+        setSize(GamePanel.GAME_WIDTH, GamePanel.GAME_HEIGHT + StatsPanelView.STATS_HEIGHT + 32);
+
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);

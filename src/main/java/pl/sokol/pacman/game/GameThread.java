@@ -8,12 +8,14 @@ import javax.swing.JPanel;
 
 public class GameThread implements Runnable {
 
-    private final int RENDER_SLEEP_TIME = 25;
-
-    public static Player player;
     public static Level level;
 
+    private final int RENDER_SLEEP_TIME = 25;
+
+    private Player player;
+
     private Thread gameThread;
+
     private boolean isStoppedFlag = false;
     private boolean isEndedFlag = false;
 
@@ -22,41 +24,31 @@ public class GameThread implements Runnable {
     public GameThread() {
         player = new Player(0, 0, this);
         level = new Level("/maps/map1.png", player, this);
-        this.gamePanel = new GamePanel(player, level);
+        gamePanel = new GamePanel(this, player, level);
     }
 
     @Override
     public void run() {
         while (!isEndedFlag) {
-            mainRender();
+            System.out.println("END");
+            while (!isStoppedFlag) {
+                //System.out.println("STOP");
+                mainRender();
+            }
         }
     }
 
-    public synchronized void startNewGame() {
+    public void startNewGame() {
         gameThread = new Thread(this);
         gameThread.start();
     }
 
-    public synchronized void resume() {
-        if (isStoppedFlag) {
-            isStoppedFlag = false;
-            try {
-                gameThread.notify();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+    public void resume() {
+        isStoppedFlag = false;
     }
 
-    public synchronized void stop() {
-        if (!isStoppedFlag) {
-            isStoppedFlag = true;
-            try {
-                gameThread.wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+    public void stop() {
+        isStoppedFlag = true;
     }
 
     private void mainRender() {
@@ -74,5 +66,9 @@ public class GameThread implements Runnable {
 
     public JPanel getGamePanel() {
         return gamePanel;
+    }
+
+    public boolean isStoppedFlag() {
+        return isStoppedFlag;
     }
 }

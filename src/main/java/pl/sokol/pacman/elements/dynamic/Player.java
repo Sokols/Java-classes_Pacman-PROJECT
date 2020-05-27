@@ -2,10 +2,10 @@ package pl.sokol.pacman.elements.dynamic;
 
 import pl.sokol.pacman.elements.Renderable;
 import pl.sokol.pacman.game.GameThread;
-import pl.sokol.pacman.gui.GameFrame;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -38,15 +38,17 @@ public class Player extends Rectangle implements Renderable, Moveable {
                 }
             }
 
+            // WIN THE GAME
             if (gameThread.getLevel().getPoints().size() == 0) {
-                // WIN THE GAME
+                gameThread.setEndedFlag(true);
             }
         }
 
         for (Enemy enemy : gameThread.getLevel().getEnemies()) {
+
+            // LOSE THE GAME
             if (this.intersects(enemy)) {
-                gameThread.setEndedFlag(false);
-                new GameFrame(new GameThread());
+                gameThread.setEndedFlag(true);
             }
         }
     }

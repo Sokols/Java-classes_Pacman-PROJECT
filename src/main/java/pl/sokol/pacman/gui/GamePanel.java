@@ -1,6 +1,7 @@
 package pl.sokol.pacman.gui;
 
 import pl.sokol.pacman.elements.dynamic.Player;
+import pl.sokol.pacman.game.GameThread;
 import pl.sokol.pacman.game.Level;
 
 import javax.swing.JPanel;
@@ -15,21 +16,26 @@ public class GamePanel extends JPanel implements KeyListener {
     public static final int GAME_WIDTH = 640;
     public static final int GAME_HEIGHT = 480;
 
+    private GameThread gameThread;
     private Player player;
     private Level level;
 
-    public GamePanel(Player player, Level level) {
+    public GamePanel(GameThread gameThread, Player player, Level level) {
+        this.gameThread = gameThread;
         this.player = player;
         this.level = level;
-        setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
+
+        Dimension dimension = new Dimension(GAME_WIDTH, GAME_HEIGHT);
+        setSize(dimension);
+        setMaximumSize(dimension);
+        setMinimumSize(dimension);
         setFocusable(true);
         addKeyListener(this);
     }
 
-
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+        // super.paintComponent(g);
 
         // fill the background
         g.setColor(Color.BLACK);
@@ -58,6 +64,14 @@ public class GamePanel extends JPanel implements KeyListener {
 
             case KeyEvent.VK_LEFT:
                 player.setCurrentMovement(3);
+                break;
+
+            case KeyEvent.VK_SPACE:
+                if (gameThread.isStoppedFlag()) {
+                    gameThread.resume();
+                } else {
+                    gameThread.stop();
+                }
                 break;
 
             default:
