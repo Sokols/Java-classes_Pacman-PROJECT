@@ -1,4 +1,6 @@
-package pl.sokol.pacman.gui.stats;
+package pl.sokol.pacman.gui.panels.stats;
+
+import pl.sokol.pacman.gui.frame.GameFrameViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,16 +22,14 @@ public class StatsPanelViewModel {
 
     private String scoreText;
 
-    public StatsPanelViewModel() {
+    public StatsPanelViewModel(GameFrameViewModel gameThread) {
         this.view = new StatsPanelView();
         this.model = new StatsPanelModel();
         initStats();
     }
 
     private void initStats() {
-        this.timer = new Timer(BLINKING_TIME, e -> {
-            blink();
-        });
+        this.timer = new Timer(BLINKING_TIME, e -> blink());
         timer.start();
         initLives();
 

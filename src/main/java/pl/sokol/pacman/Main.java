@@ -1,12 +1,11 @@
 package pl.sokol.pacman;
 
-import pl.sokol.pacman.gui.GameFrame;
-import pl.sokol.pacman.game.GameThread;
+import pl.sokol.pacman.gui.frame.GameFrameViewModel;
 
 public class Main {
 
     public static void main(String[] args) {
-
-        new GameFrame(new GameThread());
+        Thread gameThread = new Thread(new GameFrameViewModel());
+        gameThread.start();
     }
 }

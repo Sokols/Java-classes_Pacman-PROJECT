@@ -1,6 +1,6 @@
-package pl.sokol.pacman.gui.stats;
+package pl.sokol.pacman.gui.panels.stats;
 
-import pl.sokol.pacman.gui.GamePanel;
+import pl.sokol.pacman.gui.panels.game.GamePanelView;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -10,7 +10,7 @@ import java.awt.GridLayout;
 
 public class StatsPanelView extends JPanel {
 
-    private static final int STATS_WIDTH = GamePanel.GAME_WIDTH;
+    private static final int STATS_WIDTH = GamePanelView.GAME_WIDTH;
     public static final int STATS_HEIGHT = 64;
 
     private JPanel mainPanel;
@@ -22,7 +22,6 @@ public class StatsPanelView extends JPanel {
     private JLabel spaceLabel;
 
     StatsPanelView() {
-
         this.setLayout(new GridLayout());
         this.setBackground(Color.BLACK);
         Dimension dimension = new Dimension(STATS_WIDTH, STATS_HEIGHT);

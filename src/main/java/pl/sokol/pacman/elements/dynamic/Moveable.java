@@ -1,9 +1,9 @@
 package pl.sokol.pacman.elements.dynamic;
 
-import pl.sokol.pacman.game.GameThread;
 import pl.sokol.pacman.game.Level;
+import pl.sokol.pacman.gui.frame.GameFrameModel;
 
-import java.awt.*;
+import java.awt.Rectangle;
 
 public interface Moveable {
 
@@ -37,7 +37,7 @@ public interface Moveable {
         }
 
         Rectangle bounds = new Rectangle(toX, toY, (int) obj.getWidth(), (int) obj.getHeight());
-        Level level = GameThread.level;
+        Level level = GameFrameModel.level;
 
         for (int i = 0; i < level.getTiles().size(); i++) {
             if (bounds.intersects(level.getTiles().get(i))) {

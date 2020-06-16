@@ -1,10 +1,7 @@
 package pl.sokol.pacman.elements.dynamic;
 
-import pl.sokol.pacman.Utils;
-import pl.sokol.pacman.game.GameThread;
 import pl.sokol.pacman.elements.Junction;
 import pl.sokol.pacman.elements.Renderable;
-import pl.sokol.pacman.game.Level;
 
 import javax.imageio.ImageIO;
 import java.awt.Graphics;
@@ -19,7 +16,7 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
 
     private final int ENEMY_WIDTH = 32;
     private final int ENEMY_HEIGHT = 32;
-    private final int SPEED = 2;
+    private final int SPEED = 1;
     private final int SEARCH_RANGE = 160;
     private String[] IMAGES = {
             "/enemies/enemy1.png",
@@ -77,7 +74,6 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
         }
 
         if (findJunctionFlag && findPlayerFlag) {
-            System.out.println("Im in " + this.getX() + " " + this.getY());
             List<Integer> priorities = new ArrayList<>();
             // I QUARTER
             final boolean vectorsDifference = Math.abs(vectorX) >= Math.abs(vectorY);

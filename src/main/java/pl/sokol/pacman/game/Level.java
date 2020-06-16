@@ -6,7 +6,8 @@ import pl.sokol.pacman.elements.dynamic.Enemy;
 import pl.sokol.pacman.elements.Point;
 import pl.sokol.pacman.elements.Tile;
 import pl.sokol.pacman.elements.dynamic.Player;
-import pl.sokol.pacman.gui.GamePanel;
+import pl.sokol.pacman.gui.frame.GameFrameViewModel;
+import pl.sokol.pacman.gui.panels.game.GamePanelView;
 
 import javax.imageio.ImageIO;
 import java.awt.Graphics;
@@ -25,10 +26,10 @@ public class Level implements Renderable {
     private List<Enemy> enemies;
     private List<Junction> junctions;
 
-    private GameThread gameThread;
+    private GameFrameViewModel gameThread;
     private Player player;
 
-    Level(String path, Player player, GameThread gameThread) {
+    public Level(String path, Player player, GameFrameViewModel gameThread) {
         try {
             this.map = ImageIO.read(getClass().getResourceAsStream(path));
             this.gameThread = gameThread;
@@ -50,8 +51,8 @@ public class Level implements Renderable {
         int mapWidth = map.getWidth();
         int mapHeight = map.getHeight();
 
-        int mapWidthProportion = GamePanel.GAME_WIDTH / mapWidth;
-        int mapHeightProportion = GamePanel.GAME_HEIGHT / mapHeight;
+        int mapWidthProportion = GamePanelView.GAME_WIDTH / mapWidth;
+        int mapHeightProportion = GamePanelView.GAME_HEIGHT / mapHeight;
 
         for (int xx = 0; xx < mapWidth; xx++) {
             for (int yy = 0; yy < mapHeight; yy++) {
