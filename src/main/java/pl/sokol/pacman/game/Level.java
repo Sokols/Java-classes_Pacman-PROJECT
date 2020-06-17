@@ -26,13 +26,11 @@ public class Level implements Renderable {
     private List<Enemy> enemies;
     private List<Junction> junctions;
 
-    private GameFrameViewModel gameThread;
     private Player player;
 
-    public Level(String path, Player player, GameFrameViewModel gameThread) {
+    public Level(String path, Player player) {
         try {
             this.map = ImageIO.read(getClass().getResourceAsStream(path));
-            this.gameThread = gameThread;
             this.player = player;
             this.points = new ArrayList<>();
             this.enemies = new ArrayList<>();
@@ -58,7 +56,7 @@ public class Level implements Renderable {
             for (int yy = 0; yy < mapHeight; yy++) {
 
                 int x = xx * mapWidthProportion;
-                int y = yy * mapHeightProportion;
+                int y = yy * mapHeightProportion + 32;
 
                 // switch by RGB value
                 switch (map.getRGB(xx, yy)) {

@@ -10,7 +10,7 @@ import java.awt.GridLayout;
 
 public class StatsPanelView extends JPanel {
 
-    private static final int STATS_WIDTH = GamePanelView.GAME_WIDTH;
+    public static final int STATS_WIDTH = GamePanelView.GAME_WIDTH;
     public static final int STATS_HEIGHT = 64;
 
     private JPanel mainPanel;

@@ -20,10 +20,18 @@ public class Player extends Rectangle implements Renderable, Moveable {
 
     private int currentMovement;
 
+    private BufferedImage bf;
+
     public Player(int x, int y, GameFrameViewModel gameThread) {
         this.gameThread = gameThread;
         setBounds(x, y, PLAYER_WIDTH, PLAYER_HEIGHT);
-        currentMovement = 0;
+        this.currentMovement = 0;
+        this.bf = null;
+        try {
+            this.bf = ImageIO.read(getClass().getResourceAsStream("/player/player.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -58,12 +66,6 @@ public class Player extends Rectangle implements Renderable, Moveable {
     @Override
     public void render(Graphics g) {
         move();
-        BufferedImage bf = null;
-        try {
-            bf = ImageIO.read(getClass().getResourceAsStream("/player/player.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         g.drawImage(bf, x, y, width, height, null);
     }
 

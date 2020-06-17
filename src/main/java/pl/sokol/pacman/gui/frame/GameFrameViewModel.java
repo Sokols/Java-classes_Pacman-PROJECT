@@ -6,8 +6,10 @@ import pl.sokol.pacman.game.Level;
 import pl.sokol.pacman.gui.panels.game.GamePanelViewModel;
 import pl.sokol.pacman.gui.panels.stats.StatsPanelViewModel;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferStrategy;
 import java.util.concurrent.TimeUnit;
 
 public class GameFrameViewModel implements Runnable, KeyListener {
@@ -21,7 +23,7 @@ public class GameFrameViewModel implements Runnable, KeyListener {
         Player player = new Player(0, 0, this);
         this.model = new GameFrameModel(
                 player,
-                new Level("/maps/map1.png", player, this),
+                new Level("/maps/map1.png", player),
                 false,
                 false,
                 new GamePanelViewModel(this),
@@ -63,9 +65,15 @@ public class GameFrameViewModel implements Runnable, KeyListener {
     }
 
     private void mainRender() {
-        model.getGamePanelViewModel().renderGame();
-        model.getStatsPanelViewModel().getView().repaint();
-       // Utils.sleep(RENDER_SLEEP_TIME);
+        BufferStrategy bs = view.getBufferStrategy();
+        if (bs == null) {
+            view.createBufferStrategy(2);
+            return;
+        }
+        Graphics g = bs.getDrawGraphics();
+        model.getGamePanelViewModel().renderGame(g);
+        model.getStatsPanelViewModel().renderStats(g);
+        bs.show();
     }
 
     @Override

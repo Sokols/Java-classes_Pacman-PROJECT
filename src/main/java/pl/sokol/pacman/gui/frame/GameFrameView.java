@@ -22,7 +22,6 @@ public class GameFrameView extends JFrame {
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
         this.add(gameView);
         this.add(statsView);
-
         setSize(GamePanelView.GAME_WIDTH, GamePanelView.GAME_HEIGHT + StatsPanelView.STATS_HEIGHT + 32);
         setFocusable(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

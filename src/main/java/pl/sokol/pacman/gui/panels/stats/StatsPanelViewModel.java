@@ -7,6 +7,9 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static pl.sokol.pacman.gui.panels.stats.StatsPanelView.STATS_HEIGHT;
+import static pl.sokol.pacman.gui.panels.stats.StatsPanelView.STATS_WIDTH;
+
 public class StatsPanelViewModel {
 
     private final int BLINKING_TIME = 750;
@@ -26,6 +29,13 @@ public class StatsPanelViewModel {
         this.view = new StatsPanelView();
         this.model = new StatsPanelModel();
         initStats();
+    }
+
+    public void renderStats(Graphics g) {
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, STATS_WIDTH, STATS_HEIGHT);
+        view.repaint();
+        g.dispose();
     }
 
     private void initStats() {
