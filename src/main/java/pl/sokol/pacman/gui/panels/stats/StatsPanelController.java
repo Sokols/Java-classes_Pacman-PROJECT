@@ -1,6 +1,6 @@
 package pl.sokol.pacman.gui.panels.stats;
 
-import pl.sokol.pacman.gui.frame.GameFrameViewModel;
+import pl.sokol.pacman.gui.frames.game.GameFrameController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +10,7 @@ import java.util.List;
 import static pl.sokol.pacman.gui.panels.stats.StatsPanelView.STATS_HEIGHT;
 import static pl.sokol.pacman.gui.panels.stats.StatsPanelView.STATS_WIDTH;
 
-public class StatsPanelViewModel {
+public class StatsPanelController {
 
     private final int BLINKING_TIME = 750;
 
@@ -25,7 +25,7 @@ public class StatsPanelViewModel {
 
     private String scoreText;
 
-    public StatsPanelViewModel(GameFrameViewModel gameThread) {
+    public StatsPanelController(GameFrameController gameThread) {
         this.view = new StatsPanelView();
         this.model = new StatsPanelModel();
         initStats();
@@ -36,6 +36,17 @@ public class StatsPanelViewModel {
         g.fillRect(0, 0, STATS_WIDTH, STATS_HEIGHT);
         view.repaint();
         g.dispose();
+    }
+
+    public void updateScore() {
+        model.setScore(model.getScore() + 10);
+        view.getScoreLabel().setText(scoreText + model.getScore());
+    }
+
+    public void updateLives() {
+        model.setLives(model.getLives() - 1);
+        JLabel live = lives.remove(model.getLives());
+        live.setVisible(false);
     }
 
     private void initStats() {

@@ -2,7 +2,9 @@ package pl.sokol.pacman.elements.dynamic;
 
 import pl.sokol.pacman.elements.Renderable;
 import pl.sokol.pacman.game.Level;
-import pl.sokol.pacman.gui.frame.GameFrameViewModel;
+import pl.sokol.pacman.gui.frames.game.GameFrameController;
+import pl.sokol.pacman.gui.panels.game.GamePanelController;
+import pl.sokol.pacman.gui.panels.stats.StatsPanelController;
 
 import javax.imageio.ImageIO;
 import java.awt.Graphics;
@@ -16,14 +18,16 @@ public class Player extends Rectangle implements Renderable, Moveable {
     private final int PLAYER_HEIGHT = 24;
     private final int SPEED = 2;
 
-    private GameFrameViewModel gameThread;
+    private GameFrameController gameThread;
+    private StatsPanelController stats;
 
     private int currentMovement;
 
     private BufferedImage bf;
 
-    public Player(int x, int y, GameFrameViewModel gameThread) {
+    public Player(int x, int y, GameFrameController gameThread, StatsPanelController stats) {
         this.gameThread = gameThread;
+        this.stats = stats;
         setBounds(x, y, PLAYER_WIDTH, PLAYER_HEIGHT);
         this.currentMovement = 0;
         this.bf = null;
@@ -37,28 +41,34 @@ public class Player extends Rectangle implements Renderable, Moveable {
     @Override
     public void move() {
 
-        if (canMove(currentMovement, SPEED, this)) {
+        Level level = gameThread.getModel().getLevel();
+        if (canMove(currentMovement, SPEED, this, gameThread.getModel().getLevel())) {
             makeMove(currentMovement, SPEED, this);
-
-            Level level = gameThread.getModel().getLevel();
-            for (int i = 0; i < level.getPoints().size(); i++) {
-                if (this.intersects(level.getPoints().get(i))) {
-                    level.getPoints().remove(i);
-                    break;
-                }
-            }
 
             // WIN THE GAME
             if (level.getPoints().size() == 0) {
                 gameThread.getModel().setEndedFlag(true);
             }
+
+            // GET POINT
+            for (int i = 0; i < level.getPoints().size(); i++) {
+                if (this.intersects(level.getPoints().get(i))) {
+                    level.getPoints().remove(i);
+                    stats.updateScore();
+                    break;
+                }
+            }
         }
 
-        for (Enemy enemy : gameThread.getModel().getLevel().getEnemies()) {
-
-            // LOSE THE GAME
+        for (Enemy enemy : level.getEnemies()) {
+            // CONTACT WITH ENEMY
             if (this.intersects(enemy)) {
-                gameThread.getModel().setEndedFlag(true);
+                stats.updateLives();
+                if (stats.getLives().size() > 0) {
+                    gameThread.newGame(stats);
+                } else {
+                    gameThread.getModel().setStoppedFlag(true);
+                }
             }
         }
     }

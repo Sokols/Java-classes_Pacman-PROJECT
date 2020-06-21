@@ -2,6 +2,7 @@ package pl.sokol.pacman.elements.dynamic;
 
 import pl.sokol.pacman.elements.Junction;
 import pl.sokol.pacman.elements.Renderable;
+import pl.sokol.pacman.game.Level;
 
 import javax.imageio.ImageIO;
 import java.awt.Graphics;
@@ -30,6 +31,8 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
 
     private Player player;
 
+    private Level level;
+
     private List<Junction> junctions;
 
     private BufferedImage bf;
@@ -37,8 +40,9 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
     private int currentMovement;
     private int previousMovement;
 
-    public Enemy(int x, int y, Player player, List<Junction> junctions, int numberOfTheImage) throws IOException {
+    public Enemy(int x, int y, Player player, Level level, List<Junction> junctions, int numberOfTheImage) throws IOException {
         this.player = player;
+        this.level = level;
         this.bf = ImageIO.read(getClass().getResourceAsStream(IMAGES[numberOfTheImage]));
         this.junctions = junctions;
         this.currentMovement = 0;
@@ -137,7 +141,7 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
             }
 
             for (int movement : priorities) {
-                if (canMove(movement, SPEED, this) && movement != previousMovement) {
+                if (canMove(movement, SPEED, this, level) && movement != previousMovement) {
                     previousMovement = currentMovement;
                     currentMovement = movement;
                     break;
@@ -149,12 +153,12 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
             previousMovement = currentMovement;
             do {
                 currentMovement = random.nextInt(4);
-            } while (!canMove(currentMovement, SPEED, this));
+            } while (!canMove(currentMovement, SPEED, this, level));
 
         } else {
             // if possible, move with the current movement, if not - find new one
             int temp = currentMovement;
-            while (!canMove(currentMovement, SPEED, this)) {
+            while (!canMove(currentMovement, SPEED, this, level)) {
                 currentMovement = random.nextInt(4);
             }
             if (currentMovement != temp) {

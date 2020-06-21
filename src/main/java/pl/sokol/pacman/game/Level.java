@@ -6,8 +6,9 @@ import pl.sokol.pacman.elements.dynamic.Enemy;
 import pl.sokol.pacman.elements.Point;
 import pl.sokol.pacman.elements.Tile;
 import pl.sokol.pacman.elements.dynamic.Player;
-import pl.sokol.pacman.gui.frame.GameFrameViewModel;
+import pl.sokol.pacman.gui.frames.game.GameFrameController;
 import pl.sokol.pacman.gui.panels.game.GamePanelView;
+import pl.sokol.pacman.gui.panels.stats.StatsPanelController;
 
 import javax.imageio.ImageIO;
 import java.awt.Graphics;
@@ -28,15 +29,17 @@ public class Level implements Renderable {
 
     private Player player;
 
-    public Level(String path, Player player) {
+    private StatsPanelController stats;
+
+    public Level(String path, GameFrameController gameThread, StatsPanelController stats) {
         try {
+            this.stats = stats;
             this.map = ImageIO.read(getClass().getResourceAsStream(path));
-            this.player = player;
             this.points = new ArrayList<>();
             this.enemies = new ArrayList<>();
             this.junctions = new ArrayList<>();
             this.tiles = new ArrayList<>();
-
+            this.player = new Player(0, 0, gameThread, stats);
             setElements();
 
         } catch (IOException | ExceptionInInitializerError e)  {
@@ -78,7 +81,7 @@ public class Level implements Renderable {
 
                     // Red - Enemy
                     case 0xFFFF0000:
-                        enemies.add(new Enemy(x, y, player, null, new Random().nextInt(5)));
+                        enemies.add(new Enemy(x, y, player, this,null, new Random().nextInt(5)));
                         break;
 
                     // White - Point
@@ -116,6 +119,9 @@ public class Level implements Renderable {
         for (Enemy enemy : enemies) {
             enemy.render(g);
         }
+
+        // render player
+        player.render(g);
     }
 
     public List<Tile> getTiles() {
@@ -128,5 +134,9 @@ public class Level implements Renderable {
 
     public List<Enemy> getEnemies() {
         return enemies;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 }

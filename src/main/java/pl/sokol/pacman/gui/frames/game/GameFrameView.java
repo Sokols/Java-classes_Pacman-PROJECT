@@ -1,4 +1,4 @@
-package pl.sokol.pacman.gui.frame;
+package pl.sokol.pacman.gui.frames.game;
 
 import pl.sokol.pacman.gui.panels.game.GamePanelView;
 import pl.sokol.pacman.gui.panels.stats.StatsPanelView;
