@@ -1,37 +1,53 @@
 package pl.sokol.pacman.gui.frame;
 
-import pl.sokol.pacman.gui.panels.game.GamePanelView;
-import pl.sokol.pacman.gui.panels.game.engine.EnginePanelView;
-import pl.sokol.pacman.gui.panels.game.stats.StatsPanelView;
 import pl.sokol.pacman.gui.panels.menu.MenuPanelView;
-import pl.sokol.pacman.gui.panels.settings.SettingsPanelView;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Dimension;
+
+import static pl.sokol.pacman.Utils.*;
 
 public class GameFrameView extends JFrame {
 
-    private static final String TITLE = "Pac-Man";
-    private final String GAME = "GAME_PANEL";
-    private final String MENU = "MENU_PANEL";
-    private final String SETTINGS = "SETTINGS_PANEL";
+    private CardLayout card;
+    private JPanel mainPanel;
 
-    public GameFrameView(GamePanelView game, MenuPanelView menu, SettingsPanelView settings) {
+    public GameFrameView(MenuPanelView menu) {
         super(TITLE);
-
-        setSize(EnginePanelView.GAME_WIDTH, EnginePanelView.GAME_HEIGHT + StatsPanelView.STATS_HEIGHT + 32);
+        Dimension dimension = new Dimension(FRAME_WIDTH, FRAME_HEIGHT);
+        setSize(dimension);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);
+        setFocusable(true);
         setVisible(true);
 
-        CardLayout card = new CardLayout();
-        this.setLayout(card);
-        this.add(game, GAME);
-        this.add(menu, MENU);
-        this.add(settings, SETTINGS);
+        mainPanel = new JPanel();
+        mainPanel.setPreferredSize(dimension);
+        card = new CardLayout();
+        mainPanel.setLayout(card);
+        mainPanel.add(MENU, menu);
+        this.setLayout(new BorderLayout());
+        this.add(mainPanel);
+    }
 
-        //card.show(this.getContentPane(), GAME);
+    public CardLayout getCard() {
+        return card;
+    }
+
+    public void setCard(CardLayout card) {
+        this.card = card;
+    }
+
+    public JPanel getMainPanel() {
+        return mainPanel;
+    }
+
+    public void setMainPanel(JPanel mainPanel) {
+        this.mainPanel = mainPanel;
     }
 }

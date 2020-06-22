@@ -3,7 +3,6 @@ package pl.sokol.pacman.gui.panels.game;
 import pl.sokol.pacman.game.Level;
 import pl.sokol.pacman.game.RenderTimer;
 import pl.sokol.pacman.gui.frame.GameFrameController;
-import pl.sokol.pacman.gui.frame.GameFrameView;
 import pl.sokol.pacman.gui.panels.game.engine.EnginePanelController;
 import pl.sokol.pacman.gui.panels.game.stats.StatsPanelController;
 
@@ -27,20 +26,21 @@ public class GamePanelController implements Runnable, KeyListener {
                 false,
                 false,
                 new EnginePanelController(this, statsPanelController),
-                statsPanelController);
+                statsPanelController
+        );
 
         this.view = new GamePanelView(
                 this.model.getEnginePanelController().getView(),
-                this.model.getStatsPanelController().getView());
+                this.model.getStatsPanelController().getView()
+        );
 
         this.renderTimer = new RenderTimer(
                 0,
                 System.currentTimeMillis(),
                 System.nanoTime(),
                 System.nanoTime(),
-                0);
-
-        view.addKeyListener(this);
+                0
+        );
     }
 
     @Override

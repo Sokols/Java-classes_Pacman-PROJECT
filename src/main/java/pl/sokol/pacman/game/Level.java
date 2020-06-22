@@ -7,16 +7,18 @@ import pl.sokol.pacman.elements.Tile;
 import pl.sokol.pacman.elements.dynamic.Enemy;
 import pl.sokol.pacman.elements.dynamic.Player;
 import pl.sokol.pacman.gui.panels.game.GamePanelController;
-import pl.sokol.pacman.gui.panels.game.engine.EnginePanelView;
 import pl.sokol.pacman.gui.panels.game.stats.StatsPanelController;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static pl.sokol.pacman.Utils.FRAME_WIDTH;
+import static pl.sokol.pacman.Utils.GAME_HEIGHT;
 
 public class Level implements Renderable {
 
@@ -87,8 +89,8 @@ public class Level implements Renderable {
         int mapWidth = map.getWidth();
         int mapHeight = map.getHeight();
 
-        int mapWidthProportion = EnginePanelView.GAME_WIDTH / mapWidth;
-        int mapHeightProportion = EnginePanelView.GAME_HEIGHT / mapHeight;
+        int mapWidthProportion = FRAME_WIDTH / mapWidth;
+        int mapHeightProportion = GAME_HEIGHT / mapHeight;
 
         for (int xx = 0; xx < mapWidth; xx++) {
             for (int yy = 0; yy < mapHeight; yy++) {

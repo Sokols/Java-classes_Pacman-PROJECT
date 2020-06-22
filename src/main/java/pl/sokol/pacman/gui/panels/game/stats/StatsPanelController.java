@@ -1,14 +1,12 @@
 package pl.sokol.pacman.gui.panels.game.stats;
 
-import pl.sokol.pacman.gui.panels.game.GamePanelController;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static pl.sokol.pacman.gui.panels.game.stats.StatsPanelView.STATS_HEIGHT;
-import static pl.sokol.pacman.gui.panels.game.stats.StatsPanelView.STATS_WIDTH;
+import static pl.sokol.pacman.Utils.FRAME_WIDTH;
+import static pl.sokol.pacman.Utils.STATS_HEIGHT;
 
 public class StatsPanelController {
 
@@ -33,7 +31,7 @@ public class StatsPanelController {
 
     public void renderStats(Graphics g) {
         g.setColor(Color.BLACK);
-        g.fillRect(0, 0, STATS_WIDTH, STATS_HEIGHT);
+        g.fillRect(0, 0, FRAME_WIDTH, STATS_HEIGHT);
         view.repaint();
         g.dispose();
     }

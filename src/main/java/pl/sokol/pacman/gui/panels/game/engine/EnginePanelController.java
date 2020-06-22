@@ -5,6 +5,9 @@ import pl.sokol.pacman.gui.panels.game.stats.StatsPanelController;
 
 import java.awt.*;
 
+import static pl.sokol.pacman.Utils.FRAME_WIDTH;
+import static pl.sokol.pacman.Utils.GAME_HEIGHT;
+
 public class EnginePanelController {
 
     private EnginePanelView view;
@@ -18,12 +21,16 @@ public class EnginePanelController {
     public void renderGame(Graphics g) {
         // fill the background
         g.setColor(Color.BLACK);
-        g.fillRect(0, 0, EnginePanelView.GAME_WIDTH, EnginePanelView.GAME_HEIGHT);
+        g.fillRect(0, 0, FRAME_WIDTH, GAME_HEIGHT);
         model.getGameThread().getModel().getLevel().render(g);
         g.dispose();
     }
 
     public EnginePanelView getView() {
         return view;
+    }
+
+    public EnginePanelModel getModel() {
+        return model;
     }
 }

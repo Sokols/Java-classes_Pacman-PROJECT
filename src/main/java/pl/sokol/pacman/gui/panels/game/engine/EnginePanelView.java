@@ -3,13 +3,13 @@ package pl.sokol.pacman.gui.panels.game.engine;
 import javax.swing.JPanel;
 import java.awt.Dimension;
 
+import static pl.sokol.pacman.Utils.FRAME_WIDTH;
+import static pl.sokol.pacman.Utils.GAME_HEIGHT;
+
 public class EnginePanelView extends JPanel {
 
-    public static final int GAME_WIDTH = 640;
-    public static final int GAME_HEIGHT = 480;
-
     public EnginePanelView() {
-        Dimension dimension = new Dimension(GAME_WIDTH, GAME_HEIGHT);
+        Dimension dimension = new Dimension(FRAME_WIDTH, GAME_HEIGHT);
         setSize(dimension);
         setMaximumSize(dimension);
         setMinimumSize(dimension);

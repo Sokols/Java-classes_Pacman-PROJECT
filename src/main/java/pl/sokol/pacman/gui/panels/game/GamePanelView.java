@@ -5,6 +5,10 @@ import pl.sokol.pacman.gui.panels.game.stats.StatsPanelView;
 
 import javax.swing.*;
 
+import java.awt.*;
+
+import static pl.sokol.pacman.Utils.*;
+
 public class GamePanelView extends JPanel {
 
     private StatsPanelView statsView;
@@ -14,11 +18,13 @@ public class GamePanelView extends JPanel {
         this.gameView = gameView;
         this.statsView = statsView;
 
+        Dimension dimension = new Dimension(FRAME_WIDTH, FRAME_HEIGHT);
+        setSize(dimension);
+        setMaximumSize(dimension);
+        setMinimumSize(dimension);
+
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.add(gameView);
         this.add(statsView);
-        setSize(EnginePanelView.GAME_WIDTH, EnginePanelView.GAME_HEIGHT + StatsPanelView.STATS_HEIGHT + 32);
-        setFocusable(true);
-        setVisible(true);
     }
 }
