@@ -22,7 +22,7 @@ public class GamePanelController implements Runnable, KeyListener {
         StatsPanelController statsPanelController = new StatsPanelController();
         this.model = new GamePanelModel(
                 gameFrameController,
-                new Level("/maps/map1.png", this, statsPanelController),
+                new Level("/graphics/maps/map1.png", this, statsPanelController),
                 false,
                 false,
                 new EnginePanelController(this, statsPanelController),
@@ -30,8 +30,8 @@ public class GamePanelController implements Runnable, KeyListener {
         );
 
         this.view = new GamePanelView(
-                this.model.getEnginePanelController().getView(),
-                this.model.getStatsPanelController().getView()
+                this.model.getEnginePanel().getView(),
+                this.model.getStatsPanel().getView()
         );
 
         this.renderTimer = new RenderTimer(
@@ -59,7 +59,7 @@ public class GamePanelController implements Runnable, KeyListener {
 
     public void restartLevel() {
         for (int i = 0; i < model.getLevel().getEnemies().size(); i++) {
-            model.getLevel().getEnemies().get(i).setLocation(model.getLevel().getEnemiesPoint().get(i % model.getLevel().getEnemiesPoint().size()));
+            model.getLevel().getEnemies().get(i).setLocation(model.getLevel().getEnemiesPoints().get(i % model.getLevel().getEnemiesPoints().size()));
             model.getLevel().getEnemies().get(i).setCurrentMovement(0);
         }
         model.getLevel().getPlayer().setLocation(32, 64);
@@ -67,14 +67,14 @@ public class GamePanelController implements Runnable, KeyListener {
     }
 
     private void mainRender() {
-        BufferStrategy bs = model.getGameFrameController().getView().getBufferStrategy();
+        BufferStrategy bs = model.getGameFrame().getView().getBufferStrategy();
         if (bs == null) {
-            model.getGameFrameController().getView().createBufferStrategy(2);
+            model.getGameFrame().getView().createBufferStrategy(2);
             return;
         }
         Graphics g = bs.getDrawGraphics();
-        model.getEnginePanelController().renderGame(g);
-        model.getStatsPanelController().renderStats(g);
+        model.getEnginePanel().renderGame(g);
+        model.getStatsPanel().renderStats(g);
         bs.show();
     }
 
@@ -102,9 +102,15 @@ public class GamePanelController implements Runnable, KeyListener {
             case KeyEvent.VK_SPACE:
                 if (model.isStoppedFlag()) {
                     resume();
+                    model.getStatsPanel().getView().getSpaceLabel().setText("PRESS SPACE TO PAUSE");
                 } else {
-                    stop();
+                    pause();
+                    model.getStatsPanel().getView().getSpaceLabel().setText("PRESS SPACE TO RESUME");
                 }
+                break;
+
+            case KeyEvent.VK_ESCAPE:
+                model.getGameFrame().backToMenu();
                 break;
 
             case KeyEvent.VK_ENTER:
@@ -126,15 +132,11 @@ public class GamePanelController implements Runnable, KeyListener {
         // unused
     }
 
-    public void startNewGame() {
-        // hmmm
-    }
-
     public void resume() {
         model.setStoppedFlag(false);
     }
 
-    public void stop() {
+    public void pause() {
         model.setStoppedFlag(true);
     }
 

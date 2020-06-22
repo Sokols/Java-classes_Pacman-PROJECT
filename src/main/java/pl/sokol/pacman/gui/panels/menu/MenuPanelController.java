@@ -5,22 +5,27 @@ import pl.sokol.pacman.gui.frame.GameFrameController;
 public class MenuPanelController {
 
     private MenuPanelModel model;
-    private MenuPanelView view;
+    private MenuPanelView menuPanelView;
 
     public MenuPanelController(GameFrameController game) {
         this.model = new MenuPanelModel(game);
-        this.view = new MenuPanelView();
+        this.menuPanelView = new MenuPanelView();
         initListeners(game);
     }
 
     private void initListeners(GameFrameController game) {
-        view.getNewGameButton().addActionListener(e -> game.newGame());
+        menuPanelView.getBackToGameButton().addActionListener(e -> game.backToGame());
 
-        view.getExitButton().addActionListener(e -> game.getView().dispose());
+        menuPanelView.getNewGameButton().addActionListener(e -> game.newGame());
+
+        menuPanelView.getSaveButton().addActionListener(e -> game.saveGame());
+
+        menuPanelView.getExitButton().addActionListener(e -> game.getView().dispose());
+
     }
 
 
-    public MenuPanelView getView() {
-        return view;
+    public MenuPanelView getMenuPanelView() {
+        return menuPanelView;
     }
 }

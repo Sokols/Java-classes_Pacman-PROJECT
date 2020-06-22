@@ -17,17 +17,17 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
 
     private final int ENEMY_WIDTH = 32;
     private final int ENEMY_HEIGHT = 32;
-    private final int SPEED = 1;
-    private final int SEARCH_RANGE = 160;
-    private String[] IMAGES = {
-            "/enemies/enemy1.png",
-            "/enemies/enemy2.png",
-            "/enemies/enemy3.png",
-            "/enemies/enemy4.png",
-            "/enemies/enemy5.png"
+    private final int ENEMY_SPEED = 1;
+    private final int ENEMY_SEARCH_RANGE = 160;
+    private final String[] ENEMY_IMAGES = {
+            "/graphics/enemies/enemy1.png",
+            "/graphics/enemies/enemy2.png",
+            "/graphics/enemies/enemy3.png",
+            "/graphics/enemies/enemy4.png",
+            "/graphics/enemies/enemy5.png"
     };
 
-    private Random random = new Random();
+    private Random random;
 
     private Player player;
 
@@ -35,24 +35,20 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
 
     private List<Junction> junctions;
 
-    private BufferedImage bf;
+    private BufferedImage imageOfEnemy;
 
     private int currentMovement;
     private int previousMovement;
 
     public Enemy(int x, int y, Player player, Level level, List<Junction> junctions, int numberOfTheImage) throws IOException {
+        this.random = new Random();
         this.player = player;
         this.level = level;
-        this.bf = ImageIO.read(getClass().getResourceAsStream(IMAGES[numberOfTheImage]));
+        this.imageOfEnemy = ImageIO.read(getClass().getResourceAsStream(ENEMY_IMAGES[numberOfTheImage]));
         this.junctions = junctions;
         this.currentMovement = 0;
         this.previousMovement = 0;
         setBounds(x, y, ENEMY_WIDTH, ENEMY_HEIGHT);
-    }
-
-    public void render(Graphics g) {
-        move();
-        g.drawImage(bf, x, y, width, height, null);
     }
 
     @Override
@@ -64,7 +60,7 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
         int vectorY = player.y - y;
         boolean findPlayerFlag = false;
         // try to find a player in search range
-        if (Math.abs(vectorX) < SEARCH_RANGE && Math.abs(vectorY) < SEARCH_RANGE) {
+        if (Math.abs(vectorX) < ENEMY_SEARCH_RANGE && Math.abs(vectorY) < ENEMY_SEARCH_RANGE) {
             findPlayerFlag = true;
         }
 
@@ -141,7 +137,7 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
             }
 
             for (int movement : priorities) {
-                if (canMove(movement, SPEED, this, level) && movement != previousMovement) {
+                if (canMove(movement, ENEMY_SPEED, this, level) && movement != previousMovement) {
                     previousMovement = currentMovement;
                     currentMovement = movement;
                     break;
@@ -153,19 +149,24 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
             previousMovement = currentMovement;
             do {
                 currentMovement = random.nextInt(4);
-            } while (!canMove(currentMovement, SPEED, this, level));
+            } while (!canMove(currentMovement, ENEMY_SPEED, this, level));
 
         } else {
             // if possible, move with the current movement, if not - find new one
             int temp = currentMovement;
-            while (!canMove(currentMovement, SPEED, this, level)) {
+            while (!canMove(currentMovement, ENEMY_SPEED, this, level)) {
                 currentMovement = random.nextInt(4);
             }
             if (currentMovement != temp) {
                 previousMovement = temp;
             }
         }
-        makeMove(currentMovement, SPEED, this);
+        makeMove(currentMovement, ENEMY_SPEED, this);
+    }
+
+    public void render(Graphics g) {
+        move();
+        g.drawImage(imageOfEnemy, x, y, width, height, null);
     }
 
     public void setJunctions(List<Junction> junctions) {

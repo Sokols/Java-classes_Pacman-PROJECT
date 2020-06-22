@@ -12,16 +12,14 @@ public class StatsPanelController {
 
     private final int BLINKING_TIME = 750;
 
-    private StatsPanelView view;
     private StatsPanelModel model;
+    private StatsPanelView view;
 
     private List<JLabel> lives;
 
-    private int score;
-
     private Timer timer;
 
-    private String scoreText;
+    private String scoreTextTemp;
 
     public StatsPanelController() {
         this.view = new StatsPanelView();
@@ -38,7 +36,7 @@ public class StatsPanelController {
 
     public void updateScore() {
         model.setScore(model.getScore() + 10);
-        view.getScoreLabel().setText(scoreText + model.getScore());
+        view.getScoreLabel().setText(scoreTextTemp + model.getScore());
     }
 
     public void updateLives() {
@@ -55,8 +53,8 @@ public class StatsPanelController {
         initLives();
 
         // init texts
-        scoreText = view.getScoreLabel().getText();
-        view.getScoreLabel().setText(scoreText + model.getScore());
+        scoreTextTemp = view.getScoreLabel().getText();
+        view.getScoreLabel().setText(scoreTextTemp + model.getScore());
     }
 
     private void blink() {
@@ -85,5 +83,9 @@ public class StatsPanelController {
 
     public StatsPanelView getView() {
         return view;
+    }
+
+    public StatsPanelModel getModel() {
+        return model;
     }
 }

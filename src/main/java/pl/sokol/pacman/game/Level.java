@@ -22,7 +22,7 @@ import static pl.sokol.pacman.Utils.GAME_HEIGHT;
 
 public class Level implements Renderable {
 
-    private BufferedImage map;
+    private BufferedImage mapForLevel;
 
     private List<Tile> tiles;
     private List<Point> points;
@@ -31,17 +31,17 @@ public class Level implements Renderable {
 
     private Player player;
 
-    private List<java.awt.Point> enemiesPoint;
+    private List<java.awt.Point> enemiesPoints;
 
     private StatsPanelController stats;
 
     public Level(String path, GamePanelController gameThread, StatsPanelController stats) {
         try {
             this.stats = stats;
-            this.map = ImageIO.read(getClass().getResourceAsStream(path));
+            this.mapForLevel = ImageIO.read(getClass().getResourceAsStream(path));
             this.points = new ArrayList<>();
             this.enemies = new ArrayList<>();
-            this.enemiesPoint = new ArrayList<>();
+            this.enemiesPoints = new ArrayList<>();
             this.junctions = new ArrayList<>();
             this.tiles = new ArrayList<>();
             this.player = new Player(0, 0, gameThread, stats);
@@ -76,7 +76,7 @@ public class Level implements Renderable {
 
     public void addEnemy() {
         try {
-            Enemy newEnemy = new Enemy(enemiesPoint.get(0).getLocation().x, enemiesPoint.get(0).getLocation().y, player, this,null, new Random().nextInt(5));
+            Enemy newEnemy = new Enemy(enemiesPoints.get(0).getLocation().x, enemiesPoints.get(0).getLocation().y, player, this,null, new Random().nextInt(5));
             newEnemy.setJunctions(junctions);
             enemies.add(newEnemy);
         } catch (IOException e) {
@@ -86,8 +86,8 @@ public class Level implements Renderable {
 
     private void setElements() throws IOException, ExceptionInInitializerError {
 
-        int mapWidth = map.getWidth();
-        int mapHeight = map.getHeight();
+        int mapWidth = mapForLevel.getWidth();
+        int mapHeight = mapForLevel.getHeight();
 
         int mapWidthProportion = FRAME_WIDTH / mapWidth;
         int mapHeightProportion = GAME_HEIGHT / mapHeight;
@@ -99,7 +99,7 @@ public class Level implements Renderable {
                 int y = yy * mapHeightProportion + 32;
 
                 // switch by RGB value
-                switch (map.getRGB(xx, yy)) {
+                switch (mapForLevel.getRGB(xx, yy)) {
                     // Black - Tile
                     case 0xFF000000:
                         tiles.add(new Tile(x, y));
@@ -119,7 +119,7 @@ public class Level implements Renderable {
                     // Red - Enemy
                     case 0xFFFF0000:
                         enemies.add(new Enemy(x, y, player, this,null, new Random().nextInt(5)));
-                        enemiesPoint.add(new java.awt.Point(x, y));
+                        enemiesPoints.add(new java.awt.Point(x, y));
                         break;
 
                     // White - Point
@@ -155,7 +155,7 @@ public class Level implements Renderable {
         return player;
     }
 
-    public List<java.awt.Point> getEnemiesPoint() {
-        return enemiesPoint;
+    public List<java.awt.Point> getEnemiesPoints() {
+        return enemiesPoints;
     }
 }

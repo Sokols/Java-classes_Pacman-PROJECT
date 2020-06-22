@@ -2,7 +2,6 @@ package pl.sokol.pacman.elements.dynamic;
 
 import pl.sokol.pacman.elements.Renderable;
 import pl.sokol.pacman.game.Level;
-import pl.sokol.pacman.gui.frame.GameFrameController;
 import pl.sokol.pacman.gui.panels.game.GamePanelController;
 import pl.sokol.pacman.gui.panels.game.stats.StatsPanelController;
 
@@ -16,23 +15,23 @@ public class Player extends Rectangle implements Renderable, Moveable {
 
     private final int PLAYER_WIDTH = 24;
     private final int PLAYER_HEIGHT = 24;
-    private final int SPEED = 2;
+    private final int PLAYER_SPEED = 2;
 
-    private GamePanelController gameThread;
+    private GamePanelController game;
     private StatsPanelController stats;
 
     private int currentMovement;
 
-    private BufferedImage bf;
+    private BufferedImage imageOfPlayer;
 
-    public Player(int x, int y, GamePanelController gameThread, StatsPanelController stats) {
-        this.gameThread = gameThread;
+    public Player(int x, int y, GamePanelController game, StatsPanelController stats) {
+        this.game = game;
         this.stats = stats;
         setBounds(x, y, PLAYER_WIDTH, PLAYER_HEIGHT);
         this.currentMovement = 0;
-        this.bf = null;
+        this.imageOfPlayer = null;
         try {
-            this.bf = ImageIO.read(getClass().getResourceAsStream("/player/player.png"));
+            this.imageOfPlayer = ImageIO.read(getClass().getResourceAsStream("/graphics/player/player.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -41,13 +40,13 @@ public class Player extends Rectangle implements Renderable, Moveable {
     @Override
     public void move() {
 
-        Level level = gameThread.getModel().getLevel();
-        if (canMove(currentMovement, SPEED, this, gameThread.getModel().getLevel())) {
-            makeMove(currentMovement, SPEED, this);
+        Level level = game.getModel().getLevel();
+        if (canMove(currentMovement, PLAYER_SPEED, this, game.getModel().getLevel())) {
+            makeMove(currentMovement, PLAYER_SPEED, this);
 
             // WIN THE GAME
             if (level.getPoints().size() == 0) {
-                gameThread.getModel().setEndedFlag(true);
+                game.getModel().setEndedFlag(true);
             }
 
             // GET POINT
@@ -65,10 +64,10 @@ public class Player extends Rectangle implements Renderable, Moveable {
             if (this.intersects(enemy)) {
                 stats.updateLives();
                 if (stats.getLives().size() > 0) {
-                    gameThread.restartLevel();
+                    game.restartLevel();
                 } else {
-                    gameThread.getModel().setEndedFlag(true);
-                    gameThread.getModel().setStoppedFlag(true);
+                    game.getModel().setEndedFlag(true);
+                    game.getModel().setStoppedFlag(true);
                 }
             }
         }
@@ -77,7 +76,7 @@ public class Player extends Rectangle implements Renderable, Moveable {
     @Override
     public void render(Graphics g) {
         move();
-        g.drawImage(bf, x, y, width, height, null);
+        g.drawImage(imageOfPlayer, x, y, width, height, null);
     }
 
     public void setCurrentMovement(int currentMovement) {

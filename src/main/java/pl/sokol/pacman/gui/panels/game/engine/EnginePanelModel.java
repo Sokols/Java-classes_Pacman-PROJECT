@@ -1,32 +1,31 @@
 package pl.sokol.pacman.gui.panels.game.engine;
 
-import pl.sokol.pacman.gui.frame.GameFrameController;
 import pl.sokol.pacman.gui.panels.game.GamePanelController;
 import pl.sokol.pacman.gui.panels.game.stats.StatsPanelController;
 
 public class EnginePanelModel {
 
-    private GamePanelController gameThread;
-    private StatsPanelController statsPanelController;
+    private GamePanelController gamePanel;
+    private StatsPanelController statsPanel;
 
-    public EnginePanelModel(GamePanelController gameThread, StatsPanelController statsPanelController) {
-        this.gameThread = gameThread;
-        this.statsPanelController = statsPanelController;
+    public EnginePanelModel(GamePanelController gamePanel, StatsPanelController statsPanel) {
+        this.gamePanel = gamePanel;
+        this.statsPanel = statsPanel;
     }
 
-    public GamePanelController getGameThread() {
-        return gameThread;
+    public GamePanelController getGamePanel() {
+        return gamePanel;
     }
 
-    public void setGameThread(GamePanelController gameThread) {
-        this.gameThread = gameThread;
+    public void setGamePanel(GamePanelController gamePanel) {
+        this.gamePanel = gamePanel;
     }
 
-    public StatsPanelController getStatsPanelController() {
-        return statsPanelController;
+    public StatsPanelController getStatsPanel() {
+        return statsPanel;
     }
 
-    public void setStatsPanelController(StatsPanelController statsPanelController) {
-        this.statsPanelController = statsPanelController;
+    public void setStatsPanel(StatsPanelController statsPanel) {
+        this.statsPanel = statsPanel;
     }
 }

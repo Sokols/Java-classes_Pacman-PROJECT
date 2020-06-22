@@ -12,7 +12,6 @@ public class StatsPanelModel {
         this.lives = NUMBER_OF_LIVES;
     }
 
-
     public int getScore() {
         return score;
     }

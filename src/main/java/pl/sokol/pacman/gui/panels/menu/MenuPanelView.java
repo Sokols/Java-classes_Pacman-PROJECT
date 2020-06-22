@@ -11,8 +11,10 @@ public class MenuPanelView extends JPanel {
     private JPanel mainPanel;
 
     private JButton newGameButton;
-    private JButton LOADGAMEButton;
+    private JButton loadButton;
     private JButton exitButton;
+    private JButton saveButton;
+    private JButton backToGameButton;
 
     public MenuPanelView() {
         Dimension dimension = new Dimension(FRAME_WIDTH, FRAME_HEIGHT);
@@ -20,6 +22,8 @@ public class MenuPanelView extends JPanel {
         setSize(dimension);
         setMaximumSize(dimension);
         setMinimumSize(dimension);
+        saveButton.setVisible(false);
+        backToGameButton.setVisible(false);
         this.add(mainPanel);
     }
 
@@ -29,5 +33,17 @@ public class MenuPanelView extends JPanel {
 
     public JButton getExitButton() {
         return exitButton;
+    }
+
+    public JButton getSaveButton() {
+        return saveButton;
+    }
+
+    public JButton getBackToGameButton() {
+        return backToGameButton;
+    }
+
+    public JButton getLoadButton() {
+        return loadButton;
     }
 }

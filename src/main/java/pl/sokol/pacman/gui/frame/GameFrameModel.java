@@ -5,26 +5,26 @@ import pl.sokol.pacman.gui.panels.menu.MenuPanelController;
 
 public class GameFrameModel {
 
-    private GamePanelController game;
-    private MenuPanelController menu;
+    private GamePanelController gamePanel;
+    private MenuPanelController menuPanel;
 
-    public GameFrameModel(MenuPanelController menu) {
-        this.menu = menu;
+    public GameFrameModel(MenuPanelController menuPanel) {
+        this.menuPanel = menuPanel;
     }
 
-    public GamePanelController getGame() {
-        return game;
+    public GamePanelController getGamePanel() {
+        return gamePanel;
     }
 
-    public void setGame(GamePanelController game) {
-        this.game = game;
+    public void setGamePanel(GamePanelController gamePanel) {
+        this.gamePanel = gamePanel;
     }
 
-    public MenuPanelController getMenu() {
-        return menu;
+    public MenuPanelController getMenuPanel() {
+        return menuPanel;
     }
 
-    public void setMenu(MenuPanelController menu) {
-        this.menu = menu;
+    public void setMenuPanel(MenuPanelController menuPanel) {
+        this.menuPanel = menuPanel;
     }
 }

@@ -10,8 +10,8 @@ import static pl.sokol.pacman.Utils.GAME_HEIGHT;
 
 public class EnginePanelController {
 
-    private EnginePanelView view;
     private EnginePanelModel model;
+    private EnginePanelView view;
 
     public EnginePanelController(GamePanelController gameThread, StatsPanelController statsPanelController) {
         this.model = new EnginePanelModel(gameThread, statsPanelController);
@@ -22,7 +22,7 @@ public class EnginePanelController {
         // fill the background
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, FRAME_WIDTH, GAME_HEIGHT);
-        model.getGameThread().getModel().getLevel().render(g);
+        model.getGamePanel().getModel().getLevel().render(g);
         g.dispose();
     }
 

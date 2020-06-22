@@ -7,31 +7,31 @@ import pl.sokol.pacman.gui.panels.game.stats.StatsPanelController;
 
 public class GamePanelModel {
 
-    private GameFrameController gameFrameController;
+    private GameFrameController gameFrame;
 
     private Level level;
 
     private boolean isStoppedFlag;
     private boolean isEndedFlag;
 
-    private EnginePanelController enginePanelController;
-    private StatsPanelController statsPanelController;
+    private EnginePanelController enginePanel;
+    private StatsPanelController statsPanel;
 
-    public GamePanelModel(GameFrameController gameFrameController, Level level, boolean isStoppedFlag, boolean isEndedFlag, EnginePanelController enginePanelController, StatsPanelController statsPanelController) {
-        this.gameFrameController = gameFrameController;
+    public GamePanelModel(GameFrameController gameFrame, Level level, boolean isStoppedFlag, boolean isEndedFlag, EnginePanelController enginePanel, StatsPanelController statsPanel) {
+        this.gameFrame = gameFrame;
         this.level = level;
         this.isStoppedFlag = isStoppedFlag;
         this.isEndedFlag = isEndedFlag;
-        this.enginePanelController = enginePanelController;
-        this.statsPanelController = statsPanelController;
+        this.enginePanel = enginePanel;
+        this.statsPanel = statsPanel;
     }
 
-    public GameFrameController getGameFrameController() {
-        return gameFrameController;
+    public GameFrameController getGameFrame() {
+        return gameFrame;
     }
 
-    public void setGameFrameController(GameFrameController gameFrameController) {
-        this.gameFrameController = gameFrameController;
+    public void setGameFrame(GameFrameController gameFrame) {
+        this.gameFrame = gameFrame;
     }
 
     public Level getLevel() {
@@ -58,19 +58,19 @@ public class GamePanelModel {
         isEndedFlag = endedFlag;
     }
 
-    public EnginePanelController getEnginePanelController() {
-        return enginePanelController;
+    public EnginePanelController getEnginePanel() {
+        return enginePanel;
     }
 
-    public void setEnginePanelController(EnginePanelController enginePanelController) {
-        this.enginePanelController = enginePanelController;
+    public void setEnginePanel(EnginePanelController enginePanel) {
+        this.enginePanel = enginePanel;
     }
 
-    public StatsPanelController getStatsPanelController() {
-        return statsPanelController;
+    public StatsPanelController getStatsPanel() {
+        return statsPanel;
     }
 
-    public void setStatsPanelController(StatsPanelController statsPanelController) {
-        this.statsPanelController = statsPanelController;
+    public void setStatsPanel(StatsPanelController statsPanel) {
+        this.statsPanel = statsPanel;
     }
 }
