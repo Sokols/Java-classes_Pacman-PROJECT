@@ -1,17 +1,17 @@
 package pl.sokol.pacman.game;
 
 import pl.sokol.pacman.elements.Junction;
-import pl.sokol.pacman.elements.Renderable;
-import pl.sokol.pacman.elements.dynamic.Enemy;
 import pl.sokol.pacman.elements.Point;
+import pl.sokol.pacman.elements.Renderable;
 import pl.sokol.pacman.elements.Tile;
+import pl.sokol.pacman.elements.dynamic.Enemy;
 import pl.sokol.pacman.elements.dynamic.Player;
-import pl.sokol.pacman.gui.frames.game.GameFrameController;
-import pl.sokol.pacman.gui.panels.game.GamePanelView;
-import pl.sokol.pacman.gui.panels.stats.StatsPanelController;
+import pl.sokol.pacman.gui.panels.game.GamePanelController;
+import pl.sokol.pacman.gui.panels.game.engine.EnginePanelView;
+import pl.sokol.pacman.gui.panels.game.stats.StatsPanelController;
 
 import javax.imageio.ImageIO;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,14 +29,17 @@ public class Level implements Renderable {
 
     private Player player;
 
+    private List<java.awt.Point> enemiesPoint;
+
     private StatsPanelController stats;
 
-    public Level(String path, GameFrameController gameThread, StatsPanelController stats) {
+    public Level(String path, GamePanelController gameThread, StatsPanelController stats) {
         try {
             this.stats = stats;
             this.map = ImageIO.read(getClass().getResourceAsStream(path));
             this.points = new ArrayList<>();
             this.enemies = new ArrayList<>();
+            this.enemiesPoint = new ArrayList<>();
             this.junctions = new ArrayList<>();
             this.tiles = new ArrayList<>();
             this.player = new Player(0, 0, gameThread, stats);
@@ -47,13 +50,45 @@ public class Level implements Renderable {
         }
     }
 
+    @Override
+    public void render(Graphics g) {
+
+        // render tiles
+        for (Tile tile : tiles) {
+            tile.render(g);
+        }
+
+        // render points
+        for (Point point : points) {
+            point.render(g);
+        }
+
+        // render enemies
+        for (Enemy enemy : enemies) {
+            enemy.render(g);
+        }
+
+        // render player
+        player.render(g);
+    }
+
+    public void addEnemy() {
+        try {
+            Enemy newEnemy = new Enemy(enemiesPoint.get(0).getLocation().x, enemiesPoint.get(0).getLocation().y, player, this,null, new Random().nextInt(5));
+            newEnemy.setJunctions(junctions);
+            enemies.add(newEnemy);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void setElements() throws IOException, ExceptionInInitializerError {
 
         int mapWidth = map.getWidth();
         int mapHeight = map.getHeight();
 
-        int mapWidthProportion = GamePanelView.GAME_WIDTH / mapWidth;
-        int mapHeightProportion = GamePanelView.GAME_HEIGHT / mapHeight;
+        int mapWidthProportion = EnginePanelView.GAME_WIDTH / mapWidth;
+        int mapHeightProportion = EnginePanelView.GAME_HEIGHT / mapHeight;
 
         for (int xx = 0; xx < mapWidth; xx++) {
             for (int yy = 0; yy < mapHeight; yy++) {
@@ -82,6 +117,7 @@ public class Level implements Renderable {
                     // Red - Enemy
                     case 0xFFFF0000:
                         enemies.add(new Enemy(x, y, player, this,null, new Random().nextInt(5)));
+                        enemiesPoint.add(new java.awt.Point(x, y));
                         break;
 
                     // White - Point
@@ -99,29 +135,6 @@ public class Level implements Renderable {
         for (Enemy enemy : enemies) {
             enemy.setJunctions(junctions);
         }
-
-    }
-
-    @Override
-    public void render(Graphics g) {
-
-        // render tiles
-        for (Tile tile : tiles) {
-            tile.render(g);
-        }
-
-        // render points
-        for (Point point : points) {
-            point.render(g);
-        }
-
-        // render enemies
-        for (Enemy enemy : enemies) {
-            enemy.render(g);
-        }
-
-        // render player
-        player.render(g);
     }
 
     public List<Tile> getTiles() {
@@ -138,5 +151,9 @@ public class Level implements Renderable {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public List<java.awt.Point> getEnemiesPoint() {
+        return enemiesPoint;
     }
 }

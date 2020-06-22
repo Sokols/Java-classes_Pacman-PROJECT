@@ -1,4 +1,4 @@
-package pl.sokol.pacman.gui.panels.stats;
+package pl.sokol.pacman.gui.panels.game.stats;
 
 public class StatsPanelModel {
 

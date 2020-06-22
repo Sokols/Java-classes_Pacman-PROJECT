@@ -1,14 +1,14 @@
-package pl.sokol.pacman.gui.panels.stats;
+package pl.sokol.pacman.gui.panels.game.stats;
 
-import pl.sokol.pacman.gui.frames.game.GameFrameController;
+import pl.sokol.pacman.gui.panels.game.GamePanelController;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static pl.sokol.pacman.gui.panels.stats.StatsPanelView.STATS_HEIGHT;
-import static pl.sokol.pacman.gui.panels.stats.StatsPanelView.STATS_WIDTH;
+import static pl.sokol.pacman.gui.panels.game.stats.StatsPanelView.STATS_HEIGHT;
+import static pl.sokol.pacman.gui.panels.game.stats.StatsPanelView.STATS_WIDTH;
 
 public class StatsPanelController {
 
@@ -25,7 +25,7 @@ public class StatsPanelController {
 
     private String scoreText;
 
-    public StatsPanelController(GameFrameController gameThread) {
+    public StatsPanelController() {
         this.view = new StatsPanelView();
         this.model = new StatsPanelModel();
         initStats();
@@ -44,9 +44,11 @@ public class StatsPanelController {
     }
 
     public void updateLives() {
-        model.setLives(model.getLives() - 1);
-        JLabel live = lives.remove(model.getLives());
-        live.setVisible(false);
+        if (!lives.isEmpty()) {
+            model.setLives(model.getLives() - 1);
+            JLabel live = lives.remove(model.getLives());
+            live.setVisible(false);
+        }
     }
 
     private void initStats() {

@@ -2,9 +2,9 @@ package pl.sokol.pacman.elements.dynamic;
 
 import pl.sokol.pacman.elements.Renderable;
 import pl.sokol.pacman.game.Level;
-import pl.sokol.pacman.gui.frames.game.GameFrameController;
+import pl.sokol.pacman.gui.frame.GameFrameController;
 import pl.sokol.pacman.gui.panels.game.GamePanelController;
-import pl.sokol.pacman.gui.panels.stats.StatsPanelController;
+import pl.sokol.pacman.gui.panels.game.stats.StatsPanelController;
 
 import javax.imageio.ImageIO;
 import java.awt.Graphics;
@@ -18,14 +18,14 @@ public class Player extends Rectangle implements Renderable, Moveable {
     private final int PLAYER_HEIGHT = 24;
     private final int SPEED = 2;
 
-    private GameFrameController gameThread;
+    private GamePanelController gameThread;
     private StatsPanelController stats;
 
     private int currentMovement;
 
     private BufferedImage bf;
 
-    public Player(int x, int y, GameFrameController gameThread, StatsPanelController stats) {
+    public Player(int x, int y, GamePanelController gameThread, StatsPanelController stats) {
         this.gameThread = gameThread;
         this.stats = stats;
         setBounds(x, y, PLAYER_WIDTH, PLAYER_HEIGHT);
@@ -65,8 +65,9 @@ public class Player extends Rectangle implements Renderable, Moveable {
             if (this.intersects(enemy)) {
                 stats.updateLives();
                 if (stats.getLives().size() > 0) {
-                    gameThread.newGame(stats);
+                    gameThread.restartLevel();
                 } else {
+                    gameThread.getModel().setEndedFlag(true);
                     gameThread.getModel().setStoppedFlag(true);
                 }
             }

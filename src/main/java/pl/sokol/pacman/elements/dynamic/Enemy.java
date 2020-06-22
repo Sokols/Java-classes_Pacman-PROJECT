@@ -171,4 +171,8 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
     public void setJunctions(List<Junction> junctions) {
         this.junctions = junctions;
     }
+
+    public void setCurrentMovement(int currentMovement) {
+        this.currentMovement = currentMovement;
+    }
 }

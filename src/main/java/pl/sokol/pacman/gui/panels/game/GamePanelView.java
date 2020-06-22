@@ -1,17 +1,24 @@
 package pl.sokol.pacman.gui.panels.game;
 
-import javax.swing.JPanel;
-import java.awt.Dimension;
+import pl.sokol.pacman.gui.panels.game.engine.EnginePanelView;
+import pl.sokol.pacman.gui.panels.game.stats.StatsPanelView;
+
+import javax.swing.*;
 
 public class GamePanelView extends JPanel {
 
-    public static final int GAME_WIDTH = 640;
-    public static final int GAME_HEIGHT = 480;
+    private StatsPanelView statsView;
+    private EnginePanelView gameView;
 
-    public GamePanelView() {
-        Dimension dimension = new Dimension(GAME_WIDTH, GAME_HEIGHT);
-        setSize(dimension);
-        setMaximumSize(dimension);
-        setMinimumSize(dimension);
+    public GamePanelView(EnginePanelView gameView, StatsPanelView statsView) {
+        this.gameView = gameView;
+        this.statsView = statsView;
+
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.add(gameView);
+        this.add(statsView);
+        setSize(EnginePanelView.GAME_WIDTH, EnginePanelView.GAME_HEIGHT + StatsPanelView.STATS_HEIGHT + 32);
+        setFocusable(true);
+        setVisible(true);
     }
 }
