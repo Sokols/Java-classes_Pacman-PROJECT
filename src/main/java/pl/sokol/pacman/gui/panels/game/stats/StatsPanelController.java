@@ -88,4 +88,8 @@ public class StatsPanelController {
     public StatsPanelModel getModel() {
         return model;
     }
+
+    public void setModel(StatsPanelModel model) {
+        this.model = model;
+    }
 }

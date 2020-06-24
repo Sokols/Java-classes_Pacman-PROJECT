@@ -17,11 +17,8 @@ public class MenuPanelView extends JPanel {
     private JButton backToGameButton;
 
     public MenuPanelView() {
-        Dimension dimension = new Dimension(FRAME_WIDTH, FRAME_HEIGHT);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        setSize(dimension);
-        setMaximumSize(dimension);
-        setMinimumSize(dimension);
+        setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         saveButton.setVisible(false);
         backToGameButton.setVisible(false);
         this.add(mainPanel);

@@ -110,11 +110,13 @@ public class GamePanelController implements Runnable, KeyListener {
                 break;
 
             case KeyEvent.VK_ESCAPE:
-                model.getGameFrame().backToMenu();
+                model.getGameFrame().goToMenu();
                 break;
 
             case KeyEvent.VK_ENTER:
-                model.getLevel().addEnemy();
+                if (!model.isStoppedFlag()) {
+                    model.getLevel().addEnemy();
+                }
                 break;
 
             default:

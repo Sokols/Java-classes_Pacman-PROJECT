@@ -1,16 +1,13 @@
 package pl.sokol.pacman.gui.frame;
 
-import com.google.gson.Gson;
 import pl.sokol.pacman.Utils;
 import pl.sokol.pacman.elements.dynamic.Enemy;
+import pl.sokol.pacman.game.Save;
 import pl.sokol.pacman.gui.panels.game.GamePanelController;
+import pl.sokol.pacman.gui.panels.loading.LoadingPanelController;
 import pl.sokol.pacman.gui.panels.menu.MenuPanelController;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +20,7 @@ public class GameFrameController {
 
     public GameFrameController() {
         this.model = new GameFrameModel(
+                null,
                 new MenuPanelController(this)
         );
 
@@ -31,8 +29,11 @@ public class GameFrameController {
         );
     }
 
-    public void newGame() {
-        model.setGamePanel(new GamePanelController(this));
+    public void newGame(GamePanelController newGame) {
+        if (model.getGamePanel() != null) {
+            model.getGamePanel().getModel().setEndedFlag(true);
+        }
+        model.setGamePanel(newGame);
         view.getMainPanel().add(GAME, model.getGamePanel().getView());
         view.getCard().show(view.getMainPanel(), GAME);
         model.getMenuPanel().getMenuPanelView().getSaveButton().setVisible(true);
@@ -42,7 +43,7 @@ public class GameFrameController {
         thread.start();
     }
 
-    public void backToMenu() {
+    public void goToMenu() {
         view.removeKeyListener(model.getGamePanel());
         model.getGamePanel().pause();
         view.getCard().show(view.getMainPanel(), MENU);
@@ -50,32 +51,46 @@ public class GameFrameController {
 
     public void saveGame() {
         String fileName = Utils.getFileName();
-        String folderPath = PATH + fileName + "\\";
-        String filePath = folderPath + fileName;
-        new File(folderPath).mkdirs();
+        String filePath = PATH + fileName;
 
-        // SAVE REMAINING POINTS
-        Utils.writeToJSON(filePath, "points", model.getGamePanel().getModel().getLevel().getPoints());
-
-        // SAVE PLAYER LOCATION
-        Utils.writeToJSON(filePath, "playerLocation", model.getGamePanel().getModel().getLevel().getPlayer().getLocation());
-
-        // SAVE ENEMIES POSITIONS
         List<Point> enemiesPoints = new ArrayList<>();
+        List<Integer> enemiesCurrentMovements = new ArrayList<>();
+        List<Integer> enemiesNumberOfTheImages = new ArrayList<>();
         for (Enemy enemy : model.getGamePanel().getModel().getLevel().getEnemies()) {
             enemiesPoints.add(enemy.getLocation());
+            enemiesCurrentMovements.add(enemy.getCurrentMovement());
+            enemiesNumberOfTheImages.add(enemy.getNumberOfTheImage());
         }
-        Utils.writeToJSON(filePath, "enemiesLocations", enemiesPoints);
 
-        // SAVE STATISTICS
-        Utils.writeToJSON(filePath, "stats", model.getGamePanel().getModel().getStatsPanel().getModel());
+        Save save = new Save(
+                model.getGamePanel().getModel().getLevel().getPoints(),
+                model.getGamePanel().getModel().getLevel().getPlayer().getLocation(),
+                model.getGamePanel().getModel().getLevel().getPlayer().getCurrentMovement(),
+                enemiesPoints,
+                enemiesCurrentMovements,
+                enemiesNumberOfTheImages,
+                model.getGamePanel().getModel().getStatsPanel().getModel()
+        );
+
+        // SAVE TO FILE
+        Utils.writeToJSON(filePath, save);
         backToGame();
+    }
+
+    public void loadGame() {
+        model.setLoadingPanel(new LoadingPanelController(this));
+        view.getMainPanel().add(LOADING, model.getLoadingPanel().getView());
+        view.getCard().show(view.getMainPanel(), LOADING);
     }
 
     public void backToGame() {
         view.addKeyListener(model.getGamePanel());
         view.getCard().show(view.getMainPanel(), GAME);
         model.getGamePanel().resume();
+    }
+
+    public void backToMenu() {
+        view.getCard().show(view.getMainPanel(), MENU);
     }
 
     public GameFrameView getView() {

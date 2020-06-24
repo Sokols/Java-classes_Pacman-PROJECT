@@ -36,6 +36,7 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
     private List<Junction> junctions;
 
     private BufferedImage imageOfEnemy;
+    private int numberOfTheImage;
 
     private int currentMovement;
     private int previousMovement;
@@ -45,6 +46,7 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
         this.player = player;
         this.level = level;
         this.imageOfEnemy = ImageIO.read(getClass().getResourceAsStream(ENEMY_IMAGES[numberOfTheImage]));
+        this.numberOfTheImage = numberOfTheImage;
         this.junctions = junctions;
         this.currentMovement = 0;
         this.previousMovement = 0;
@@ -175,5 +177,21 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
 
     public void setCurrentMovement(int currentMovement) {
         this.currentMovement = currentMovement;
+    }
+
+    public int getCurrentMovement() {
+        return currentMovement;
+    }
+
+    public int getNumberOfTheImage() {
+        return numberOfTheImage;
+    }
+
+    public void setImageOfEnemy(int numberOfTheImage) {
+        try {
+            this.imageOfEnemy = ImageIO.read(getClass().getResourceAsStream(ENEMY_IMAGES[numberOfTheImage]));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

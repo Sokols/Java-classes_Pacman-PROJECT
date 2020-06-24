@@ -82,4 +82,8 @@ public class Player extends Rectangle implements Renderable, Moveable {
     public void setCurrentMovement(int currentMovement) {
         this.currentMovement = currentMovement;
     }
+
+    public int getCurrentMovement() {
+        return currentMovement;
+    }
 }

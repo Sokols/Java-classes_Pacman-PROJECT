@@ -158,4 +158,28 @@ public class Level implements Renderable {
     public List<java.awt.Point> getEnemiesPoints() {
         return enemiesPoints;
     }
+
+    public void setPoints(List<Point> points) {
+        this.points = points;
+    }
+
+    public void setEnemies(List<Enemy> enemies) {
+        this.enemies = enemies;
+    }
+
+    public void setJunctions(List<Junction> junctions) {
+        this.junctions = junctions;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public void setEnemiesPoints(List<java.awt.Point> enemiesPoints) {
+        this.enemiesPoints = enemiesPoints;
+    }
+
+    public void setStats(StatsPanelController stats) {
+        this.stats = stats;
+    }
 }
