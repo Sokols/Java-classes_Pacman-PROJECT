@@ -1,37 +1,42 @@
-package pl.sokol.pacman.gui.panels.loading;
+package pl.sokol.pacman.gui.panels.endgame;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import java.awt.Dimension;
 
 import static pl.sokol.pacman.Utils.FRAME_HEIGHT;
 import static pl.sokol.pacman.Utils.FRAME_WIDTH;
 
-public class LoadingPanelView extends JPanel {
-
+public class EndgamePanelView extends JPanel {
     private JPanel mainPanel;
-    private JPanel loadingPanel;
+    private JLabel titleLabel;
+    private JLabel scoreLabel;
     private JButton backToMenuButton;
-    private JScrollPane scrollPanel;
 
-    public LoadingPanelView() {
+    public EndgamePanelView(String title, int score) {
         setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        loadingPanel.setLayout(new BoxLayout(loadingPanel, BoxLayout.Y_AXIS));
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        scrollPanel.setViewportView(loadingPanel);
-        scrollPanel.setBorder(null);
         this.add(mainPanel);
+        titleLabel.setText(title);
+        scoreLabel.setText(scoreLabel.getText() + score);
     }
 
-    public JPanel getLoadingPanel() {
-        return loadingPanel;
+    public JLabel getTitleLabel() {
+        return titleLabel;
     }
 
-    public void setLoadingPanel(JPanel loadingPanel) {
-        this.loadingPanel = loadingPanel;
+    public void setTitleLabel(JLabel titleLabel) {
+        this.titleLabel = titleLabel;
+    }
+
+    public JLabel getScoreLabel() {
+        return scoreLabel;
+    }
+
+    public void setScoreLabel(JLabel scoreLabel) {
+        this.scoreLabel = scoreLabel;
     }
 
     public JButton getBackToMenuButton() {

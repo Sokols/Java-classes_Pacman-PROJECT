@@ -2,7 +2,7 @@ package pl.sokol.pacman.gui.panels.loading;
 
 import pl.sokol.pacman.gui.frame.GameFrameController;
 
-import javax.swing.*;
+import javax.swing.JPanel;
 import java.util.ArrayList;
 import java.util.List;
 

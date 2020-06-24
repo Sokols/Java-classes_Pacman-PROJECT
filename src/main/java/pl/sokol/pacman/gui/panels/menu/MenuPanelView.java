@@ -1,7 +1,9 @@
 package pl.sokol.pacman.gui.panels.menu;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import java.awt.Dimension;
 
 import static pl.sokol.pacman.Utils.FRAME_HEIGHT;
 import static pl.sokol.pacman.Utils.FRAME_WIDTH;

@@ -1,12 +1,15 @@
 package pl.sokol.pacman;
 
 import com.google.gson.Gson;
+import org.apache.log4j.xml.DOMConfigurator;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Utils {
 
@@ -19,30 +22,18 @@ public class Utils {
     public static final String GAME = "GAME_PANEL";
     public static final String MENU = "MENU_PANEL";
     public static final String LOADING = "LOADING_PANEL";
+    public static final String ENDGAME = "ENDGAME_PANEL";
 
     public static final String PATH = "C:\\Users\\asus1\\OneDrive\\Pulpit\\Studia\\SEM4\\JTP\\Projekt\\Project\\src\\main\\resources\\saves\\";
 
-    public static void sleep(int sleepTime) {
-        try {
-            Thread.sleep(sleepTime);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static String getFileName() {
-        return LocalDate.now().toString() + "_"
-                + LocalTime.now().getHour() + "-"
-                + LocalTime.now().getMinute() + "-"
-                + LocalTime.now().getSecond();
+        String pattern = "dd-MM-yyyy_HH-mm-ss";
+        DateFormat df = new SimpleDateFormat(pattern);
+        Date now = Calendar.getInstance().getTime();
+        return df.format(now);
     }
 
-    public static void writeToJSON(String filePath, Object object) {
-        try (Writer writer = new FileWriter(filePath + ".json")) {
-            Gson gson = new Gson();
-            gson.toJson(object, writer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    static void configureLogger() {
+        DOMConfigurator.configure("C:\\Users\\asus1\\OneDrive\\Pulpit\\Studia\\SEM4\\JTP\\Projekt\\Project\\src\\main\\resources\\log4j2.xml");
     }
 }

@@ -1,5 +1,6 @@
 package pl.sokol.pacman.elements.dynamic;
 
+import org.apache.log4j.Logger;
 import pl.sokol.pacman.elements.Renderable;
 import pl.sokol.pacman.game.Level;
 import pl.sokol.pacman.gui.panels.game.GamePanelController;
@@ -13,6 +14,8 @@ import java.io.IOException;
 
 public class Player extends Rectangle implements Renderable, Moveable {
 
+    private final Logger LOG;
+
     private final int PLAYER_WIDTH = 24;
     private final int PLAYER_HEIGHT = 24;
     private final int PLAYER_SPEED = 2;
@@ -24,17 +27,13 @@ public class Player extends Rectangle implements Renderable, Moveable {
 
     private BufferedImage imageOfPlayer;
 
-    public Player(int x, int y, GamePanelController game, StatsPanelController stats) {
+    public Player(int x, int y, GamePanelController game, StatsPanelController stats) throws IOException {
+        this.LOG = Logger.getLogger(Player.class.getName());
         this.game = game;
         this.stats = stats;
         setBounds(x, y, PLAYER_WIDTH, PLAYER_HEIGHT);
         this.currentMovement = 0;
-        this.imageOfPlayer = null;
-        try {
-            this.imageOfPlayer = ImageIO.read(getClass().getResourceAsStream("/graphics/player/player.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.imageOfPlayer = ImageIO.read(getClass().getResourceAsStream("/graphics/player/player.png"));
     }
 
     @Override
@@ -44,12 +43,12 @@ public class Player extends Rectangle implements Renderable, Moveable {
         if (canMove(currentMovement, PLAYER_SPEED, this, game.getModel().getLevel())) {
             makeMove(currentMovement, PLAYER_SPEED, this);
 
-            // WIN THE GAME
+            // VICTORY - out of points to collect
             if (level.getPoints().size() == 0) {
-                game.getModel().setEndedFlag(true);
+                game.getModel().getGameFrame().endGame("VICTORY", stats.getModel().getScore());
             }
 
-            // GET POINT
+            // GET THE POINT
             for (int i = 0; i < level.getPoints().size(); i++) {
                 if (this.intersects(level.getPoints().get(i))) {
                     level.getPoints().remove(i);
@@ -59,15 +58,18 @@ public class Player extends Rectangle implements Renderable, Moveable {
             }
         }
 
+        // CONTACT WITH THE ENEMY
         for (Enemy enemy : level.getEnemies()) {
-            // CONTACT WITH ENEMY
             if (this.intersects(enemy)) {
+                // lose 1 life
                 stats.updateLives();
-                if (stats.getLives().size() > 0) {
+                // RESTART LEVEL - player and enemies go to their start positions
+                if (stats.getModel().getLives() > 0) {
                     game.restartLevel();
-                } else {
-                    game.getModel().setEndedFlag(true);
-                    game.getModel().setStoppedFlag(true);
+                }
+                // GAME OVER - last life was lost
+                else {
+                    game.getModel().getGameFrame().endGame("GAME OVER", stats.getModel().getScore());
                 }
             }
         }

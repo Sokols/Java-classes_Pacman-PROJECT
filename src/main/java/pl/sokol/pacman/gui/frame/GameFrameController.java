@@ -1,24 +1,37 @@
 package pl.sokol.pacman.gui.frame;
 
+import org.apache.log4j.Logger;
+import com.google.gson.Gson;
 import pl.sokol.pacman.Utils;
 import pl.sokol.pacman.elements.dynamic.Enemy;
 import pl.sokol.pacman.game.Save;
+import pl.sokol.pacman.gui.panels.endgame.EndgamePanelController;
 import pl.sokol.pacman.gui.panels.game.GamePanelController;
 import pl.sokol.pacman.gui.panels.loading.LoadingPanelController;
 import pl.sokol.pacman.gui.panels.menu.MenuPanelController;
 
-import java.awt.*;
+import java.awt.Point;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import static pl.sokol.pacman.Utils.*;
+import static pl.sokol.pacman.Utils.ENDGAME;
+import static pl.sokol.pacman.Utils.GAME;
+import static pl.sokol.pacman.Utils.LOADING;
+import static pl.sokol.pacman.Utils.MENU;
+import static pl.sokol.pacman.Utils.PATH;
 
 public class GameFrameController {
+
+    private final Logger LOG;
 
     private GameFrameModel model;
     private GameFrameView view;
 
     public GameFrameController() {
+        this.LOG = Logger.getLogger(GameFrameController.class.getName());
         this.model = new GameFrameModel(
                 null,
                 new MenuPanelController(this)
@@ -73,7 +86,13 @@ public class GameFrameController {
         );
 
         // SAVE TO FILE
-        Utils.writeToJSON(filePath, save);
+        Gson gson = new Gson();
+        try (Writer writer = new FileWriter(filePath + ".json")) {
+            gson.toJson(save, writer);
+        } catch (IOException e) {
+            LOG.warn(e);
+        }
+
         backToGame();
     }
 
@@ -91,6 +110,14 @@ public class GameFrameController {
 
     public void backToMenu() {
         view.getCard().show(view.getMainPanel(), MENU);
+    }
+
+    public void endGame(String title, int score) {
+        model.getMenuPanel().getMenuPanelView().getSaveButton().setVisible(false);
+        model.getMenuPanel().getMenuPanelView().getBackToGameButton().setVisible(false);
+        model.getGamePanel().getModel().setEndedFlag(true);
+        view.getMainPanel().add(ENDGAME, new EndgamePanelController(this, title, score).getView());
+        view.getCard().show(view.getMainPanel(), ENDGAME);
     }
 
     public GameFrameView getView() {

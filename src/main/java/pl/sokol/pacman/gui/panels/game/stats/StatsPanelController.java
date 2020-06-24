@@ -1,7 +1,9 @@
 package pl.sokol.pacman.gui.panels.game.stats;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JLabel;
+import javax.swing.Timer;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,13 +32,13 @@ public class StatsPanelController {
     public void renderStats(Graphics g) {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, FRAME_WIDTH, STATS_HEIGHT);
+        view.getScoreLabel().setText(scoreTextTemp + model.getScore());
         view.repaint();
         g.dispose();
     }
 
     public void updateScore() {
         model.setScore(model.getScore() + 10);
-        view.getScoreLabel().setText(scoreTextTemp + model.getScore());
     }
 
     public void updateLives() {
@@ -52,7 +54,6 @@ public class StatsPanelController {
         timer.start();
         initLives();
 
-        // init texts
         scoreTextTemp = view.getScoreLabel().getText();
         view.getScoreLabel().setText(scoreTextTemp + model.getScore());
     }

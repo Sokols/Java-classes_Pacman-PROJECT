@@ -28,5 +28,7 @@ public class StatsPanelModel {
         this.lives = lives;
     }
 
-
+    public int getNUMBER_OF_LIVES() {
+        return NUMBER_OF_LIVES;
+    }
 }

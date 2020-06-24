@@ -1,4 +1,6 @@
-package pl.sokol.pacman.elements;
+package pl.sokol.pacman.elements.map;
+
+import pl.sokol.pacman.elements.Renderable;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -13,6 +15,7 @@ public class Point extends Rectangle implements Renderable {
         setBounds(x + 10, y + 10, POINT_WIDTH, POINT_HEIGHT);
     }
 
+    @Override
     public void render(Graphics g) {
         g.setColor(Color.YELLOW);
         g.fillRect(x, y, POINT_WIDTH, POINT_HEIGHT);

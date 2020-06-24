@@ -1,9 +1,10 @@
 package pl.sokol.pacman.game;
 
-import pl.sokol.pacman.elements.Junction;
-import pl.sokol.pacman.elements.Point;
+import org.apache.log4j.Logger;
+import pl.sokol.pacman.elements.map.Junction;
+import pl.sokol.pacman.elements.map.Point;
 import pl.sokol.pacman.elements.Renderable;
-import pl.sokol.pacman.elements.Tile;
+import pl.sokol.pacman.elements.map.Tile;
 import pl.sokol.pacman.elements.dynamic.Enemy;
 import pl.sokol.pacman.elements.dynamic.Player;
 import pl.sokol.pacman.gui.panels.game.GamePanelController;
@@ -22,6 +23,8 @@ import static pl.sokol.pacman.Utils.GAME_HEIGHT;
 
 public class Level implements Renderable {
 
+    private final Logger LOG;
+
     private BufferedImage mapForLevel;
 
     private List<Tile> tiles;
@@ -33,22 +36,19 @@ public class Level implements Renderable {
 
     private List<java.awt.Point> enemiesPoints;
 
-    private StatsPanelController stats;
-
     public Level(String path, GamePanelController gameThread, StatsPanelController stats) {
+        this.LOG = Logger.getLogger(Level.class.getName());
+        this.points = new ArrayList<>();
+        this.enemies = new ArrayList<>();
+        this.enemiesPoints = new ArrayList<>();
+        this.junctions = new ArrayList<>();
+        this.tiles = new ArrayList<>();
         try {
-            this.stats = stats;
             this.mapForLevel = ImageIO.read(getClass().getResourceAsStream(path));
-            this.points = new ArrayList<>();
-            this.enemies = new ArrayList<>();
-            this.enemiesPoints = new ArrayList<>();
-            this.junctions = new ArrayList<>();
-            this.tiles = new ArrayList<>();
             this.player = new Player(0, 0, gameThread, stats);
             setElements();
-
-        } catch (IOException | ExceptionInInitializerError e)  {
-            e.printStackTrace();
+        } catch (IOException e) {
+            LOG.warn(e);
         }
     }
 
@@ -76,11 +76,11 @@ public class Level implements Renderable {
 
     public void addEnemy() {
         try {
-            Enemy newEnemy = new Enemy(enemiesPoints.get(0).getLocation().x, enemiesPoints.get(0).getLocation().y, player, this,null, new Random().nextInt(5));
+            Enemy newEnemy = new Enemy(enemiesPoints.get(0).getLocation().x, enemiesPoints.get(0).getLocation().y, player, this, null, new Random().nextInt(5));
             newEnemy.setJunctions(junctions);
             enemies.add(newEnemy);
         } catch (IOException e) {
-            e.printStackTrace();
+           LOG.warn(e);
         }
     }
 
@@ -100,6 +100,7 @@ public class Level implements Renderable {
 
                 // switch by RGB value
                 switch (mapForLevel.getRGB(xx, yy)) {
+
                     // Black - Tile
                     case 0xFF000000:
                         tiles.add(new Tile(x, y));
@@ -118,7 +119,7 @@ public class Level implements Renderable {
 
                     // Red - Enemy
                     case 0xFFFF0000:
-                        enemies.add(new Enemy(x, y, player, this,null, new Random().nextInt(5)));
+                        enemies.add(new Enemy(x, y, player, this, null, new Random().nextInt(5)));
                         enemiesPoints.add(new java.awt.Point(x, y));
                         break;
 
@@ -128,12 +129,12 @@ public class Level implements Renderable {
                         break;
 
                     default:
-                        throw new ExceptionInInitializerError("Error loading image!");
+                        throw new ExceptionInInitializerError("Error of image loading!");
                 }
             }
         }
 
-        // set prepared junctions in every enemy
+        // set prepared junctions for every enemy
         for (Enemy enemy : enemies) {
             enemy.setJunctions(junctions);
         }
@@ -161,25 +162,5 @@ public class Level implements Renderable {
 
     public void setPoints(List<Point> points) {
         this.points = points;
-    }
-
-    public void setEnemies(List<Enemy> enemies) {
-        this.enemies = enemies;
-    }
-
-    public void setJunctions(List<Junction> junctions) {
-        this.junctions = junctions;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    public void setEnemiesPoints(List<java.awt.Point> enemiesPoints) {
-        this.enemiesPoints = enemiesPoints;
-    }
-
-    public void setStats(StatsPanelController stats) {
-        this.stats = stats;
     }
 }

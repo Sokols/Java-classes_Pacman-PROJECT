@@ -9,17 +9,19 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 
-import static pl.sokol.pacman.Utils.*;
+import static pl.sokol.pacman.Utils.FRAME_HEIGHT;
+import static pl.sokol.pacman.Utils.FRAME_WIDTH;
+import static pl.sokol.pacman.Utils.MENU;
+import static pl.sokol.pacman.Utils.TITLE;
 
 public class GameFrameView extends JFrame {
 
     private CardLayout card;
     private JPanel mainPanel;
 
-    public GameFrameView(MenuPanelView menu) {
+    GameFrameView(MenuPanelView menu) {
         super(TITLE);
-        Dimension dimension = new Dimension(FRAME_WIDTH, FRAME_HEIGHT);
-        setSize(dimension);
+        setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);
@@ -27,7 +29,6 @@ public class GameFrameView extends JFrame {
         setVisible(true);
 
         mainPanel = new JPanel();
-        mainPanel.setPreferredSize(dimension);
         card = new CardLayout();
         mainPanel.setLayout(card);
         mainPanel.add(MENU, menu);
@@ -35,19 +36,12 @@ public class GameFrameView extends JFrame {
         this.add(mainPanel);
     }
 
-    public CardLayout getCard() {
+    CardLayout getCard() {
         return card;
     }
 
-    public void setCard(CardLayout card) {
-        this.card = card;
-    }
-
-    public JPanel getMainPanel() {
+    JPanel getMainPanel() {
         return mainPanel;
     }
 
-    public void setMainPanel(JPanel mainPanel) {
-        this.mainPanel = mainPanel;
-    }
 }

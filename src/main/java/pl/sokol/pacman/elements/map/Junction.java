@@ -1,6 +1,10 @@
-package pl.sokol.pacman.elements;
+package pl.sokol.pacman.elements.map;
 
-import java.awt.*;
+import pl.sokol.pacman.elements.Renderable;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 
 public class Junction extends Rectangle implements Renderable {
 

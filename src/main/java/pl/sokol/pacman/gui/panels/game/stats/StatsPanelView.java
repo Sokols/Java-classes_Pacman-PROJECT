@@ -22,13 +22,7 @@ public class StatsPanelView extends JPanel {
     StatsPanelView() {
         this.setLayout(new GridLayout());
         this.setBackground(Color.BLACK);
-        Dimension dimension = new Dimension(FRAME_WIDTH, STATS_HEIGHT);
-        mainPanel.setSize(dimension);
-        mainPanel.setMinimumSize(dimension);
-        mainPanel.setMaximumSize(dimension);
-        setSize(dimension);
-        setMaximumSize(dimension);
-        setMinimumSize(dimension);
+        setMaximumSize(new Dimension(FRAME_WIDTH, STATS_HEIGHT));
         this.add(mainPanel);
     }
 

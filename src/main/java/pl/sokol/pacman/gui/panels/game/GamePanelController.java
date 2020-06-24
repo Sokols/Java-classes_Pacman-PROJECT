@@ -6,7 +6,7 @@ import pl.sokol.pacman.gui.frame.GameFrameController;
 import pl.sokol.pacman.gui.panels.game.engine.EnginePanelController;
 import pl.sokol.pacman.gui.panels.game.stats.StatsPanelController;
 
-import java.awt.*;
+import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;

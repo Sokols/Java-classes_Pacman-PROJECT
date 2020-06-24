@@ -5,8 +5,9 @@ import pl.sokol.pacman.game.Save;
 import pl.sokol.pacman.gui.frame.GameFrameController;
 import pl.sokol.pacman.gui.panels.game.GamePanelController;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
@@ -24,8 +25,8 @@ public class LoadingPanelController implements MouseListener {
     public LoadingPanelController(GameFrameController game) {
         this.model = new LoadingPanelModel(game);
         this.view = new LoadingPanelView();
-        initLoadingPanel();
         initListeners();
+        initLoadingPanel();
     }
 
     @Override
@@ -34,33 +35,28 @@ public class LoadingPanelController implements MouseListener {
         loadSave(save.getText());
     }
 
-    private void loadSave(String saveName) {
-        for (String save : model.getSavesNames()) {
-            if (save.contains(saveName)) {
-                Gson gson = new Gson();
-                String content = null;
-                try {
-                    content = new String(Files.readAllBytes(Paths.get(save)));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if (content != null) {
-                    Save gameSave = gson.fromJson(content, Save.class);
-                    GamePanelController newGame = new GamePanelController(model.getGame());
-                    newGame.getModel().getLevel().setPoints(gameSave.getPoints());
-                    newGame.getModel().getLevel().getPlayer().setLocation(gameSave.getPlayerLocation());
-                    newGame.getModel().getLevel().getPlayer().setCurrentMovement(gameSave.getPlayerCurrentMovement());
-                    for (int i = 0; i < gameSave.getEnemiesLocations().size(); i++) {
-                        newGame.getModel().getLevel().getEnemies().get(i).setLocation(gameSave.getEnemiesLocations().get(i));
-                        newGame.getModel().getLevel().getEnemies().get(i).setCurrentMovement(gameSave.getEnemiesCurrentMovements().get(i));
-                        newGame.getModel().getLevel().getEnemies().get(i).setImageOfEnemy(gameSave.getEnemiesNumberOfTheImages().get(i));
-                    }
-                    newGame.getModel().getStatsPanel().setModel(gameSave.getStats());
-                    model.getGame().newGame(newGame);
-                }
-                break;
-            }
-        }
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        // unused
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        // unused
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        // unused
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        // unused
+    }
+
+    private void initListeners() {
+        view.getBackToMenuButton().addActionListener(e -> model.getGame().backToMenu());
     }
 
     private void initLoadingPanel() {
@@ -83,8 +79,39 @@ public class LoadingPanelController implements MouseListener {
         }
     }
 
-    private void initListeners() {
-        view.getBackToMenuButton().addActionListener(e -> model.getGame().backToMenu());
+    private void loadSave(String saveName) {
+        for (String save : model.getSavesNames()) {
+            if (save.contains(saveName)) {
+                Gson gson = new Gson();
+                String content = null;
+                try {
+                    content = new String(Files.readAllBytes(Paths.get(save)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (content != null) {
+                    Save gameSave = gson.fromJson(content, Save.class);
+                    GamePanelController newGame = new GamePanelController(model.getGame());
+                    newGame.getModel().getLevel().setPoints(gameSave.getPoints());
+                    newGame.getModel().getLevel().getPlayer().setLocation(gameSave.getPlayerLocation());
+                    newGame.getModel().getLevel().getPlayer().setCurrentMovement(gameSave.getPlayerCurrentMovement());
+                    for (int i = 0; i < gameSave.getEnemiesLocations().size(); i++) {
+                        newGame.getModel().getLevel().getEnemies().get(i).setLocation(gameSave.getEnemiesLocations().get(i));
+                        newGame.getModel().getLevel().getEnemies().get(i).setCurrentMovement(gameSave.getEnemiesCurrentMovements().get(i));
+                        newGame.getModel().getLevel().getEnemies().get(i).setImageOfEnemyByNumber(gameSave.getEnemiesImageNumbers().get(i));
+                    }
+                    newGame.getModel().getStatsPanel().setModel(gameSave.getStats());
+
+                    int livesLeft = newGame.getModel().getStatsPanel().getModel().getNUMBER_OF_LIVES() - newGame.getModel().getStatsPanel().getModel().getLives();
+                    for (int i = 0; i < livesLeft; i++) {
+                        JLabel live = newGame.getModel().getStatsPanel().getLives().remove(newGame.getModel().getStatsPanel().getLives().size() - 1);
+                        live.setVisible(false);
+                    }
+                    model.getGame().newGame(newGame);
+                }
+                break;
+            }
+        }
     }
 
     public LoadingPanelModel getModel() {
@@ -103,23 +130,4 @@ public class LoadingPanelController implements MouseListener {
         this.view = view;
     }
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
 }

@@ -9,9 +9,6 @@ import static pl.sokol.pacman.Utils.GAME_HEIGHT;
 public class EnginePanelView extends JPanel {
 
     public EnginePanelView() {
-        Dimension dimension = new Dimension(FRAME_WIDTH, GAME_HEIGHT);
-        setSize(dimension);
-        setMaximumSize(dimension);
-        setMinimumSize(dimension);
+        setMaximumSize(new Dimension(FRAME_WIDTH, GAME_HEIGHT));
     }
 }

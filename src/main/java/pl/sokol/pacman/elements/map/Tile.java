@@ -1,4 +1,6 @@
-package pl.sokol.pacman.elements;
+package pl.sokol.pacman.elements.map;
+
+import pl.sokol.pacman.elements.Renderable;
 
 import java.awt.Color;
 import java.awt.Graphics;
