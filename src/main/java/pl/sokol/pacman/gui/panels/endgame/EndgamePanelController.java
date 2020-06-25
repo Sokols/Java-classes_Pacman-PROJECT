@@ -8,7 +8,7 @@ public class EndgamePanelController {
     private EndgamePanelView view;
 
     public EndgamePanelController(GameFrameController game, String title, int score) {
-        this.model = new EndgamePanelModel(game, title, score);
+        this.model = new EndgamePanelModel(game, score);
         this.view = new EndgamePanelView(title, score);
         initListeners();
     }

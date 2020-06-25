@@ -5,12 +5,10 @@ import pl.sokol.pacman.gui.frame.GameFrameController;
 public class EndgamePanelModel {
 
     private GameFrameController game;
-    private String title;
     private int score;
 
-    public EndgamePanelModel(GameFrameController game, String title, int score) {
+    public EndgamePanelModel(GameFrameController game, int score) {
         this.game = game;
-        this.title = title;
         this.score = score;
     }
 

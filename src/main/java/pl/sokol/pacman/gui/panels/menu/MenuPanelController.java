@@ -5,11 +5,9 @@ import pl.sokol.pacman.gui.panels.game.GamePanelController;
 
 public class MenuPanelController {
 
-    private MenuPanelModel model;
     private MenuPanelView menuPanelView;
 
     public MenuPanelController(GameFrameController game) {
-        this.model = new MenuPanelModel(game);
         this.menuPanelView = new MenuPanelView();
         initListeners(game);
     }
@@ -25,7 +23,6 @@ public class MenuPanelController {
 
         menuPanelView.getExitButton().addActionListener(e -> game.getView().dispose());
     }
-
 
     public MenuPanelView getMenuPanelView() {
         return menuPanelView;

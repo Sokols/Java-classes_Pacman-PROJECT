@@ -18,9 +18,7 @@ public class StatsPanelController {
     private StatsPanelView view;
 
     private List<JLabel> lives;
-
     private Timer timer;
-
     private String scoreTextTemp;
 
     public StatsPanelController() {
@@ -76,10 +74,6 @@ public class StatsPanelController {
 
     public List<JLabel> getLives() {
         return lives;
-    }
-
-    public void setLives(List<JLabel> lives) {
-        this.lives = lives;
     }
 
     public StatsPanelView getView() {

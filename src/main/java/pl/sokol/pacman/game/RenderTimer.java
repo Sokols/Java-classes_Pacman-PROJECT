@@ -4,10 +4,10 @@ import org.apache.log4j.Logger;
 
 public class RenderTimer {
 
-    private final Logger LOG;
-
     private final double TARGET_FPS = 60.0;
     private final double NS = 1e9 / TARGET_FPS;
+
+    private Logger LOG;
 
     private int fps;
     private double timer;
@@ -15,13 +15,48 @@ public class RenderTimer {
     private long actualTime;
     private double delta;
 
-    public RenderTimer(int fps, double timer, long lastTime, long actualTime, double delta) {
-        this.LOG = Logger.getLogger(RenderTimer.class.getName());
-        this.fps = fps;
-        this.timer = timer;
-        this.lastTime = lastTime;
-        this.actualTime = actualTime;
-        this.delta = delta;
+    public static final class Builder {
+        private int fps;
+        private double timer;
+        private long lastTime;
+        private long actualTime;
+        private double delta;
+
+        public Builder fps(int fps) {
+            this.fps = fps;
+            return this;
+        }
+
+        public Builder timer(double timer) {
+            this.timer = timer;
+            return this;
+        }
+
+        public Builder lastTime(long lastTime) {
+            this.lastTime = lastTime;
+            return this;
+        }
+
+        public Builder actualTime(long actualTime) {
+            this.actualTime = actualTime;
+            return this;
+        }
+
+        public Builder delta(double delta) {
+            this.delta = delta;
+            return this;
+        }
+
+        public RenderTimer build() {
+            RenderTimer renderTimer = new RenderTimer();
+            renderTimer.LOG = Logger.getLogger(RenderTimer.class.getName());
+            renderTimer.fps = this.fps;
+            renderTimer.timer = this.timer;
+            renderTimer.lastTime = this.lastTime;
+            renderTimer.actualTime = this.actualTime;
+            renderTimer.delta = this.delta;
+            return renderTimer;
+        }
     }
 
     public void startCounting() {
@@ -46,4 +81,6 @@ public class RenderTimer {
     public double getDelta() {
         return delta;
     }
+
+    private RenderTimer() {}
 }

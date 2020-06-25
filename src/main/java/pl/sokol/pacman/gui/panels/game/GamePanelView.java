@@ -12,15 +12,9 @@ import static pl.sokol.pacman.Utils.FRAME_WIDTH;
 
 public class GamePanelView extends JPanel {
 
-    private StatsPanelView statsView;
-    private EnginePanelView gameView;
-
     public GamePanelView(EnginePanelView gameView, StatsPanelView statsView) {
         setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-        this.gameView = gameView;
-        this.statsView = statsView;
 
         this.add(gameView);
         this.add(statsView);

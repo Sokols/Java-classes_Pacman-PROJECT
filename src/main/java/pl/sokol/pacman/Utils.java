@@ -1,15 +1,12 @@
 package pl.sokol.pacman;
 
-import com.google.gson.Gson;
 import org.apache.log4j.xml.DOMConfigurator;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 public class Utils {
 
@@ -24,7 +21,7 @@ public class Utils {
     public static final String LOADING = "LOADING_PANEL";
     public static final String ENDGAME = "ENDGAME_PANEL";
 
-    public static final String PATH = "C:\\Users\\asus1\\OneDrive\\Pulpit\\Studia\\SEM4\\JTP\\Projekt\\Project\\src\\main\\resources\\saves\\";
+    public static final String SAVES_PATH = "C:\\Users\\asus1\\OneDrive\\Pulpit\\Studia\\SEM4\\JTP\\Projekt\\Project\\src\\main\\resources\\saves\\";
 
     public static String getFileName() {
         String pattern = "dd-MM-yyyy_HH-mm-ss";
@@ -35,5 +32,9 @@ public class Utils {
 
     static void configureLogger() {
         DOMConfigurator.configure("C:\\Users\\asus1\\OneDrive\\Pulpit\\Studia\\SEM4\\JTP\\Projekt\\Project\\src\\main\\resources\\log4j2.xml");
+    }
+
+    public static Random random() {
+        return new Random();
     }
 }

@@ -14,8 +14,8 @@ public class EnginePanelController {
     private EnginePanelModel model;
     private EnginePanelView view;
 
-    public EnginePanelController(GamePanelController gameThread, StatsPanelController statsPanelController) {
-        this.model = new EnginePanelModel(gameThread, statsPanelController);
+    public EnginePanelController(GamePanelController gameThread) {
+        this.model = new EnginePanelModel(gameThread);
         this.view = new EnginePanelView();
     }
 
@@ -28,9 +28,5 @@ public class EnginePanelController {
 
     public EnginePanelView getView() {
         return view;
-    }
-
-    public EnginePanelModel getModel() {
-        return model;
     }
 }

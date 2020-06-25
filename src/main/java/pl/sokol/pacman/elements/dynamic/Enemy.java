@@ -1,6 +1,7 @@
 package pl.sokol.pacman.elements.dynamic;
 
 import org.apache.log4j.Logger;
+import pl.sokol.pacman.Utils;
 import pl.sokol.pacman.elements.map.Junction;
 import pl.sokol.pacman.elements.Renderable;
 import pl.sokol.pacman.game.Level;
@@ -16,13 +17,6 @@ import java.util.Random;
 
 public class Enemy extends Rectangle implements Renderable, Moveable {
 
-    private final Logger LOG;
-
-
-    private final int ENEMY_WIDTH = 32;
-    private final int ENEMY_HEIGHT = 32;
-    private final int ENEMY_SPEED = 1;
-    private final int ENEMY_SEARCH_RANGE = 160;
     private final String[] ENEMY_IMAGES = {
             "/graphics/enemies/enemy1.png",
             "/graphics/enemies/enemy2.png",
@@ -31,36 +25,79 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
             "/graphics/enemies/enemy5.png"
     };
 
+    private final int ENEMY_WIDTH = 32;
+    private final int ENEMY_HEIGHT = 32;
+    private final int ENEMY_SPEED = 1;
+    private final int ENEMY_SEARCH_RANGE = 160;
+
+    private Logger LOG;
     private Random random;
+    private BufferedImage imageOfEnemy;
 
     private Player player;
-
     private Level level;
-
     private List<Junction> junctions;
-
-    private BufferedImage imageOfEnemy;
     private int numberOfTheImage;
-
     private int currentMovement;
     private int previousMovement;
 
-    public Enemy(int x, int y, Player player, Level level, List<Junction> junctions, int numberOfTheImage) throws IOException {
-        this.LOG = Logger.getLogger(Enemy.class.getName());
-        this.random = new Random();
-        this.player = player;
-        this.level = level;
-        this.imageOfEnemy = ImageIO.read(getClass().getResourceAsStream(ENEMY_IMAGES[numberOfTheImage]));
-        this.numberOfTheImage = numberOfTheImage;
-        this.junctions = junctions;
-        this.currentMovement = 0;
-        this.previousMovement = 0;
-        setBounds(x, y, ENEMY_WIDTH, ENEMY_HEIGHT);
+    public static final class Builder {
+        private Player player;
+        private Level level;
+        private List<Junction> junctions;
+        private int numberOfTheImage;
+        private int currentMovement;
+        private int previousMovement;
+
+        public Builder player(Player player) {
+            this.player = player;
+            return this;
+        }
+
+        public Builder level(Level level) {
+            this.level = level;
+            return this;
+        }
+
+        public Builder junctions(List<Junction> junctions) {
+            this.junctions = junctions;
+            return this;
+        }
+
+        public Builder numberOfTheImage(int numberOfTheImage) {
+            this.numberOfTheImage = numberOfTheImage;
+            return this;
+        }
+
+        public Builder currentMovement(int currentMovement) {
+            this.currentMovement = currentMovement;
+            return this;
+        }
+
+        public Builder previousMovement(int previousMovement) {
+            this.previousMovement = previousMovement;
+            return this;
+        }
+
+        public Enemy build(int x, int y) throws IOException {
+            Enemy enemy = new Enemy();
+            enemy.player = this.player;
+            enemy.level = this.level;
+            enemy.junctions = this.junctions;
+            enemy.numberOfTheImage = this.numberOfTheImage;
+            enemy.currentMovement = this.currentMovement;
+            enemy.previousMovement = this.previousMovement;
+
+            enemy.LOG = Logger.getLogger(Enemy.class.getName());
+            enemy.random = Utils.random();
+            enemy.imageOfEnemy = ImageIO.read(getClass().getResourceAsStream(enemy.ENEMY_IMAGES[numberOfTheImage]));
+            enemy.setBounds(x, y, enemy.ENEMY_WIDTH, enemy.ENEMY_HEIGHT);
+            return enemy;
+        }
     }
 
     @Override
     public void move() {
-
         // vector position of the enemy relative to the player
         // HERE WE USE JAVA COORDINATE SYSTEM
         int vectorX = player.x - x;
@@ -181,14 +218,6 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
     public void render(Graphics g) {
         move();
         g.drawImage(imageOfEnemy, x, y, width, height, null);
-    }
-
-    public void setImageOfEnemyByNumber(int numberOfTheImage) {
-        try {
-            this.imageOfEnemy = ImageIO.read(getClass().getResourceAsStream(ENEMY_IMAGES[numberOfTheImage]));
-        } catch (IOException e) {
-            LOG.warn(e);
-        }
     }
 
     public void setJunctions(List<Junction> junctions) {

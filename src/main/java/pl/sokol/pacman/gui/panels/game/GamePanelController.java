@@ -20,27 +20,28 @@ public class GamePanelController implements Runnable, KeyListener {
 
     public GamePanelController(GameFrameController gameFrameController) {
         StatsPanelController statsPanelController = new StatsPanelController();
-        this.model = new GamePanelModel(
-                gameFrameController,
-                new Level("/graphics/maps/map1.png", this, statsPanelController),
-                false,
-                false,
-                new EnginePanelController(this, statsPanelController),
-                statsPanelController
-        );
+
+        this.model = new GamePanelModel.Builder()
+                .gameFrame(gameFrameController)
+                .level(new Level("/graphics/maps/map1.png", this, statsPanelController))
+                .isStoppedFlag(false)
+                .isEndedFlag(false)
+                .enginePanel(new EnginePanelController(this))
+                .statsPanel(statsPanelController)
+                .build();
 
         this.view = new GamePanelView(
                 this.model.getEnginePanel().getView(),
                 this.model.getStatsPanel().getView()
         );
 
-        this.renderTimer = new RenderTimer(
-                0,
-                System.currentTimeMillis(),
-                System.nanoTime(),
-                System.nanoTime(),
-                0
-        );
+        this.renderTimer = new RenderTimer.Builder()
+                .fps(0)
+                .timer(System.currentTimeMillis())
+                .lastTime(System.nanoTime())
+                .actualTime(System.nanoTime())
+                .delta(0)
+                .build();
     }
 
     @Override

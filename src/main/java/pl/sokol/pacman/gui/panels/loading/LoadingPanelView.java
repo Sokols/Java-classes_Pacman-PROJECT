@@ -30,15 +30,7 @@ public class LoadingPanelView extends JPanel {
         return loadingPanel;
     }
 
-    public void setLoadingPanel(JPanel loadingPanel) {
-        this.loadingPanel = loadingPanel;
-    }
-
     public JButton getBackToMenuButton() {
         return backToMenuButton;
-    }
-
-    public void setBackToMenuButton(JButton backToMenuButton) {
-        this.backToMenuButton = backToMenuButton;
     }
 }

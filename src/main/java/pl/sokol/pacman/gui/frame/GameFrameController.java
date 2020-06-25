@@ -7,6 +7,7 @@ import pl.sokol.pacman.elements.dynamic.Enemy;
 import pl.sokol.pacman.game.Save;
 import pl.sokol.pacman.gui.panels.endgame.EndgamePanelController;
 import pl.sokol.pacman.gui.panels.game.GamePanelController;
+import pl.sokol.pacman.gui.panels.game.GamePanelModel;
 import pl.sokol.pacman.gui.panels.loading.LoadingPanelController;
 import pl.sokol.pacman.gui.panels.menu.MenuPanelController;
 
@@ -21,7 +22,7 @@ import static pl.sokol.pacman.Utils.ENDGAME;
 import static pl.sokol.pacman.Utils.GAME;
 import static pl.sokol.pacman.Utils.LOADING;
 import static pl.sokol.pacman.Utils.MENU;
-import static pl.sokol.pacman.Utils.PATH;
+import static pl.sokol.pacman.Utils.SAVES_PATH;
 
 public class GameFrameController {
 
@@ -64,26 +65,29 @@ public class GameFrameController {
 
     public void saveGame() {
         String fileName = Utils.getFileName();
-        String filePath = PATH + fileName;
+        String filePath = SAVES_PATH + fileName;
 
         List<Point> enemiesPoints = new ArrayList<>();
         List<Integer> enemiesCurrentMovements = new ArrayList<>();
         List<Integer> enemiesNumberOfTheImages = new ArrayList<>();
-        for (Enemy enemy : model.getGamePanel().getModel().getLevel().getEnemies()) {
+        GamePanelModel gameModel = model.getGamePanel().getModel();
+
+        for (Enemy enemy : gameModel.getLevel().getEnemies()) {
             enemiesPoints.add(enemy.getLocation());
             enemiesCurrentMovements.add(enemy.getCurrentMovement());
             enemiesNumberOfTheImages.add(enemy.getNumberOfTheImage());
         }
 
-        Save save = new Save(
-                model.getGamePanel().getModel().getLevel().getPoints(),
-                model.getGamePanel().getModel().getLevel().getPlayer().getLocation(),
-                model.getGamePanel().getModel().getLevel().getPlayer().getCurrentMovement(),
-                enemiesPoints,
-                enemiesCurrentMovements,
-                enemiesNumberOfTheImages,
-                model.getGamePanel().getModel().getStatsPanel().getModel()
-        );
+        // CREATE SAVE
+        Save save = new Save.Builder()
+                .points(gameModel.getLevel().getPoints())
+                .playerLocation(gameModel.getLevel().getPlayer().getLocation())
+                .playerCurrentMovement(gameModel.getLevel().getPlayer().getCurrentMovement())
+                .enemiesLocations(enemiesPoints)
+                .enemiesCurrentMovements(enemiesCurrentMovements)
+                .enemiesImageNumbers(enemiesNumberOfTheImages)
+                .stats(gameModel.getStatsPanel().getModel())
+                .build();
 
         // SAVE TO FILE
         Gson gson = new Gson();
