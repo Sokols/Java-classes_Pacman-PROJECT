@@ -62,8 +62,9 @@ public class Level implements Renderable {
         }
 
         // render enemies
-        for (Enemy enemy : enemies) {
-            enemy.render(graphics);
+        // noinspection ForLoopReplaceableByForEach
+        for (int i = 0; i < enemies.size(); i++) {
+            enemies.get(i).render(graphics);
         }
 
         // render player

@@ -13,7 +13,7 @@ public class GamePanelModel {
     private boolean isEndedFlag;
     private EnginePanelController enginePanel;
     private StatsPanelController statsPanel;
-    private boolean isPermissionToAddEnemy;
+    private boolean isPermissionForNewClick;
 
     public static final class Builder {
         private GameFrameController gameFrame;
@@ -22,7 +22,7 @@ public class GamePanelModel {
         private boolean isEndedFlag;
         private EnginePanelController enginePanel;
         private StatsPanelController statsPanel;
-        private boolean isPermissionToAddEnemy;
+        private boolean isPermissionForNewClick;
 
         public Builder gameFrame(GameFrameController gameFrame) {
             this.gameFrame = gameFrame;
@@ -54,8 +54,8 @@ public class GamePanelModel {
             return this;
         }
 
-        public Builder isPermissionToAddEnemy(boolean isPermissionToAddEnemy) {
-            this.isPermissionToAddEnemy = isPermissionToAddEnemy;
+        public Builder isPermissionForNewClick(boolean isPermissionForNewClick) {
+            this.isPermissionForNewClick = isPermissionForNewClick;
             return this;
         }
 
@@ -67,7 +67,7 @@ public class GamePanelModel {
             model.isEndedFlag = this.isEndedFlag;
             model.enginePanel = this.enginePanel;
             model.statsPanel = this.statsPanel;
-            model.isPermissionToAddEnemy = this.isPermissionToAddEnemy;
+            model.isPermissionForNewClick = this.isPermissionForNewClick;
             return model;
         }
     }
@@ -112,11 +112,11 @@ public class GamePanelModel {
         this.statsPanel = statsPanel;
     }
 
-    public boolean isPermissionToAddEnemy() {
-        return isPermissionToAddEnemy;
+    public boolean isPermissionForNewClick() {
+        return isPermissionForNewClick;
     }
 
-    public void setPermissionToAddEnemy(boolean permissionToAddEnemy) {
-        isPermissionToAddEnemy = permissionToAddEnemy;
+    public void setPermissionForNewClick(boolean permissionForNewClick) {
+        isPermissionForNewClick = permissionForNewClick;
     }
 }

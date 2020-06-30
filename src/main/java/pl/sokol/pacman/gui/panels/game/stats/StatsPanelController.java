@@ -2,9 +2,12 @@ package pl.sokol.pacman.gui.panels.game.stats;
 
 import javax.swing.JLabel;
 import javax.swing.Timer;
-import java.awt.Color;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+
+import static pl.sokol.pacman.Utils.*;
 
 public class StatsPanelController {
 
@@ -35,8 +38,14 @@ public class StatsPanelController {
         }
     }
 
-    public void renderStats() {
-        view.repaint();
+    public void renderStats(Graphics graphics) {
+        graphics.drawImage(createImageFromPanel(), 0, GAME_HEIGHT + 32, FRAME_WIDTH, STATS_HEIGHT, null);
+    }
+
+    private BufferedImage createImageFromPanel() {
+        BufferedImage newImage = new BufferedImage(FRAME_WIDTH, STATS_HEIGHT, BufferedImage.TYPE_INT_RGB);
+        view.paint(newImage.getGraphics());
+        return newImage;
     }
 
     private void initStats() {
@@ -57,9 +66,9 @@ public class StatsPanelController {
 
     private void initLives() {
         lives = new ArrayList<>();
-        lives.add(view.getImageLabel1());
-        lives.add(view.getImageLabel2());
-        lives.add(view.getImageLabel3());
+        lives.add(view.getLifeImageLabel1());
+        lives.add(view.getLifeImageLabel2());
+        lives.add(view.getLifeImageLabel3());
     }
 
     public List<JLabel> getLives() {

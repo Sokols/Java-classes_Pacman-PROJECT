@@ -28,7 +28,7 @@ public class GamePanelController implements Runnable, KeyListener {
                 .isEndedFlag(false)
                 .enginePanel(new EnginePanelController(this))
                 .statsPanel(statsPanelController)
-                .isPermissionToAddEnemy(true)
+                .isPermissionForNewClick(true)
                 .build();
 
         this.view = new GamePanelView(
@@ -79,12 +79,15 @@ public class GamePanelController implements Runnable, KeyListener {
                 break;
 
             case KeyEvent.VK_SPACE:
-                if (model.isStoppedFlag()) {
-                    resume();
-                    model.getStatsPanel().getView().getSpaceLabel().setText("PRESS SPACE TO PAUSE");
-                } else {
-                    pause();
-                    model.getStatsPanel().getView().getSpaceLabel().setText("PRESS SPACE TO RESUME");
+                if (model.isPermissionForNewClick()) {
+                    if (model.isStoppedFlag()) {
+                        resume();
+                        model.getStatsPanel().getView().getSpaceLabel().setText("PRESS SPACE TO PAUSE");
+                    } else {
+                        pause();
+                        model.getStatsPanel().getView().getSpaceLabel().setText("PRESS SPACE TO RESUME");
+                    }
+                    model.setPermissionForNewClick(false);
                 }
                 break;
 
@@ -93,9 +96,9 @@ public class GamePanelController implements Runnable, KeyListener {
                 break;
 
             case KeyEvent.VK_ENTER:
-                if (!model.isStoppedFlag() && model.isPermissionToAddEnemy()) {
+                if (!model.isStoppedFlag() && model.isPermissionForNewClick()) {
                     model.getLevel().addEnemy();
-                    model.setPermissionToAddEnemy(false);
+                    model.setPermissionForNewClick(false);
                 }
                 break;
 
@@ -106,8 +109,8 @@ public class GamePanelController implements Runnable, KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-            model.setPermissionToAddEnemy(true);
+        if (e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_SPACE) {
+            model.setPermissionForNewClick(true);
         }
     }
 
@@ -147,11 +150,11 @@ public class GamePanelController implements Runnable, KeyListener {
         BufferStrategy bufferStrategy = model.getGameFrame().getView().getBufferStrategy();
         if (bufferStrategy == null) {
             model.getGameFrame().getView().createBufferStrategy(2);
-            return;
+            bufferStrategy = model.getGameFrame().getView().getBufferStrategy();
         }
         Graphics graphics = bufferStrategy.getDrawGraphics();
         model.getEnginePanel().renderGame(graphics);
-        model.getStatsPanel().renderStats();
+        model.getStatsPanel().renderStats(graphics);
         bufferStrategy.show();
         graphics.dispose();
     }

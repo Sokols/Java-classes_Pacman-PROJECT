@@ -2,7 +2,9 @@ package pl.sokol.pacman.gui.panels.game.stats;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 
 import static pl.sokol.pacman.Utils.FRAME_WIDTH;
 import static pl.sokol.pacman.Utils.STATS_HEIGHT;
@@ -10,9 +12,9 @@ import static pl.sokol.pacman.Utils.STATS_HEIGHT;
 public class StatsPanelView extends JPanel {
 
     private JPanel mainPanel;
-    private JLabel imageLabel1;
-    private JLabel imageLabel2;
-    private JLabel imageLabel3;
+    private JLabel lifeImageLabel1;
+    private JLabel lifeImageLabel2;
+    private JLabel lifeImageLabel3;
     private JLabel scoreLabel;
     private JLabel spaceLabel;
 
@@ -20,19 +22,20 @@ public class StatsPanelView extends JPanel {
         this.setLayout(new GridLayout());
         this.setBackground(Color.BLACK);
         setMaximumSize(new Dimension(FRAME_WIDTH, STATS_HEIGHT));
+        setMinimumSize(new Dimension(FRAME_WIDTH, STATS_HEIGHT));
         this.add(mainPanel);
     }
 
-    public JLabel getImageLabel1() {
-        return imageLabel1;
+    public JLabel getLifeImageLabel1() {
+        return lifeImageLabel1;
     }
 
-    public JLabel getImageLabel2() {
-        return imageLabel2;
+    public JLabel getLifeImageLabel2() {
+        return lifeImageLabel2;
     }
 
-    public JLabel getImageLabel3() {
-        return imageLabel3;
+    public JLabel getLifeImageLabel3() {
+        return lifeImageLabel3;
     }
 
     public JLabel getScoreLabel() {
