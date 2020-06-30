@@ -1,6 +1,5 @@
 package pl.sokol.pacman.elements.dynamic;
 
-import org.apache.log4j.Logger;
 import pl.sokol.pacman.elements.Renderable;
 import pl.sokol.pacman.game.Level;
 import pl.sokol.pacman.gui.panels.game.GamePanelController;
@@ -20,9 +19,7 @@ public class Player extends Rectangle implements Renderable, Moveable {
 
     private GamePanelController game;
     private StatsPanelController stats;
-
     private int currentMovement;
-
     private BufferedImage imageOfPlayer;
 
     public Player(int x, int y, GamePanelController game, StatsPanelController stats) throws IOException {
@@ -35,7 +32,6 @@ public class Player extends Rectangle implements Renderable, Moveable {
 
     @Override
     public void move() {
-
         Level level = game.getModel().getLevel();
         if (canMove(currentMovement, PLAYER_SPEED, this, game.getModel().getLevel())) {
             makeMove(currentMovement, PLAYER_SPEED, this);
@@ -73,9 +69,9 @@ public class Player extends Rectangle implements Renderable, Moveable {
     }
 
     @Override
-    public void render(Graphics g) {
+    public void render(Graphics graphics) {
         move();
-        g.drawImage(imageOfPlayer, x, y, width, height, null);
+        graphics.drawImage(imageOfPlayer, x, y, width, height, null);
     }
 
     public void setCurrentMovement(int currentMovement) {

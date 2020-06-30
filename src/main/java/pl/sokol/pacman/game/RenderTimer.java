@@ -8,7 +8,6 @@ public class RenderTimer {
     private final double NS = 1e9 / TARGET_FPS;
 
     private Logger LOG;
-
     private int fps;
     private double timer;
     private long lastTime;
@@ -81,6 +80,4 @@ public class RenderTimer {
     public double getDelta() {
         return delta;
     }
-
-    private RenderTimer() {}
 }

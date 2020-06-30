@@ -23,27 +23,7 @@ public class EndgamePanelView extends JPanel {
         scoreLabel.setText(scoreLabel.getText() + score);
     }
 
-    public JLabel getTitleLabel() {
-        return titleLabel;
-    }
-
-    public void setTitleLabel(JLabel titleLabel) {
-        this.titleLabel = titleLabel;
-    }
-
-    public JLabel getScoreLabel() {
-        return scoreLabel;
-    }
-
-    public void setScoreLabel(JLabel scoreLabel) {
-        this.scoreLabel = scoreLabel;
-    }
-
     public JButton getBackToMenuButton() {
         return backToMenuButton;
-    }
-
-    public void setBackToMenuButton(JButton backToMenuButton) {
-        this.backToMenuButton = backToMenuButton;
     }
 }

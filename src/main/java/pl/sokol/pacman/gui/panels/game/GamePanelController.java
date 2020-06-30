@@ -28,6 +28,7 @@ public class GamePanelController implements Runnable, KeyListener {
                 .isEndedFlag(false)
                 .enginePanel(new EnginePanelController(this))
                 .statsPanel(statsPanelController)
+                .isPermissionToAddEnemy(true)
                 .build();
 
         this.view = new GamePanelView(
@@ -58,31 +59,8 @@ public class GamePanelController implements Runnable, KeyListener {
         }
     }
 
-    public void restartLevel() {
-        for (int i = 0; i < model.getLevel().getEnemies().size(); i++) {
-            model.getLevel().getEnemies().get(i).setLocation(model.getLevel().getEnemiesPoints().get(i % model.getLevel().getEnemiesPoints().size()));
-            model.getLevel().getEnemies().get(i).setCurrentMovement(0);
-        }
-        model.getLevel().getPlayer().setLocation(32, 64);
-        model.getLevel().getPlayer().setCurrentMovement(0);
-    }
-
-    private void mainRender() {
-        BufferStrategy bs = model.getGameFrame().getView().getBufferStrategy();
-        if (bs == null) {
-            model.getGameFrame().getView().createBufferStrategy(2);
-            return;
-        }
-        Graphics g = bs.getDrawGraphics();
-        model.getEnginePanel().renderGame(g);
-        model.getStatsPanel().renderStats(g);
-        bs.show();
-    }
-
     @Override
     public void keyPressed(KeyEvent e) {
-
-        // switch by pressed key
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
                 model.getLevel().getPlayer().setCurrentMovement(0);
@@ -115,8 +93,9 @@ public class GamePanelController implements Runnable, KeyListener {
                 break;
 
             case KeyEvent.VK_ENTER:
-                if (!model.isStoppedFlag()) {
+                if (!model.isStoppedFlag() && model.isPermissionToAddEnemy()) {
                     model.getLevel().addEnemy();
+                    model.setPermissionToAddEnemy(false);
                 }
                 break;
 
@@ -127,12 +106,25 @@ public class GamePanelController implements Runnable, KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        // unused
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            model.setPermissionToAddEnemy(true);
+        }
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
         // unused
+    }
+
+    public void restartLevel() {
+        Level restartLevel = model.getLevel();
+        for (int i = 0; i < restartLevel.getEnemies().size(); i++) {
+            restartLevel.getEnemies().get(i).setLocation(model.getLevel().getEnemiesPoints().get(i % model.getLevel().getEnemiesPoints().size()));
+            restartLevel.getEnemies().get(i).setCurrentMovement(0);
+        }
+        restartLevel.getPlayer().setLocation(32, 64);
+        restartLevel.getPlayer().setCurrentMovement(0);
+        model.setLevel(restartLevel);
     }
 
     public void resume() {
@@ -149,5 +141,18 @@ public class GamePanelController implements Runnable, KeyListener {
 
     public GamePanelView getView() {
         return view;
+    }
+
+    private void mainRender() {
+        BufferStrategy bufferStrategy = model.getGameFrame().getView().getBufferStrategy();
+        if (bufferStrategy == null) {
+            model.getGameFrame().getView().createBufferStrategy(2);
+            return;
+        }
+        Graphics graphics = bufferStrategy.getDrawGraphics();
+        model.getEnginePanel().renderGame(graphics);
+        model.getStatsPanel().renderStats();
+        bufferStrategy.show();
+        graphics.dispose();
     }
 }

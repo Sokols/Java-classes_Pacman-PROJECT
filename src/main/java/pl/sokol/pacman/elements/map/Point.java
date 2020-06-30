@@ -16,8 +16,8 @@ public class Point extends Rectangle implements Renderable {
     }
 
     @Override
-    public void render(Graphics g) {
-        g.setColor(Color.YELLOW);
-        g.fillRect(x, y, POINT_WIDTH, POINT_HEIGHT);
+    public void render(Graphics graphics) {
+        graphics.setColor(Color.YELLOW);
+        graphics.fillRect(x, y, POINT_WIDTH, POINT_HEIGHT);
     }
 }

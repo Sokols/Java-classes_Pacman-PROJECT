@@ -1,7 +1,6 @@
 package pl.sokol.pacman.gui.panels.game.engine;
 
 import pl.sokol.pacman.gui.panels.game.GamePanelController;
-import pl.sokol.pacman.gui.panels.game.stats.StatsPanelController;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -19,11 +18,10 @@ public class EnginePanelController {
         this.view = new EnginePanelView();
     }
 
-    public void renderGame(Graphics g) {
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, FRAME_WIDTH, GAME_HEIGHT);
-        model.getGamePanel().getModel().getLevel().render(g);
-        g.dispose();
+    public void renderGame(Graphics graphics) {
+        graphics.setColor(Color.BLACK);
+        graphics.fillRect(0, 0, FRAME_WIDTH, GAME_HEIGHT);
+        model.getGamePanel().getModel().getLevel().render(graphics);
     }
 
     public EnginePanelView getView() {

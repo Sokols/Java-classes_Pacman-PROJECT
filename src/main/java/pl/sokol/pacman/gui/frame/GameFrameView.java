@@ -28,10 +28,10 @@ public class GameFrameView extends JFrame {
         setFocusable(true);
         setVisible(true);
 
-        mainPanel = new JPanel();
-        card = new CardLayout();
-        mainPanel.setLayout(card);
-        mainPanel.add(MENU, menu);
+        this.mainPanel = new JPanel();
+        this.card = new CardLayout();
+        this.mainPanel.setLayout(card);
+        this.mainPanel.add(MENU, menu);
         this.setLayout(new BorderLayout());
         this.add(mainPanel);
     }
@@ -43,5 +43,4 @@ public class GameFrameView extends JFrame {
     JPanel getMainPanel() {
         return mainPanel;
     }
-
 }

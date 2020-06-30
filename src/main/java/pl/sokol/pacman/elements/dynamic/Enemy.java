@@ -1,7 +1,5 @@
 package pl.sokol.pacman.elements.dynamic;
 
-import org.apache.log4j.Logger;
-import pl.sokol.pacman.Utils;
 import pl.sokol.pacman.elements.map.Junction;
 import pl.sokol.pacman.elements.Renderable;
 import pl.sokol.pacman.game.Level;
@@ -30,16 +28,14 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
     private final int ENEMY_SPEED = 1;
     private final int ENEMY_SEARCH_RANGE = 160;
 
-    private Logger LOG;
-    private Random random;
-    private BufferedImage imageOfEnemy;
-
     private Player player;
     private Level level;
     private List<Junction> junctions;
     private int numberOfTheImage;
     private int currentMovement;
     private int previousMovement;
+    private Random random;
+    private BufferedImage imageOfEnemy;
 
     public static final class Builder {
         private Player player;
@@ -87,9 +83,7 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
             enemy.numberOfTheImage = this.numberOfTheImage;
             enemy.currentMovement = this.currentMovement;
             enemy.previousMovement = this.previousMovement;
-
-            enemy.LOG = Logger.getLogger(Enemy.class.getName());
-            enemy.random = Utils.random();
+            enemy.random = new Random();
             enemy.imageOfEnemy = ImageIO.read(getClass().getResourceAsStream(enemy.ENEMY_IMAGES[numberOfTheImage]));
             enemy.setBounds(x, y, enemy.ENEMY_WIDTH, enemy.ENEMY_HEIGHT);
             return enemy;
@@ -97,12 +91,18 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
     }
 
     @Override
+    public void render(Graphics graphics) {
+        move();
+        graphics.drawImage(imageOfEnemy, x, y, width, height, null);
+    }
+
+    @Override
     public void move() {
         // vector position of the enemy relative to the player
-        // HERE WE USE JAVA COORDINATE SYSTEM
         int vectorX = player.x - x;
         int vectorY = player.y - y;
         boolean findPlayerFlag = false;
+        boolean findJunctionFlag = false;
 
         // check if player is in search range
         if (Math.abs(vectorX) < ENEMY_SEARCH_RANGE && Math.abs(vectorY) < ENEMY_SEARCH_RANGE) {
@@ -110,7 +110,6 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
         }
 
         // check if enemy is on the junction
-        boolean findJunctionFlag = false;
         for (Junction junction : junctions) {
             if (junction.contains(this)) {
                 findJunctionFlag = true;
@@ -123,7 +122,6 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
             // List of movements priorities
             List<Integer> priorities = new ArrayList<>();
             boolean vectorsDifference = (Math.abs(vectorX) >= Math.abs(vectorY));
-
             // I QUARTER
             if (vectorX >= 0 && vectorY <= 0) {
                 if (vectorsDifference) {
@@ -138,7 +136,6 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
                     priorities.add(2);
                 }
             }
-
             // II QUARTER
             else if (vectorX <= 0 && vectorY <= 0) {
                 if (vectorsDifference) {
@@ -153,7 +150,6 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
                     priorities.add(2);
                 }
             }
-
             // III QUARTER
             else if (vectorX <= 0) {
                 if (vectorsDifference) {
@@ -168,7 +164,6 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
                     priorities.add(0);
                 }
             }
-
             // IV QUARTER
             else {
                 if (vectorsDifference) {
@@ -183,7 +178,6 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
                     priorities.add(0);
                 }
             }
-
             // make move by highest priority
             for (int movement : priorities) {
                 if (canMove(movement, ENEMY_SPEED, this, level) && movement != previousMovement) {
@@ -204,20 +198,15 @@ public class Enemy extends Rectangle implements Renderable, Moveable {
 
         // make current move or find new one
         else {
-            int temp = currentMovement;
+            int tempMovement = currentMovement;
             while (!canMove(currentMovement, ENEMY_SPEED, this, level)) {
                 currentMovement = random.nextInt(4);
             }
-            if (currentMovement != temp) {
-                previousMovement = temp;
+            if (currentMovement != tempMovement) {
+                previousMovement = tempMovement;
             }
         }
         makeMove(currentMovement, ENEMY_SPEED, this);
-    }
-
-    public void render(Graphics g) {
-        move();
-        g.drawImage(imageOfEnemy, x, y, width, height, null);
     }
 
     public void setJunctions(List<Junction> junctions) {

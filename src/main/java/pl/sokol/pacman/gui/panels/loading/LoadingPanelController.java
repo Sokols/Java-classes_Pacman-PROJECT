@@ -41,7 +41,7 @@ public class LoadingPanelController implements MouseListener {
     @Override
     public void mousePressed(MouseEvent e) {
         JLabel save = (JLabel) e.getSource();
-        try {
+                try {
             loadSave(save.getText());
         } catch (IOException ex) {
             LOG.warn(ex);
@@ -66,6 +66,10 @@ public class LoadingPanelController implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
         // unused
+    }
+
+    public LoadingPanelView getView() {
+        return view;
     }
 
     private void initListeners() {
@@ -101,14 +105,9 @@ public class LoadingPanelController implements MouseListener {
     }
 
     private void loadSave(String saveName) throws IOException {
-        // find chosen save
         for (String save : model.getSavesNames()) {
             if (save.contains(saveName)) {
-
-                // temps
-                Gson gson = new Gson();
-                String content = new String(Files.readAllBytes(Paths.get(save)));
-                Save gameSave = gson.fromJson(content, Save.class);
+                Save gameSave = new Gson().fromJson(new String(Files.readAllBytes(Paths.get(save))), Save.class);
                 GamePanelController newGame = new GamePanelController(model.getGame());
                 Level newLevel = newGame.getModel().getLevel();
                 StatsPanelController newStats = newGame.getModel().getStatsPanel();
@@ -125,6 +124,7 @@ public class LoadingPanelController implements MouseListener {
                             .player(newLevel.getPlayer())
                             .level(newLevel)
                             .junctions(newLevel.getJunctions())
+                            .currentMovement(gameSave.getEnemiesCurrentMovements().get(i))
                             .numberOfTheImage(gameSave.getEnemiesImageNumbers().get(i))
                             .build(gameSave.getEnemiesLocations().get(i).x, gameSave.getEnemiesLocations().get(i).y));
                 }
@@ -137,6 +137,7 @@ public class LoadingPanelController implements MouseListener {
                     JLabel live = newStats.getLives().remove(newStats.getLives().size() - 1);
                     live.setVisible(false);
                 }
+                newStats.getView().getScoreLabel().setText(newStats.getScoreTextTemp() + newStats.getModel().getScore());
 
                 // load prepared game
                 newGame.getModel().setStatsPanel(newStats);
@@ -145,9 +146,5 @@ public class LoadingPanelController implements MouseListener {
                 break;
             }
         }
-    }
-
-    public LoadingPanelView getView() {
-        return view;
     }
 }

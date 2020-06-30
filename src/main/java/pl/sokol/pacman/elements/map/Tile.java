@@ -16,8 +16,8 @@ public class Tile extends Rectangle implements Renderable {
     }
 
     @Override
-    public void render(Graphics g) {
-        g.setColor(new Color(33, 0, 127));
-        g.fillRect(x, y, TILE_WIDTH, TILE_HEIGHT);
+    public void render(Graphics graphics) {
+        graphics.setColor(new Color(33, 0, 127));
+        graphics.fillRect(x, y, TILE_WIDTH, TILE_HEIGHT);
     }
 }

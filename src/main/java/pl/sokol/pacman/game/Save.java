@@ -96,6 +96,10 @@ public class Save {
         return stats;
     }
 
+    public List<Integer> getEnemiesCurrentMovements() {
+        return enemiesCurrentMovements;
+    }
+
     public void setStats(StatsPanelModel stats) {
         this.stats = stats;
     }

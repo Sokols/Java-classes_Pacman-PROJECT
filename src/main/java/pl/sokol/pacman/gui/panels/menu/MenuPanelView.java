@@ -11,7 +11,6 @@ import static pl.sokol.pacman.Utils.FRAME_WIDTH;
 public class MenuPanelView extends JPanel {
 
     private JPanel mainPanel;
-
     private JButton newGameButton;
     private JButton loadButton;
     private JButton exitButton;

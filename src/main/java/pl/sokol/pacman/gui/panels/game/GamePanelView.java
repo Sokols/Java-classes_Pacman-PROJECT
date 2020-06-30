@@ -15,7 +15,6 @@ public class GamePanelView extends JPanel {
     public GamePanelView(EnginePanelView gameView, StatsPanelView statsView) {
         setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
         this.add(gameView);
         this.add(statsView);
     }

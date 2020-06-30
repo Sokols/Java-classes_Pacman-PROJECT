@@ -13,6 +13,7 @@ public class GamePanelModel {
     private boolean isEndedFlag;
     private EnginePanelController enginePanel;
     private StatsPanelController statsPanel;
+    private boolean isPermissionToAddEnemy;
 
     public static final class Builder {
         private GameFrameController gameFrame;
@@ -21,6 +22,7 @@ public class GamePanelModel {
         private boolean isEndedFlag;
         private EnginePanelController enginePanel;
         private StatsPanelController statsPanel;
+        private boolean isPermissionToAddEnemy;
 
         public Builder gameFrame(GameFrameController gameFrame) {
             this.gameFrame = gameFrame;
@@ -52,6 +54,11 @@ public class GamePanelModel {
             return this;
         }
 
+        public Builder isPermissionToAddEnemy(boolean isPermissionToAddEnemy) {
+            this.isPermissionToAddEnemy = isPermissionToAddEnemy;
+            return this;
+        }
+
         public GamePanelModel build() {
             GamePanelModel model = new GamePanelModel();
             model.gameFrame = this.gameFrame;
@@ -60,6 +67,7 @@ public class GamePanelModel {
             model.isEndedFlag = this.isEndedFlag;
             model.enginePanel = this.enginePanel;
             model.statsPanel = this.statsPanel;
+            model.isPermissionToAddEnemy = this.isPermissionToAddEnemy;
             return model;
         }
     }
@@ -102,5 +110,13 @@ public class GamePanelModel {
 
     public void setStatsPanel(StatsPanelController statsPanel) {
         this.statsPanel = statsPanel;
+    }
+
+    public boolean isPermissionToAddEnemy() {
+        return isPermissionToAddEnemy;
+    }
+
+    public void setPermissionToAddEnemy(boolean permissionToAddEnemy) {
+        isPermissionToAddEnemy = permissionToAddEnemy;
     }
 }

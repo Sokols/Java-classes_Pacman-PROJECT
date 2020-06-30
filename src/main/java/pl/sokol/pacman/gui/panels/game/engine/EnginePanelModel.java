@@ -1,7 +1,6 @@
 package pl.sokol.pacman.gui.panels.game.engine;
 
 import pl.sokol.pacman.gui.panels.game.GamePanelController;
-import pl.sokol.pacman.gui.panels.game.stats.StatsPanelController;
 
 public class EnginePanelModel {
 

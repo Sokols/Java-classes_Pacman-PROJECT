@@ -2,7 +2,6 @@ package pl.sokol.pacman.gui.frame;
 
 import org.apache.log4j.Logger;
 import com.google.gson.Gson;
-import pl.sokol.pacman.Utils;
 import pl.sokol.pacman.elements.dynamic.Enemy;
 import pl.sokol.pacman.game.Save;
 import pl.sokol.pacman.gui.panels.endgame.EndgamePanelController;
@@ -15,7 +14,9 @@ import java.awt.Point;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import static pl.sokol.pacman.Utils.ENDGAME;
@@ -26,8 +27,7 @@ import static pl.sokol.pacman.Utils.SAVES_PATH;
 
 public class GameFrameController {
 
-    private final Logger LOG;
-
+    private Logger LOG;
     private GameFrameModel model;
     private GameFrameView view;
 
@@ -41,6 +41,22 @@ public class GameFrameController {
         this.view = new GameFrameView(
                 model.getMenuPanel().getMenuPanelView()
         );
+    }
+
+    public void backToMenu() {
+        view.getCard().show(view.getMainPanel(), MENU);
+    }
+
+    public void goToMenu() {
+        view.removeKeyListener(model.getGamePanel());
+        model.getGamePanel().pause();
+        view.getCard().show(view.getMainPanel(), MENU);
+    }
+
+    public void backToGame() {
+        view.addKeyListener(model.getGamePanel());
+        view.getCard().show(view.getMainPanel(), GAME);
+        model.getGamePanel().resume();
     }
 
     public void newGame(GamePanelController newGame) {
@@ -57,21 +73,15 @@ public class GameFrameController {
         thread.start();
     }
 
-    public void goToMenu() {
-        view.removeKeyListener(model.getGamePanel());
-        model.getGamePanel().pause();
-        view.getCard().show(view.getMainPanel(), MENU);
-    }
-
     public void saveGame() {
-        String fileName = Utils.getFileName();
+        String fileName = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss").format(Calendar.getInstance().getTime());
         String filePath = SAVES_PATH + fileName;
-
         List<Point> enemiesPoints = new ArrayList<>();
         List<Integer> enemiesCurrentMovements = new ArrayList<>();
         List<Integer> enemiesNumberOfTheImages = new ArrayList<>();
         GamePanelModel gameModel = model.getGamePanel().getModel();
 
+        // SAVE ENEMIES DATA
         for (Enemy enemy : gameModel.getLevel().getEnemies()) {
             enemiesPoints.add(enemy.getLocation());
             enemiesCurrentMovements.add(enemy.getCurrentMovement());
@@ -90,13 +100,11 @@ public class GameFrameController {
                 .build();
 
         // SAVE TO FILE
-        Gson gson = new Gson();
         try (Writer writer = new FileWriter(filePath + ".json")) {
-            gson.toJson(save, writer);
+            new Gson().toJson(save, writer);
         } catch (IOException e) {
             LOG.warn(e);
         }
-
         backToGame();
     }
 
@@ -104,16 +112,6 @@ public class GameFrameController {
         model.setLoadingPanel(new LoadingPanelController(this));
         view.getMainPanel().add(LOADING, model.getLoadingPanel().getView());
         view.getCard().show(view.getMainPanel(), LOADING);
-    }
-
-    public void backToGame() {
-        view.addKeyListener(model.getGamePanel());
-        view.getCard().show(view.getMainPanel(), GAME);
-        model.getGamePanel().resume();
-    }
-
-    public void backToMenu() {
-        view.getCard().show(view.getMainPanel(), MENU);
     }
 
     public void endGame(String title, int score) {

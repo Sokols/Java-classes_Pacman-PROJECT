@@ -36,7 +36,6 @@ public interface Moveable {
         }
 
         Rectangle bounds = new Rectangle(toX, toY, (int) obj.getWidth(), (int) obj.getHeight());
-
         for (int i = 0; i < level.getTiles().size(); i++) {
             if (bounds.intersects(level.getTiles().get(i))) {
                 return false;

@@ -12,6 +12,10 @@ public class MenuPanelController {
         initListeners(game);
     }
 
+    public MenuPanelView getMenuPanelView() {
+        return menuPanelView;
+    }
+
     private void initListeners(GameFrameController game) {
         menuPanelView.getBackToGameButton().addActionListener(e -> game.backToGame());
 
@@ -22,9 +26,5 @@ public class MenuPanelController {
         menuPanelView.getLoadButton().addActionListener(e -> game.loadGame());
 
         menuPanelView.getExitButton().addActionListener(e -> game.getView().dispose());
-    }
-
-    public MenuPanelView getMenuPanelView() {
-        return menuPanelView;
     }
 }
