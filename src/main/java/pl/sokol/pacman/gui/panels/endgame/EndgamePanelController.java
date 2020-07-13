@@ -13,12 +13,12 @@ public class EndgamePanelController {
         initListeners();
     }
 
-    private void initListeners() {
-        view.getBackToMenuButton().addActionListener(e -> model.getGame().backToMenu());
-    }
-
     public EndgamePanelView getView() {
         return view;
+    }
+
+    private void initListeners() {
+        view.getBackToMenuButton().addActionListener(e -> model.getGame().backToMenu());
     }
 }
 

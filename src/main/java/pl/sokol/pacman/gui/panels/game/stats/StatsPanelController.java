@@ -2,12 +2,15 @@ package pl.sokol.pacman.gui.panels.game.stats;
 
 import javax.swing.JLabel;
 import javax.swing.Timer;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import static pl.sokol.pacman.Utils.*;
+import static pl.sokol.pacman.Utils.FRAME_WIDTH;
+import static pl.sokol.pacman.Utils.GAME_HEIGHT;
+import static pl.sokol.pacman.Utils.STATS_HEIGHT;
 
 public class StatsPanelController {
 
@@ -42,6 +45,26 @@ public class StatsPanelController {
         graphics.drawImage(createImageFromPanel(), 0, GAME_HEIGHT + 32, FRAME_WIDTH, STATS_HEIGHT, null);
     }
 
+    public List<JLabel> getLives() {
+        return lives;
+    }
+
+    public String getScoreTextTemp() {
+        return scoreTextTemp;
+    }
+
+    public StatsPanelView getView() {
+        return view;
+    }
+
+    public StatsPanelModel getModel() {
+        return model;
+    }
+
+    public void setModel(StatsPanelModel model) {
+        this.model = model;
+    }
+
     private BufferedImage createImageFromPanel() {
         BufferedImage newImage = new BufferedImage(FRAME_WIDTH, STATS_HEIGHT, BufferedImage.TYPE_INT_RGB);
         view.paint(newImage.getGraphics());
@@ -69,25 +92,5 @@ public class StatsPanelController {
         lives.add(view.getLifeImageLabel1());
         lives.add(view.getLifeImageLabel2());
         lives.add(view.getLifeImageLabel3());
-    }
-
-    public List<JLabel> getLives() {
-        return lives;
-    }
-
-    public String getScoreTextTemp() {
-        return scoreTextTemp;
-    }
-
-    public StatsPanelView getView() {
-        return view;
-    }
-
-    public StatsPanelModel getModel() {
-        return model;
-    }
-
-    public void setModel(StatsPanelModel model) {
-        this.model = model;
     }
 }

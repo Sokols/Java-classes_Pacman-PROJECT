@@ -2,6 +2,11 @@ package pl.sokol.pacman;
 
 import org.apache.log4j.xml.DOMConfigurator;
 
+import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
+
 public class Utils {
 
     // static app sizes
@@ -20,6 +25,12 @@ public class Utils {
     public static final String SAVES_PATH = "C:\\Users\\asus1\\OneDrive\\Pulpit\\Studia\\SEM4\\JTP\\Projekt\\Project\\src\\main\\resources\\saves\\";
 
     static void configureLogger() {
-        DOMConfigurator.configure("C:\\Users\\asus1\\OneDrive\\Pulpit\\Studia\\SEM4\\JTP\\Projekt\\Project\\src\\main\\resources\\log4j2.xml");
+        try {
+            URL resource = Utils.class.getClassLoader().getResource("log4j2.xml");
+            File logConfiguratorFile = Paths.get(resource.toURI()).toFile();
+            DOMConfigurator.configure(logConfiguratorFile.getAbsolutePath());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 }

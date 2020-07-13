@@ -15,12 +15,10 @@ public class GamePanelController implements Runnable, KeyListener {
 
     private GamePanelModel model;
     private GamePanelView view;
-
     private RenderTimer renderTimer;
 
     public GamePanelController(GameFrameController gameFrameController) {
         StatsPanelController statsPanelController = new StatsPanelController();
-
         this.model = new GamePanelModel.Builder()
                 .gameFrame(gameFrameController)
                 .level(new Level("/graphics/maps/map1.png", this, statsPanelController))
