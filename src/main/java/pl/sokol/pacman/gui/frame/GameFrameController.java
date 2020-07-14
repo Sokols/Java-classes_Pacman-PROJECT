@@ -9,6 +9,7 @@ import pl.sokol.pacman.gui.panels.game.GamePanelController;
 import pl.sokol.pacman.gui.panels.game.GamePanelModel;
 import pl.sokol.pacman.gui.panels.loading.LoadingPanelController;
 import pl.sokol.pacman.gui.panels.menu.MenuPanelController;
+import pl.sokol.pacman.gui.panels.ranking.RankingPanelController;
 
 import java.awt.Point;
 import java.io.FileWriter;
@@ -19,20 +20,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static pl.sokol.pacman.Utils.ENDGAME;
-import static pl.sokol.pacman.Utils.GAME;
-import static pl.sokol.pacman.Utils.LOADING;
-import static pl.sokol.pacman.Utils.MENU;
-import static pl.sokol.pacman.Utils.SAVES_PATH;
+import static pl.sokol.pacman.Utils.*;
 
 public class GameFrameController {
 
-    private Logger LOG;
+    private final Logger LOG = Logger.getLogger(GameFrameController.class);
     private GameFrameModel model;
     private GameFrameView view;
 
     public GameFrameController() {
-        this.LOG = Logger.getLogger(GameFrameController.class.getName());
         this.model = new GameFrameModel(
                 null,
                 new MenuPanelController(this)
@@ -120,6 +116,12 @@ public class GameFrameController {
         model.getGamePanel().getModel().setEndedFlag(true);
         view.getMainPanel().add(ENDGAME, new EndgamePanelController(this, title, score).getView());
         view.getCard().show(view.getMainPanel(), ENDGAME);
+    }
+
+    public void showRanking() {
+        model.setRankingPanel(new RankingPanelController(this));
+        view.getMainPanel().add(RANKING, model.getRankingPanel().getView());
+        view.getCard().show(view.getMainPanel(), RANKING);
     }
 
     public GameFrameView getView() {

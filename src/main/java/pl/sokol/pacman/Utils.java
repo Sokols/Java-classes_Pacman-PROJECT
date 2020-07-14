@@ -21,6 +21,7 @@ public class Utils {
     public static final String MENU = "MENU_PANEL";
     public static final String LOADING = "LOADING_PANEL";
     public static final String ENDGAME = "ENDGAME_PANEL";
+    public static final String RANKING = "RANKING_PANEL";
 
     public static final String SAVES_PATH = "C:\\Users\\asus1\\OneDrive\\Pulpit\\Studia\\SEM4\\JTP\\Projekt\\Project\\src\\main\\resources\\saves\\";
 

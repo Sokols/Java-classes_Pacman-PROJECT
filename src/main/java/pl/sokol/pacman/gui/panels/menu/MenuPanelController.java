@@ -25,6 +25,8 @@ public class MenuPanelController {
 
         menuPanelView.getLoadButton().addActionListener(e -> game.loadGame());
 
+        menuPanelView.getRankingButton().addActionListener(e -> game.showRanking());
+
         menuPanelView.getExitButton().addActionListener(e -> game.getView().dispose());
     }
 }

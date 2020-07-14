@@ -9,11 +9,6 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 public class HibernateFactory {
 
     public SessionFactory getSessionFactory() {
-
-//        Configuration configuration = new Configuration().configure();
-//        StandardServiceRegistryBuilder standardServiceRegistryBuilder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
-//        return configuration.buildSessionFactory(standardServiceRegistryBuilder.build());
-
         StandardServiceRegistry standardServiceRegistry = new StandardServiceRegistryBuilder().configure().build();
         MetadataSources metadataSources = new MetadataSources(standardServiceRegistry);
         Metadata metadata = metadataSources.getMetadataBuilder().build();

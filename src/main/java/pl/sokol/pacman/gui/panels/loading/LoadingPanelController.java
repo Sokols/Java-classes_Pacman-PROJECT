@@ -25,13 +25,12 @@ import static pl.sokol.pacman.Utils.SAVES_PATH;
 
 public class LoadingPanelController implements MouseListener {
 
-    private final Logger LOG;
+    private final Logger LOG = Logger.getLogger(LoadingPanelController.class);
 
     private LoadingPanelModel model;
     private LoadingPanelView view;
 
     public LoadingPanelController(GameFrameController game) {
-        this.LOG = Logger.getLogger(LoadingPanelController.class.getName());
         this.model = new LoadingPanelModel(game);
         this.view = new LoadingPanelView();
         initListeners();
@@ -84,19 +83,19 @@ public class LoadingPanelController implements MouseListener {
         if (listOfFiles != null) {
             for (File file : listOfFiles) {
 
-                // init UI elements
+                // init UI element
                 JPanel save = new JPanel();
                 save.setBackground(Color.BLACK);
                 JLabel saveName = new JLabel();
                 saveName.setForeground(Color.WHITE);
                 saveName.addMouseListener(this);
 
-                // prepare names of the saves
+                // prepare name of the save
                 model.getSavesNames().add(file.toString());
                 String name = file.toString().substring(SAVES_PATH.length());
                 name = name.substring(0, name.length() - 5);
 
-                // set and add UI of saves to the GUI
+                // set and add UI of save to the GUI
                 saveName.setText(name);
                 save.add(saveName);
                 view.getLoadingPanel().add(save);

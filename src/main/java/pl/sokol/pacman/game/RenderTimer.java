@@ -7,7 +7,7 @@ public class RenderTimer {
     private final double TARGET_FPS = 60.0;
     private final double NS = 1e9 / TARGET_FPS;
 
-    private Logger LOG;
+    private final Logger LOG = Logger.getLogger(RenderTimer.class);
     private int fps;
     private double timer;
     private long lastTime;
@@ -48,7 +48,6 @@ public class RenderTimer {
 
         public RenderTimer build() {
             RenderTimer renderTimer = new RenderTimer();
-            renderTimer.LOG = Logger.getLogger(RenderTimer.class.getName());
             renderTimer.fps = this.fps;
             renderTimer.timer = this.timer;
             renderTimer.lastTime = this.lastTime;

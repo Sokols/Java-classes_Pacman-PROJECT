@@ -16,6 +16,7 @@ public class MenuPanelView extends JPanel {
     private JButton exitButton;
     private JButton saveButton;
     private JButton backToGameButton;
+    private JButton rankingButton;
 
     public MenuPanelView() {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -43,5 +44,9 @@ public class MenuPanelView extends JPanel {
 
     public JButton getLoadButton() {
         return loadButton;
+    }
+
+    public JButton getRankingButton() {
+        return rankingButton;
     }
 }

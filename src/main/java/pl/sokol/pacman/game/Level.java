@@ -23,7 +23,7 @@ import static pl.sokol.pacman.Utils.GAME_HEIGHT;
 
 public class Level implements Renderable {
 
-    private Logger LOG;
+    private final Logger LOG = Logger.getLogger(Level.class);
     private List<Point> points;
     private List<Enemy> enemies;
     private List<java.awt.Point> enemiesPoints;
@@ -33,7 +33,6 @@ public class Level implements Renderable {
     private Player player;
 
     public Level(String path, GamePanelController gameThread, StatsPanelController stats) {
-        this.LOG = Logger.getLogger(Level.class.getName());
         this.points = new ArrayList<>();
         this.enemies = new ArrayList<>();
         this.enemiesPoints = new ArrayList<>();

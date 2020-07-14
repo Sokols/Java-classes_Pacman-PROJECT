@@ -1,6 +1,15 @@
 package pl.sokol.pacman.gui.panels.endgame;
 
+import pl.sokol.pacman.database.dao.RankingDao;
+import pl.sokol.pacman.database.domain.Ranking;
 import pl.sokol.pacman.gui.frame.GameFrameController;
+
+import javax.swing.*;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 public class EndgamePanelController {
 
@@ -18,7 +27,21 @@ public class EndgamePanelController {
     }
 
     private void initListeners() {
-        view.getBackToMenuButton().addActionListener(e -> model.getGame().backToMenu());
+        view.getApplyButton().addActionListener(e -> goToRanking());
+    }
+
+    private void goToRanking() {
+        if (view.getNickTextField().getText().isEmpty()) {
+            JOptionPane.showMessageDialog(new JFrame(), "Nick cannot be empty!", "WARNING", JOptionPane.WARNING_MESSAGE);
+        } else {
+            Ranking ranking = Ranking.builder()
+                    .nick(view.getNickTextField().getText())
+                    .points(model.getScore())
+                    .date(Date.from(Instant.now())).build();
+            RankingDao rankingDao = new RankingDao();
+            rankingDao.save(ranking);
+            model.getGame().showRanking();
+        }
     }
 }
 

@@ -2,11 +2,17 @@ package pl.sokol.pacman.database.domain;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.*;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
 
 // Lombok annotations
@@ -29,7 +35,6 @@ public class Ranking {
     private int points;
 
     @Column(name = "date")
-    @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 }
