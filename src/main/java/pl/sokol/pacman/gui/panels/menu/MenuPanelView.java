@@ -1,5 +1,7 @@
 package pl.sokol.pacman.gui.panels.menu;
 
+import lombok.Getter;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -8,6 +10,7 @@ import java.awt.Dimension;
 import static pl.sokol.pacman.Utils.FRAME_HEIGHT;
 import static pl.sokol.pacman.Utils.FRAME_WIDTH;
 
+@Getter
 public class MenuPanelView extends JPanel {
 
     private JPanel mainPanel;
@@ -24,29 +27,5 @@ public class MenuPanelView extends JPanel {
         saveButton.setVisible(false);
         backToGameButton.setVisible(false);
         this.add(mainPanel);
-    }
-
-    public JButton getNewGameButton() {
-        return newGameButton;
-    }
-
-    public JButton getExitButton() {
-        return exitButton;
-    }
-
-    public JButton getSaveButton() {
-        return saveButton;
-    }
-
-    public JButton getBackToGameButton() {
-        return backToGameButton;
-    }
-
-    public JButton getLoadButton() {
-        return loadButton;
-    }
-
-    public JButton getRankingButton() {
-        return rankingButton;
     }
 }

@@ -1,5 +1,8 @@
 package pl.sokol.pacman.gui.panels.game.stats;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.swing.JLabel;
 import javax.swing.Timer;
 import java.awt.Color;
@@ -12,6 +15,8 @@ import static pl.sokol.pacman.Utils.FRAME_WIDTH;
 import static pl.sokol.pacman.Utils.GAME_HEIGHT;
 import static pl.sokol.pacman.Utils.STATS_HEIGHT;
 
+@Getter
+@Setter
 public class StatsPanelController {
 
     private final int BLINKING_TIME = 750;
@@ -43,26 +48,6 @@ public class StatsPanelController {
 
     public void renderStats(Graphics graphics) {
         graphics.drawImage(createImageFromPanel(), 0, GAME_HEIGHT + 32, FRAME_WIDTH, STATS_HEIGHT, null);
-    }
-
-    public List<JLabel> getLives() {
-        return lives;
-    }
-
-    public String getScoreTextTemp() {
-        return scoreTextTemp;
-    }
-
-    public StatsPanelView getView() {
-        return view;
-    }
-
-    public StatsPanelModel getModel() {
-        return model;
-    }
-
-    public void setModel(StatsPanelModel model) {
-        this.model = model;
     }
 
     private BufferedImage createImageFromPanel() {

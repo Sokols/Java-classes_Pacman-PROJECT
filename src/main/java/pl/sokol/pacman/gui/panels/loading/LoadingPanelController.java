@@ -1,5 +1,6 @@
 package pl.sokol.pacman.gui.panels.loading;
 
+import lombok.Getter;
 import org.apache.log4j.Logger;
 import com.google.gson.Gson;
 import pl.sokol.pacman.elements.dynamic.Enemy;
@@ -23,6 +24,7 @@ import java.util.List;
 
 import static pl.sokol.pacman.Utils.SAVES_PATH;
 
+@Getter
 public class LoadingPanelController implements MouseListener {
 
     private final Logger LOG = Logger.getLogger(LoadingPanelController.class);
@@ -65,10 +67,6 @@ public class LoadingPanelController implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
         // unused
-    }
-
-    public LoadingPanelView getView() {
-        return view;
     }
 
     private void initListeners() {

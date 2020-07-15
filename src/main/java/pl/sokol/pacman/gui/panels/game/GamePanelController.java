@@ -1,5 +1,6 @@
 package pl.sokol.pacman.gui.panels.game;
 
+import lombok.Getter;
 import pl.sokol.pacman.game.Level;
 import pl.sokol.pacman.game.RenderTimer;
 import pl.sokol.pacman.gui.frame.GameFrameController;
@@ -11,6 +12,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 
+@Getter
 public class GamePanelController implements Runnable, KeyListener {
 
     private GamePanelModel model;
@@ -19,7 +21,7 @@ public class GamePanelController implements Runnable, KeyListener {
 
     public GamePanelController(GameFrameController gameFrameController) {
         StatsPanelController statsPanelController = new StatsPanelController();
-        this.model = new GamePanelModel.Builder()
+        this.model = GamePanelModel.builder()
                 .gameFrame(gameFrameController)
                 .level(new Level("/graphics/maps/map1.png", this, statsPanelController))
                 .isStoppedFlag(false)
@@ -34,7 +36,7 @@ public class GamePanelController implements Runnable, KeyListener {
                 this.model.getStatsPanel().getView()
         );
 
-        this.renderTimer = new RenderTimer.Builder()
+        this.renderTimer = RenderTimer.builder()
                 .fps(0)
                 .timer(System.currentTimeMillis())
                 .lastTime(System.nanoTime())
@@ -134,14 +136,6 @@ public class GamePanelController implements Runnable, KeyListener {
 
     public void pause() {
         model.setStoppedFlag(true);
-    }
-
-    public GamePanelModel getModel() {
-        return model;
-    }
-
-    public GamePanelView getView() {
-        return view;
     }
 
     private void mainRender() {

@@ -1,5 +1,7 @@
 package pl.sokol.pacman.gui.panels.game.stats;
 
+import lombok.Getter;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Color;
@@ -9,6 +11,7 @@ import java.awt.GridLayout;
 import static pl.sokol.pacman.Utils.FRAME_WIDTH;
 import static pl.sokol.pacman.Utils.STATS_HEIGHT;
 
+@Getter
 public class StatsPanelView extends JPanel {
 
     private JPanel mainPanel;
@@ -24,25 +27,5 @@ public class StatsPanelView extends JPanel {
         setMaximumSize(new Dimension(FRAME_WIDTH, STATS_HEIGHT));
         setMinimumSize(new Dimension(FRAME_WIDTH, STATS_HEIGHT));
         this.add(mainPanel);
-    }
-
-    public JLabel getLifeImageLabel1() {
-        return lifeImageLabel1;
-    }
-
-    public JLabel getLifeImageLabel2() {
-        return lifeImageLabel2;
-    }
-
-    public JLabel getLifeImageLabel3() {
-        return lifeImageLabel3;
-    }
-
-    public JLabel getScoreLabel() {
-        return scoreLabel;
-    }
-
-    public JLabel getSpaceLabel() {
-        return spaceLabel;
     }
 }

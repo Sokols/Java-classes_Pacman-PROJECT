@@ -1,5 +1,6 @@
 package pl.sokol.pacman.gui.frame;
 
+import lombok.Getter;
 import pl.sokol.pacman.gui.panels.menu.MenuPanelView;
 
 import javax.swing.JFrame;
@@ -14,6 +15,7 @@ import static pl.sokol.pacman.Utils.FRAME_WIDTH;
 import static pl.sokol.pacman.Utils.MENU;
 import static pl.sokol.pacman.Utils.TITLE;
 
+@Getter
 public class GameFrameView extends JFrame {
 
     private CardLayout card;
@@ -34,13 +36,5 @@ public class GameFrameView extends JFrame {
         this.mainPanel.add(MENU, menu);
         this.setLayout(new BorderLayout());
         this.add(mainPanel);
-    }
-
-    CardLayout getCard() {
-        return card;
-    }
-
-    JPanel getMainPanel() {
-        return mainPanel;
     }
 }

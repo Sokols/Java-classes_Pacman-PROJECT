@@ -1,10 +1,14 @@
 package pl.sokol.pacman.gui.frame;
 
+import lombok.Getter;
+import lombok.Setter;
 import pl.sokol.pacman.gui.panels.game.GamePanelController;
 import pl.sokol.pacman.gui.panels.loading.LoadingPanelController;
 import pl.sokol.pacman.gui.panels.menu.MenuPanelController;
 import pl.sokol.pacman.gui.panels.ranking.RankingPanelController;
 
+@Getter
+@Setter
 class GameFrameModel {
 
     private GamePanelController gamePanel;
@@ -15,33 +19,5 @@ class GameFrameModel {
     GameFrameModel(GamePanelController gamePanel, MenuPanelController menuPanel) {
         this.gamePanel = gamePanel;
         this.menuPanel = menuPanel;
-    }
-
-    GamePanelController getGamePanel() {
-        return gamePanel;
-    }
-
-    void setGamePanel(GamePanelController gamePanel) {
-        this.gamePanel = gamePanel;
-    }
-
-    MenuPanelController getMenuPanel() {
-        return menuPanel;
-    }
-
-    LoadingPanelController getLoadingPanel() {
-        return loadingPanel;
-    }
-
-    void setLoadingPanel(LoadingPanelController loadingPanel) {
-        this.loadingPanel = loadingPanel;
-    }
-
-    public RankingPanelController getRankingPanel() {
-        return rankingPanel;
-    }
-
-    public void setRankingPanel(RankingPanelController rankingPanel) {
-        this.rankingPanel = rankingPanel;
     }
 }

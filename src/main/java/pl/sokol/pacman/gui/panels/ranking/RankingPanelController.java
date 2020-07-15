@@ -1,5 +1,6 @@
 package pl.sokol.pacman.gui.panels.ranking;
 
+import lombok.Getter;
 import pl.sokol.pacman.database.dao.RankingDao;
 import pl.sokol.pacman.database.domain.Ranking;
 import pl.sokol.pacman.gui.frame.GameFrameController;
@@ -10,6 +11,7 @@ import java.awt.Color;
 import java.util.Collections;
 import java.util.List;
 
+@Getter
 public class RankingPanelController {
 
     private RankingPanelView view;
@@ -55,9 +57,5 @@ public class RankingPanelController {
                 new String[]{
                         "Position", "Nick", "Score"
                 }, 0);
-    }
-
-    public RankingPanelView getView() {
-        return view;
     }
 }

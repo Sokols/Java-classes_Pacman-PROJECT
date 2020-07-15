@@ -1,12 +1,18 @@
 package pl.sokol.pacman.gui.panels.ranking;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
+import lombok.Getter;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import java.awt.Dimension;
 
 import static pl.sokol.pacman.Utils.FRAME_HEIGHT;
 import static pl.sokol.pacman.Utils.FRAME_WIDTH;
 
+@Getter
 public class RankingPanelView extends JPanel {
 
     private JPanel mainPanel;
@@ -21,13 +27,5 @@ public class RankingPanelView extends JPanel {
         scrollPanel.setViewportView(rankingTable);
         scrollPanel.setBorder(null);
         this.add(mainPanel);
-    }
-
-    public JTable getRankingTable() {
-        return rankingTable;
-    }
-
-    public JButton getBackToMenuButton() {
-        return backToMenuButton;
     }
 }

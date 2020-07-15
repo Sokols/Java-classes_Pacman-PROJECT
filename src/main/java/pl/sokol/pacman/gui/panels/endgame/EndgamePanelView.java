@@ -1,11 +1,18 @@
 package pl.sokol.pacman.gui.panels.endgame;
 
-import javax.swing.*;
+import lombok.Getter;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import java.awt.Dimension;
 
 import static pl.sokol.pacman.Utils.FRAME_HEIGHT;
 import static pl.sokol.pacman.Utils.FRAME_WIDTH;
 
+@Getter
 public class EndgamePanelView extends JPanel {
     private JPanel mainPanel;
     private JLabel titleLabel;
@@ -19,13 +26,5 @@ public class EndgamePanelView extends JPanel {
         this.add(mainPanel);
         titleLabel.setText(title);
         scoreLabel.setText(scoreLabel.getText() + score);
-    }
-
-    public JButton getApplyButton() {
-        return applyButton;
-    }
-
-    public JTextField getNickTextField() {
-        return nickTextField;
     }
 }

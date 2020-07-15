@@ -1,5 +1,7 @@
 package pl.sokol.pacman.gui.panels.loading;
 
+import lombok.Getter;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -9,6 +11,7 @@ import java.awt.Dimension;
 import static pl.sokol.pacman.Utils.FRAME_HEIGHT;
 import static pl.sokol.pacman.Utils.FRAME_WIDTH;
 
+@Getter
 public class LoadingPanelView extends JPanel {
 
     private JPanel mainPanel;
@@ -24,13 +27,5 @@ public class LoadingPanelView extends JPanel {
         scrollPanel.setViewportView(loadingPanel);
         scrollPanel.setBorder(null);
         this.add(mainPanel);
-    }
-
-    public JPanel getLoadingPanel() {
-        return loadingPanel;
-    }
-
-    public JButton getBackToMenuButton() {
-        return backToMenuButton;
     }
 }

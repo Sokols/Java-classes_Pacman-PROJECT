@@ -1,8 +1,10 @@
 package pl.sokol.pacman.gui.panels.menu;
 
+import lombok.Getter;
 import pl.sokol.pacman.gui.frame.GameFrameController;
 import pl.sokol.pacman.gui.panels.game.GamePanelController;
 
+@Getter
 public class MenuPanelController {
 
     private MenuPanelView menuPanelView;
@@ -10,10 +12,6 @@ public class MenuPanelController {
     public MenuPanelController(GameFrameController game) {
         this.menuPanelView = new MenuPanelView();
         initListeners(game);
-    }
-
-    public MenuPanelView getMenuPanelView() {
-        return menuPanelView;
     }
 
     private void initListeners(GameFrameController game) {

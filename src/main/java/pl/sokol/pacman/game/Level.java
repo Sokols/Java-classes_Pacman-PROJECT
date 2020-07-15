@@ -1,5 +1,9 @@
 package pl.sokol.pacman.game;
 
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.log4j.Logger;
 import pl.sokol.pacman.elements.Renderable;
 import pl.sokol.pacman.elements.dynamic.Enemy;
@@ -21,6 +25,8 @@ import java.util.Random;
 import static pl.sokol.pacman.Utils.FRAME_WIDTH;
 import static pl.sokol.pacman.Utils.GAME_HEIGHT;
 
+@Getter
+@Setter
 public class Level implements Renderable {
 
     private final Logger LOG = Logger.getLogger(Level.class);
@@ -83,38 +89,6 @@ public class Level implements Renderable {
         } catch (IOException e) {
             LOG.warn(e);
         }
-    }
-
-    public List<Tile> getTiles() {
-        return tiles;
-    }
-
-    public List<Point> getPoints() {
-        return points;
-    }
-
-    public List<Enemy> getEnemies() {
-        return enemies;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public List<java.awt.Point> getEnemiesPoints() {
-        return enemiesPoints;
-    }
-
-    public void setPoints(List<Point> points) {
-        this.points = points;
-    }
-
-    public List<Junction> getJunctions() {
-        return junctions;
-    }
-
-    public void setEnemies(List<Enemy> enemies) {
-        this.enemies = enemies;
     }
 
     private void setElements() throws IOException, ExceptionInInitializerError {

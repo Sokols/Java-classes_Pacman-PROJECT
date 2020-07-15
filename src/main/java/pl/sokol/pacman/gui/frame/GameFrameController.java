@@ -20,7 +20,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static pl.sokol.pacman.Utils.*;
+import static pl.sokol.pacman.Utils.ENDGAME;
+import static pl.sokol.pacman.Utils.GAME;
+import static pl.sokol.pacman.Utils.LOADING;
+import static pl.sokol.pacman.Utils.MENU;
+import static pl.sokol.pacman.Utils.RANKING;
+import static pl.sokol.pacman.Utils.SAVES_PATH;
 
 public class GameFrameController {
 
@@ -85,7 +90,7 @@ public class GameFrameController {
         }
 
         // CREATE SAVE
-        Save save = new Save.Builder()
+        Save save = Save.builder()
                 .points(gameModel.getLevel().getPoints())
                 .playerLocation(gameModel.getLevel().getPlayer().getLocation())
                 .playerCurrentMovement(gameModel.getLevel().getPlayer().getCurrentMovement())
