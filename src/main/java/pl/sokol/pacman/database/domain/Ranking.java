@@ -1,27 +1,29 @@
 package pl.sokol.pacman.database.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
 
 // Lombok annotations
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 // Hibernate annotations
 @Entity
-@Table(name = "ranking")
-public class Ranking {
+public class Ranking implements Comparable<Ranking> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,4 +39,9 @@ public class Ranking {
     @Column(name = "date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
+
+    @Override
+    public int compareTo(Ranking o) {
+        return Integer.compare(o.getPoints(), this.getPoints());
+    }
 }

@@ -2,14 +2,16 @@ package pl.sokol.pacman.database.dao;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import pl.sokol.pacman.database.Dao;
 import pl.sokol.pacman.database.HibernateFactory;
 import pl.sokol.pacman.database.domain.Ranking;
 
 import javax.persistence.Query;
-import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class RankingDao implements Dao<Ranking> {
 
@@ -20,35 +22,40 @@ public class RankingDao implements Dao<Ranking> {
         this.session = new HibernateFactory().getSessionFactory().openSession();
     }
 
+    public void shutdown() {
+        session.close();
+    }
+
     @Override
-    @Transactional
     public Optional<Ranking> get(int id) {
         return Optional.ofNullable(session.find(Ranking.class, id));
     }
 
     @Override
-    @Transactional
-    public List<Ranking> getAll() {
-        try {
-            Query query = session.createQuery("SELECT R FROM Ranking R");
-            return query.getResultList();
-        } catch (NullPointerException e) {
-            LOG.info(e);
-        }
-        return null;
+    public ArrayList<Ranking> getAll() {
+        Query query = session.createNativeQuery("SELECT * FROM Ranking", Ranking.class);
+        return (ArrayList<Ranking>) query.getResultList();
     }
 
     @Override
     public void save(Ranking ranking) {
-        session.getTransaction().begin();
-        session.persist(ranking);
-        session.getTransaction().commit();
-        session.close();
+        executeInsideTransaction(session -> session.persist(ranking));
     }
 
     @Override
-    @Transactional
     public void delete(Ranking ranking) {
-        session.remove(ranking);
+        executeInsideTransaction(session -> session.remove(ranking));
+    }
+
+    private void executeInsideTransaction(Consumer<Session> action) {
+        Transaction tx = session.getTransaction();
+        try {
+            tx.begin();
+            action.accept(session);
+            tx.commit();
+        } catch (RuntimeException e) {
+            tx.rollback();
+            LOG.warn(e);
+        }
     }
 }

@@ -4,9 +4,10 @@ import pl.sokol.pacman.database.dao.RankingDao;
 import pl.sokol.pacman.database.domain.Ranking;
 import pl.sokol.pacman.gui.frame.GameFrameController;
 
-import javax.swing.*;
+import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
+import java.awt.Color;
+import java.util.Collections;
 import java.util.List;
 
 public class RankingPanelController {
@@ -32,31 +33,30 @@ public class RankingPanelController {
             JLabel emptyLabel = new JLabel("Empty");
             emptyLabel.setForeground(Color.WHITE);
             view.remove(view.getRankingTable());
-            view.getRankingPanel().add(emptyLabel);
+            view.getRankingTable().add(emptyLabel);
         } else {
             DefaultTableModel model = initRankingTable();
             // sort list by highest score
-            rankings.sort((o1, o2) -> Integer.compare(o2.getPoints(), o1.getPoints()));
+            Collections.sort(rankings);
             for (int i = 0; i < rankings.size(); i++) {
                 model.addRow(
                         new Object[]{
                                 i + 1,
                                 rankings.get(i).getNick(),
                                 rankings.get(i).getPoints(),
-                                rankings.get(i).getDate()
                         }
                 );
             }
+            view.getRankingTable().setModel(model);
         }
+        rankingDao.shutdown();
     }
 
     private DefaultTableModel initRankingTable() {
-        DefaultTableModel model = new DefaultTableModel(
+        return new DefaultTableModel(
                 new String[]{
-                        "Position", "Nick", "Score", "Date"
+                        "Position", "Nick", "Score"
                 }, 0);
-        view.getRankingTable().setModel(model);
-        return model;
     }
 
     public RankingPanelView getView() {

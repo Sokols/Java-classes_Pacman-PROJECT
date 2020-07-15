@@ -1,14 +1,14 @@
 package pl.sokol.pacman.gui.panels.endgame;
 
+import org.hibernate.Session;
+import pl.sokol.pacman.database.HibernateFactory;
 import pl.sokol.pacman.database.dao.RankingDao;
 import pl.sokol.pacman.database.domain.Ranking;
 import pl.sokol.pacman.gui.frame.GameFrameController;
 
-import javax.swing.*;
-import java.sql.Timestamp;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 public class EndgamePanelController {
@@ -38,8 +38,15 @@ public class EndgamePanelController {
                     .nick(view.getNickTextField().getText())
                     .points(model.getScore())
                     .date(Date.from(Instant.now())).build();
-            RankingDao rankingDao = new RankingDao();
-            rankingDao.save(ranking);
+            System.out.println(ranking.getNick() + " " + ranking.getPoints() + " " + ranking.getDate());
+//            RankingDao rankingDao = new RankingDao();
+//            rankingDao.save(ranking);
+//            rankingDao.shutdown();
+            Session session = new HibernateFactory().getSessionFactory().openSession();
+            session.getTransaction().begin();
+            session.persist(ranking);
+            session.getTransaction().commit();
+            session.close();
             model.getGame().showRanking();
         }
     }
