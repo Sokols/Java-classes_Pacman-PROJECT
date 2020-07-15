@@ -12,11 +12,9 @@ import java.util.List;
 
 public class RankingPanelController {
 
-    private RankingPanelModel model;
     private RankingPanelView view;
 
     public RankingPanelController(GameFrameController game) {
-        this.model = new RankingPanelModel();
         this.view = new RankingPanelView();
         initListeners(game);
         initRankingPanel();
