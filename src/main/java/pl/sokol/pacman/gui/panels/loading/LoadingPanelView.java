@@ -6,6 +6,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import java.awt.Color;
 import java.awt.Dimension;
 
 import static pl.sokol.pacman.Utils.FRAME_HEIGHT;
@@ -25,6 +26,7 @@ public class LoadingPanelView extends JPanel {
         loadingPanel.setLayout(new BoxLayout(loadingPanel, BoxLayout.Y_AXIS));
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         scrollPanel.setViewportView(loadingPanel);
+        scrollPanel.getVerticalScrollBar().setBackground(Color.BLACK);
         scrollPanel.setBorder(null);
         this.add(mainPanel);
     }

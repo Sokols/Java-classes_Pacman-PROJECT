@@ -1,9 +1,12 @@
 package pl.sokol.pacman.gui.frame;
 
+import lombok.Getter;
 import org.apache.log4j.Logger;
 import com.google.gson.Gson;
+import org.hibernate.Session;
+import pl.sokol.pacman.database.HibernateFactory;
 import pl.sokol.pacman.elements.dynamic.Enemy;
-import pl.sokol.pacman.game.Save;
+import pl.sokol.pacman.database.domain.Save;
 import pl.sokol.pacman.gui.panels.endgame.EndgamePanelController;
 import pl.sokol.pacman.gui.panels.game.GamePanelController;
 import pl.sokol.pacman.gui.panels.game.GamePanelModel;
@@ -16,8 +19,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static pl.sokol.pacman.Utils.ENDGAME;
@@ -27,6 +32,7 @@ import static pl.sokol.pacman.Utils.MENU;
 import static pl.sokol.pacman.Utils.RANKING;
 import static pl.sokol.pacman.Utils.SAVES_PATH;
 
+@Getter
 public class GameFrameController {
 
     private final Logger LOG = Logger.getLogger(GameFrameController.class);
@@ -98,14 +104,23 @@ public class GameFrameController {
                 .enemiesCurrentMovements(enemiesCurrentMovements)
                 .enemiesImageNumbers(enemiesNumberOfTheImages)
                 .stats(gameModel.getStatsPanel().getModel())
-                .build();
+                .date(Date.from(Instant.now())).build();
 
-        // SAVE TO FILE
-        try (Writer writer = new FileWriter(filePath + ".json")) {
+        // SAVE TO DATABASE
+        Session session = new HibernateFactory().getSessionFactory().openSession();
+        session.getTransaction().begin();
+        session.persist(save);
+        session.getTransaction().commit();
+        session.close();
+
+
+        // SAVE TO FILE - BY GSON
+/*        try (Writer writer = new FileWriter(filePath + ".json")) {
             new Gson().toJson(save, writer);
         } catch (IOException e) {
             LOG.warn(e);
         }
+*/
         backToGame();
     }
 
@@ -127,9 +142,5 @@ public class GameFrameController {
         model.setRankingPanel(new RankingPanelController(this));
         view.getMainPanel().add(RANKING, model.getRankingPanel().getView());
         view.getCard().show(view.getMainPanel(), RANKING);
-    }
-
-    public GameFrameView getView() {
-        return view;
     }
 }

@@ -1,29 +1,24 @@
 package pl.sokol.pacman.gui.panels.loading;
 
+import lombok.Getter;
+import lombok.Setter;
+import pl.sokol.pacman.database.domain.Save;
 import pl.sokol.pacman.gui.frame.GameFrameController;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 public class LoadingPanelModel {
 
     private GameFrameController game;
     private List<String> savesNames;
+    private List<Save> saves;
 
     public LoadingPanelModel(GameFrameController game) {
         this.game = game;
         this.savesNames = new ArrayList<>();
-    }
-
-    public GameFrameController getGame() {
-        return game;
-    }
-
-    public void setGame(GameFrameController game) {
-        this.game = game;
-    }
-
-    public List<String> getSavesNames() {
-        return savesNames;
+        this.saves = new ArrayList<>();
     }
 }

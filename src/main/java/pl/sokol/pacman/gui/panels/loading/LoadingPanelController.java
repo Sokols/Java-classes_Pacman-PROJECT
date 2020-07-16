@@ -3,16 +3,17 @@ package pl.sokol.pacman.gui.panels.loading;
 import lombok.Getter;
 import org.apache.log4j.Logger;
 import com.google.gson.Gson;
+import pl.sokol.pacman.database.dao.SaveDao;
 import pl.sokol.pacman.elements.dynamic.Enemy;
 import pl.sokol.pacman.game.Level;
-import pl.sokol.pacman.game.Save;
+import pl.sokol.pacman.database.domain.Save;
 import pl.sokol.pacman.gui.frame.GameFrameController;
 import pl.sokol.pacman.gui.panels.game.GamePanelController;
 import pl.sokol.pacman.gui.panels.game.stats.StatsPanelController;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
@@ -21,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static pl.sokol.pacman.Utils.SAVES_PATH;
 
@@ -42,7 +44,7 @@ public class LoadingPanelController implements MouseListener {
     @Override
     public void mousePressed(MouseEvent e) {
         JLabel save = (JLabel) e.getSource();
-                try {
+        try {
             loadSave(save.getText());
         } catch (IOException ex) {
             LOG.warn(ex);
@@ -74,6 +76,33 @@ public class LoadingPanelController implements MouseListener {
     }
 
     private void initLoadingPanel() {
+
+        // WITH DATABASE
+        SaveDao saveDao = new SaveDao();
+        model.setSaves(saveDao.getAll());
+
+        for (Save save : model.getSaves()) {
+
+            // init UI element
+            JPanel savePanel = new JPanel();
+            savePanel.setBackground(Color.BLACK);
+            JLabel saveLabel = new JLabel();
+            saveLabel.setForeground(Color.WHITE);
+            saveLabel.addMouseListener(this);
+            saveLabel.setFont(new Font("Arial", Font.BOLD, 16));
+
+            // prepare name of the save
+            String saveName = save.getDate().toString();
+            model.getSavesNames().add(saveName);
+
+            // set and add UI of save to the GUI
+            saveLabel.setText(saveName);
+            savePanel.add(saveLabel);
+            view.getLoadingPanel().add(savePanel);
+        }
+
+        // WITH GSON
+        /*
         // get all names of save files
         File folder = new File(SAVES_PATH);
         File[] listOfFiles = folder.listFiles();
@@ -87,6 +116,7 @@ public class LoadingPanelController implements MouseListener {
                 JLabel saveName = new JLabel();
                 saveName.setForeground(Color.WHITE);
                 saveName.addMouseListener(this);
+                saveName.setFont(new Font("Arial", Font.BOLD, 16));
 
                 // prepare name of the save
                 model.getSavesNames().add(file.toString());
@@ -99,9 +129,57 @@ public class LoadingPanelController implements MouseListener {
                 view.getLoadingPanel().add(save);
             }
         }
+        */
     }
 
     private void loadSave(String saveName) throws IOException {
+
+        for (Save save : model.getSaves()) {
+            if (save.getDate().toString().equals(saveName)) {
+                Save gameSave = new SaveDao().get(save.getId());
+                GamePanelController newGame = new GamePanelController(model.getGame());
+                Level newLevel = newGame.getModel().getLevel();
+                StatsPanelController newStats = newGame.getModel().getStatsPanel();
+                List<Enemy> newEnemies = new ArrayList<>();
+
+                // set player location and current movement
+                newLevel.getPlayer().setLocation(gameSave.getPlayerLocation());
+                newLevel.getPlayer().setCurrentMovement(gameSave.getPlayerCurrentMovement());
+
+                // set level points and enemies
+                newLevel.setPoints(gameSave.getPoints());
+                for (int i = 0; i < gameSave.getEnemiesLocations().size(); i++) {
+                    newEnemies.add(new Enemy.Builder()
+                            .player(newLevel.getPlayer())
+                            .level(newLevel)
+                            .junctions(newLevel.getJunctions())
+                            .currentMovement(gameSave.getEnemiesCurrentMovements().get(i))
+                            .numberOfTheImage(gameSave.getEnemiesImageNumbers().get(i))
+                            .build(gameSave.getEnemiesLocations().get(i).x, gameSave.getEnemiesLocations().get(i).y));
+                }
+                newLevel.setEnemies(newEnemies);
+
+                // set stats
+                newStats.setModel(gameSave.getStats());
+                int livesLeft = newStats.getModel().getNUMBER_OF_LIVES() - newStats.getModel().getLives();
+                for (int i = 0; i < livesLeft; i++) {
+                    JLabel live = newStats.getLives().remove(newStats.getLives().size() - 1);
+                    live.setVisible(false);
+                }
+                newStats.getView().getScoreLabel().setText(newStats.getScoreTextTemp() + newStats.getModel().getScore());
+
+                // load prepared game
+                newGame.getModel().setStatsPanel(newStats);
+                newGame.getModel().setLevel(newLevel);
+                model.getGame().newGame(newGame);
+                break;
+            }
+        }
+
+
+
+        // GSON LOADING
+        /*
         for (String save : model.getSavesNames()) {
             if (save.contains(saveName)) {
                 Save gameSave = new Gson().fromJson(new String(Files.readAllBytes(Paths.get(save))), Save.class);
@@ -143,5 +221,6 @@ public class LoadingPanelController implements MouseListener {
                 break;
             }
         }
+    */
     }
 }

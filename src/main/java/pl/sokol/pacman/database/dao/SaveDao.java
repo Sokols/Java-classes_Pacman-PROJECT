@@ -5,19 +5,20 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import pl.sokol.pacman.database.Dao;
 import pl.sokol.pacman.database.HibernateFactory;
-import pl.sokol.pacman.database.domain.Ranking;
+import pl.sokol.pacman.database.domain.Save;
 
 import javax.persistence.Query;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class RankingDao implements Dao<Ranking> {
+public class SaveDao implements Dao<Save> {
 
-    private final Logger LOG = Logger.getLogger(RankingDao.class);
+    private Logger LOG = Logger.getLogger(SaveDao.class);
     private Session session;
 
-    public RankingDao() {
+    public SaveDao() {
         this.session = new HibernateFactory().getSessionFactory().openSession();
     }
 
@@ -26,29 +27,29 @@ public class RankingDao implements Dao<Ranking> {
     }
 
     @Override
-    public Ranking get(int id) {
-        Ranking save = session.find(Ranking.class, id);
+    public Save get(int id) {
+        Save save = session.find(Save.class, id);
         if (save != null) {
-            return session.find(Ranking.class, id);
+            return session.find(Save.class, id);
         } else {
             throw new NullPointerException();
         }
     }
 
     @Override
-    public ArrayList<Ranking> getAll() {
-        Query query = session.createNativeQuery("SELECT * FROM Ranking", Ranking.class);
-        return (ArrayList<Ranking>) query.getResultList();
+    public List<Save> getAll() {
+        Query query = session.createNativeQuery("SELECT * FROM Save", Save.class);
+        return (ArrayList<Save>) query.getResultList();
     }
 
     @Override
-    public void save(Ranking ranking) {
-        executeInsideTransaction(session -> session.persist(ranking));
+    public void save(Save save) {
+        executeInsideTransaction(session -> session.persist(save));
     }
 
     @Override
-    public void delete(Ranking ranking) {
-        executeInsideTransaction(session -> session.remove(ranking));
+    public void delete(Save save) {
+        executeInsideTransaction(session -> session.remove(save));
     }
 
     private void executeInsideTransaction(Consumer<Session> action) {
