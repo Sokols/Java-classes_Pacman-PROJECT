@@ -1,12 +1,12 @@
 package pl.sokol.pacman.gui.frame;
 
+import com.google.gson.Gson;
 import lombok.Getter;
 import org.apache.log4j.Logger;
-import com.google.gson.Gson;
 import org.hibernate.Session;
 import pl.sokol.pacman.database.HibernateFactory;
 import pl.sokol.pacman.elements.dynamic.Enemy;
-import pl.sokol.pacman.database.domain.Save;
+import pl.sokol.pacman.game.Save;
 import pl.sokol.pacman.gui.panels.endgame.EndgamePanelController;
 import pl.sokol.pacman.gui.panels.game.GamePanelController;
 import pl.sokol.pacman.gui.panels.game.GamePanelModel;
@@ -103,8 +103,7 @@ public class GameFrameController {
                 .enemiesLocations(enemiesPoints)
                 .enemiesCurrentMovements(enemiesCurrentMovements)
                 .enemiesImageNumbers(enemiesNumberOfTheImages)
-                .stats(gameModel.getStatsPanel().getModel())
-                .date(Date.from(Instant.now())).build();
+                .stats(gameModel.getStatsPanel().getModel()).build();
 
         // SAVE TO DATABASE
         Session session = new HibernateFactory().getSessionFactory().openSession();
@@ -115,12 +114,12 @@ public class GameFrameController {
 
 
         // SAVE TO FILE - BY GSON
-/*        try (Writer writer = new FileWriter(filePath + ".json")) {
+        try (Writer writer = new FileWriter(filePath + ".json")) {
             new Gson().toJson(save, writer);
         } catch (IOException e) {
             LOG.warn(e);
         }
-*/
+
         backToGame();
     }
 
