@@ -1,5 +1,7 @@
-package pl.sokol.pacman.elements.dynamic;
+package pl.sokol.pacman.elements.dynamic.enemy;
 
+import pl.sokol.pacman.elements.dynamic.Moveable;
+import pl.sokol.pacman.elements.dynamic.player.Player;
 import pl.sokol.pacman.elements.map.Junction;
 import pl.sokol.pacman.elements.Renderable;
 import pl.sokol.pacman.game.Level;

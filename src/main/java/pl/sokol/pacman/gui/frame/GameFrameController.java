@@ -5,7 +5,7 @@ import lombok.Getter;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import pl.sokol.pacman.database.HibernateFactory;
-import pl.sokol.pacman.elements.dynamic.Enemy;
+import pl.sokol.pacman.elements.dynamic.enemy.Enemy;
 import pl.sokol.pacman.game.Save;
 import pl.sokol.pacman.gui.panels.endgame.EndgamePanelController;
 import pl.sokol.pacman.gui.panels.game.GamePanelController;
@@ -19,10 +19,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import static pl.sokol.pacman.Utils.ENDGAME;
@@ -99,19 +97,11 @@ public class GameFrameController {
         Save save = Save.builder()
                 .points(gameModel.getLevel().getPoints())
                 .playerLocation(gameModel.getLevel().getPlayer().getLocation())
-                .playerCurrentMovement(gameModel.getLevel().getPlayer().getCurrentMovement())
+                .playerCurrentMovement(gameModel.getLevel().getPlayer().getPlayerEngine().getCurrentMovement())
                 .enemiesLocations(enemiesPoints)
                 .enemiesCurrentMovements(enemiesCurrentMovements)
                 .enemiesImageNumbers(enemiesNumberOfTheImages)
                 .stats(gameModel.getStatsPanel().getModel()).build();
-
-        // SAVE TO DATABASE
-        Session session = new HibernateFactory().getSessionFactory().openSession();
-        session.getTransaction().begin();
-        session.persist(save);
-        session.getTransaction().commit();
-        session.close();
-
 
         // SAVE TO FILE - BY GSON
         try (Writer writer = new FileWriter(filePath + ".json")) {

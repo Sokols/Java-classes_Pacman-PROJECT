@@ -1,1 +1,0 @@
-{"points":[{"POINT_WIDTH":8,"POINT_HEIGHT":8,"x":234,"y":426,"width":8,"height":8}],"playerLocation":{"x":236,"y":456},"playerCurrentMovement":2,"enemiesLocations":[{"x":127,"y":448},{"x":319,"y":224},{"x":447,"y":288},{"x":96,"y":351}],"enemiesCurrentMovements":[1,1,1,2],"enemiesImageNumbers":[1,3,2,3],"stats":{"NUMBER_OF_LIVES":3,"score":1420,"lives":3}}

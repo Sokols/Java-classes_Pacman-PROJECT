@@ -1,13 +1,11 @@
 package pl.sokol.pacman.game;
 
-import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.log4j.Logger;
 import pl.sokol.pacman.elements.Renderable;
-import pl.sokol.pacman.elements.dynamic.Enemy;
-import pl.sokol.pacman.elements.dynamic.Player;
+import pl.sokol.pacman.elements.dynamic.enemy.Enemy;
+import pl.sokol.pacman.elements.dynamic.player.Player;
 import pl.sokol.pacman.elements.map.Junction;
 import pl.sokol.pacman.elements.map.Point;
 import pl.sokol.pacman.elements.map.Tile;
@@ -29,25 +27,28 @@ import static pl.sokol.pacman.Utils.GAME_HEIGHT;
 @Setter
 public class Level implements Renderable {
 
+    private final int NUMBER_OF_MAPS = 3;
+
     private final Logger LOG = Logger.getLogger(Level.class);
+
     private List<Point> points;
     private List<Enemy> enemies;
     private List<java.awt.Point> enemiesPoints;
     private List<Junction> junctions;
     private List<Tile> tiles;
-    private BufferedImage mapForLevel;
+    private List<BufferedImage> maps;
     private Player player;
 
-    public Level(String path, GamePanelController gameThread, StatsPanelController stats) {
+    public Level(GamePanelController gameThread, StatsPanelController stats) {
         this.points = new ArrayList<>();
         this.enemies = new ArrayList<>();
         this.enemiesPoints = new ArrayList<>();
         this.junctions = new ArrayList<>();
         this.tiles = new ArrayList<>();
         try {
-            this.mapForLevel = ImageIO.read(getClass().getResourceAsStream(path));
             this.player = new Player(0, 0, gameThread, stats);
-            setElements();
+            setMaps();
+            setElements(stats.getModel().getLevel());
         } catch (IOException e) {
             LOG.warn(e);
         }
@@ -91,12 +92,22 @@ public class Level implements Renderable {
         }
     }
 
-    private void setElements() throws IOException, ExceptionInInitializerError {
+    private void setMaps() throws IOException {
+        this.maps = new ArrayList<>();
+        for (int i = 0; i < NUMBER_OF_MAPS; i++) {
+            maps.add(ImageIO.read(getClass().getResourceAsStream("/graphics/maps/map" + (i + 1) + ".png")));
+        }
+    }
+
+    private void setElements(int numberOfTheMap) throws IOException, ExceptionInInitializerError {
+        BufferedImage mapForLevel = maps.get(numberOfTheMap - 1);
         int mapWidth = mapForLevel.getWidth();
         int mapHeight = mapForLevel.getHeight();
 
         int mapWidthProportion = FRAME_WIDTH / mapWidth;
         int mapHeightProportion = GAME_HEIGHT / mapHeight;
+
+        int enemyImageCounter = 0;
 
         for (int xx = 0; xx < mapWidth; xx++) {
             for (int yy = 0; yy < mapHeight; yy++) {
@@ -130,7 +141,7 @@ public class Level implements Renderable {
                                 .player(player)
                                 .level(this)
                                 .junctions(null)
-                                .numberOfTheImage(new Random().nextInt(5))
+                                .numberOfTheImage(enemyImageCounter++)
                                 .currentMovement(0)
                                 .previousMovement(0)
                                 .build(x, y));

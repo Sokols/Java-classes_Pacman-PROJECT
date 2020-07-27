@@ -3,8 +3,7 @@ package pl.sokol.pacman.gui.panels.loading;
 import com.google.gson.Gson;
 import lombok.Getter;
 import org.apache.log4j.Logger;
-import pl.sokol.pacman.elements.dynamic.Enemy;
-import pl.sokol.pacman.elements.map.Point;
+import pl.sokol.pacman.elements.dynamic.enemy.Enemy;
 import pl.sokol.pacman.game.Level;
 import pl.sokol.pacman.game.Save;
 import pl.sokol.pacman.gui.frame.GameFrameController;
@@ -116,7 +115,7 @@ public class LoadingPanelController implements MouseListener {
 
                 // set player location and current movement
                 newLevel.getPlayer().setLocation(gameSave.getPlayerLocation());
-                newLevel.getPlayer().setCurrentMovement(gameSave.getPlayerCurrentMovement());
+                newLevel.getPlayer().getPlayerEngine().setCurrentMovement(gameSave.getPlayerCurrentMovement());
 
                 // set level points and enemies
                 newLevel.setPoints(gameSave.getPoints());

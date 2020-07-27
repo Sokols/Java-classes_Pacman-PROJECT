@@ -23,7 +23,7 @@ public class GamePanelController implements Runnable, KeyListener {
         StatsPanelController statsPanelController = new StatsPanelController();
         this.model = GamePanelModel.builder()
                 .gameFrame(gameFrameController)
-                .level(new Level("/graphics/maps/map1.png", this, statsPanelController))
+                .level(new Level(this, statsPanelController))
                 .isStoppedFlag(false)
                 .isEndedFlag(false)
                 .enginePanel(new EnginePanelController(this))
@@ -63,19 +63,19 @@ public class GamePanelController implements Runnable, KeyListener {
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
-                model.getLevel().getPlayer().setCurrentMovement(0);
+                model.getLevel().getPlayer().getPlayerEngine().setCurrentMovement(0);
                 break;
 
             case KeyEvent.VK_RIGHT:
-                model.getLevel().getPlayer().setCurrentMovement(1);
+                model.getLevel().getPlayer().getPlayerEngine().setCurrentMovement(1);
                 break;
 
             case KeyEvent.VK_DOWN:
-                model.getLevel().getPlayer().setCurrentMovement(2);
+                model.getLevel().getPlayer().getPlayerEngine().setCurrentMovement(2);
                 break;
 
             case KeyEvent.VK_LEFT:
-                model.getLevel().getPlayer().setCurrentMovement(3);
+                model.getLevel().getPlayer().getPlayerEngine().setCurrentMovement(3);
                 break;
 
             case KeyEvent.VK_SPACE:
@@ -126,7 +126,7 @@ public class GamePanelController implements Runnable, KeyListener {
             restartLevel.getEnemies().get(i).setCurrentMovement(0);
         }
         restartLevel.getPlayer().setLocation(32, 64);
-        restartLevel.getPlayer().setCurrentMovement(0);
+        restartLevel.getPlayer().getPlayerEngine().setCurrentMovement(0);
         model.setLevel(restartLevel);
     }
 
