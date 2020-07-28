@@ -3,6 +3,7 @@ package pl.sokol.pacman.gui.panels.menu;
 import lombok.Getter;
 import pl.sokol.pacman.gui.frame.GameFrameController;
 import pl.sokol.pacman.gui.panels.game.GamePanelController;
+import pl.sokol.pacman.gui.panels.game.stats.StatsPanelController;
 
 @Getter
 public class MenuPanelController {
@@ -17,7 +18,7 @@ public class MenuPanelController {
     private void initListeners(GameFrameController game) {
         menuPanelView.getBackToGameButton().addActionListener(e -> game.backToGame());
 
-        menuPanelView.getNewGameButton().addActionListener(e -> game.newGame(new GamePanelController(game)));
+        menuPanelView.getNewGameButton().addActionListener(e -> game.newGame(new GamePanelController(game, new StatsPanelController())));
 
         menuPanelView.getSaveButton().addActionListener(e -> game.saveGame());
 

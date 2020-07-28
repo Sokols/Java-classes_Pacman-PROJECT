@@ -108,7 +108,9 @@ public class LoadingPanelController implements MouseListener {
         for (String save : model.getSavesNames()) {
             if (save.contains(saveName)) {
                 Save gameSave = new Gson().fromJson(new String(Files.readAllBytes(Paths.get(save))), Save.class);
-                GamePanelController newGame = new GamePanelController(model.getGame());
+                StatsPanelController statsPanelController = new StatsPanelController();
+                statsPanelController.setModel(gameSave.getStats());
+                GamePanelController newGame = new GamePanelController(model.getGame(), statsPanelController);
                 Level newLevel = newGame.getModel().getLevel();
                 StatsPanelController newStats = newGame.getModel().getStatsPanel();
                 List<Enemy> newEnemies = new ArrayList<>();

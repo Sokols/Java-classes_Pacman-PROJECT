@@ -92,14 +92,7 @@ public class Level implements Renderable {
         }
     }
 
-    private void setMaps() throws IOException {
-        this.maps = new ArrayList<>();
-        for (int i = 0; i < NUMBER_OF_MAPS; i++) {
-            maps.add(ImageIO.read(getClass().getResourceAsStream("/graphics/maps/map" + (i + 1) + ".png")));
-        }
-    }
-
-    private void setElements(int numberOfTheMap) throws IOException, ExceptionInInitializerError {
+    public void setElements(int numberOfTheMap) throws IOException, ExceptionInInitializerError {
         BufferedImage mapForLevel = maps.get(numberOfTheMap - 1);
         int mapWidth = mapForLevel.getWidth();
         int mapHeight = mapForLevel.getHeight();
@@ -163,6 +156,13 @@ public class Level implements Renderable {
         // set prepared junctions for every enemy
         for (Enemy enemy : enemies) {
             enemy.setJunctions(junctions);
+        }
+    }
+
+    private void setMaps() throws IOException {
+        this.maps = new ArrayList<>();
+        for (int i = 0; i < NUMBER_OF_MAPS; i++) {
+            maps.add(ImageIO.read(getClass().getResourceAsStream("/graphics/maps/map" + (i + 1) + ".png")));
         }
     }
 }

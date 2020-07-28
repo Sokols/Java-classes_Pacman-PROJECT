@@ -19,8 +19,7 @@ public class GamePanelController implements Runnable, KeyListener {
     private GamePanelView view;
     private RenderTimer renderTimer;
 
-    public GamePanelController(GameFrameController gameFrameController) {
-        StatsPanelController statsPanelController = new StatsPanelController();
+    public GamePanelController(GameFrameController gameFrameController, StatsPanelController statsPanelController) {
         this.model = GamePanelModel.builder()
                 .gameFrame(gameFrameController)
                 .level(new Level(this, statsPanelController))
