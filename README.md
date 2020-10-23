@@ -1,7 +1,7 @@
-# PAC-MAN - simple Java game
+# PAC-MAN - Java desktop app
 
 ## Description
-Project of a simple game "PAC-MAN" to pass Java programming classes (finished in the second version).
+A project of the popular game "PAC-MAN", created in order to pass Java programming classes (finished in the second version).
 
 ![Zrzut ekranu (4)](https://user-images.githubusercontent.com/59984158/88973607-a1958400-d2b7-11ea-95de-90400a6962e0.png)
 
